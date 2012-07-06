@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1171" systemVersion="11D50" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="Context" syncable="YES">
+        <attribute name="apikey" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="apiroot" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="host" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="port" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="testProject" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="Feed" syncable="YES">
+        <attribute name="filter" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="procId" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="writekey" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="messages" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Message" inverseName="feed" inverseEntity="Message" syncable="YES"/>
+    </entity>
+    <entity name="Log" syncable="YES">
+        <attribute name="message" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="timestamp" optional="YES" attributeType="Date" syncable="YES"/>
+    </entity>
+    <entity name="Message" syncable="YES">
+        <attribute name="payload" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="timestamp" optional="YES" attributeType="Date" syncable="YES"/>
+        <relationship name="feed" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Feed" inverseName="messages" inverseEntity="Feed" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="Context" positionX="-441" positionY="63" width="128" height="120"/>
+        <element name="Feed" positionX="-432" positionY="174" width="128" height="135"/>
+        <element name="Log" positionX="-191" positionY="63" width="128" height="75"/>
+        <element name="Message" positionX="-173" positionY="171" width="128" height="90"/>
+    </elements>
+</model>
