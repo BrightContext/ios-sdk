@@ -1,9 +1,10 @@
+//-----------------------------------------------------------------
+// Copyright 2012 BrightContext Corporation
 //
-//  BrightContext.h
-//  brightcontext-ios-sdk
-//
-//  Copyright (c) 2011 BrightContext Corporation. All rights reserved.
-//
+// Licensed under the MIT License defined in the 
+// LICENSE file. You may not use this file except in 
+// compliance with the License.
+//----------------------------------------------------------------- 
 
 #import <Foundation/Foundation.h>
 
@@ -77,19 +78,11 @@
  
  \section overview Architecture at a glance
  
- \dot
- digraph {
- Context ->
-  Project -> ThruChannel;
-    ThruChannel -> DefaultFeed;
-    ThruChannel -> Subchannel1;
-    ThruChannel -> Subchannel2;
-  Project -> QuantChannel;
-    QuantChannel -> Input1;
-    QuantChannel -> Output1;
-    QuantChannel -> Output2;
- }
- \enddot
+ \htmlonly
+ <div align="center">
+ <img src="/wp-content/themes/bcctheme2/uploads/2012/07/architecture.png">
+ </div>
+ \endhtmlonly
  
  \subsection step1 First Steps
  

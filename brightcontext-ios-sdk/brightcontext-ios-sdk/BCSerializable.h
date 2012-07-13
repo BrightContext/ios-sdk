@@ -1,9 +1,10 @@
+//-----------------------------------------------------------------
+// Copyright 2012 BrightContext Corporation
 //
-//  BCSerializable.h
-//  brightcontext-ios-sdk
-//
-//  Copyright (c) 2011 BrightContext Corporation. All rights reserved.
-//
+// Licensed under the MIT License defined in the 
+// LICENSE file. You may not use this file except in 
+// compliance with the License.
+//----------------------------------------------------------------- 
 
 #import <Foundation/Foundation.h>
 
