@@ -14,6 +14,7 @@
 @class BCEvent;
 @class BCCommand;
 @class BCSession;
+@class BCHTTPRequest;
 @protocol BCFeedListener;
 
 typedef void(^BCSessionEstablishedCompletion)(NSError* err, BCSession* s);
@@ -22,9 +23,9 @@ typedef void(^BCShutdownCompletion)(NSError* err);
 
 @protocol BCConnectionManager <NSObject>
 
-+ (void) createSessionUsingLoadBalancer:(NSURL *)loadBalancerRootUrl
-                            usingApiKey:(NSString*)apiKey
-                             completion:(BCSessionEstablishedCompletion)completion;
++ (BCHTTPRequest*) createSessionUsingLoadBalancer:(NSURL *)loadBalancerRootUrl
+                                      usingApiKey:(NSString*)apiKey
+                                       completion:(BCSessionEstablishedCompletion)completion;
 
 - (void) establishConnection:(BCSessionEstablishedCompletion)completion;
 

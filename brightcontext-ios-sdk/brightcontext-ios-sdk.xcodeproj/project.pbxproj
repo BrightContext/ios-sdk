@@ -83,6 +83,7 @@
 		D75CC43F152DF38F006FD0BE /* SRWebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = D712E7B61520C62D0050BB0C /* SRWebSocket.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		D75CC442152DF46C006FD0BE /* FDMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D75CC441152DF46C006FD0BE /* FDMessageViewController.m */; };
 		D75CC449152E1AE9006FD0BE /* FDFeedMessagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D75CC448152E1AE9006FD0BE /* FDFeedMessagesViewController.m */; };
+		D75E920B15A394090066774D /* DateTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D75E920A15A394090066774D /* DateTests.m */; };
 		D766B33D1521F386004ED3EC /* TestContext.m in Sources */ = {isa = PBXBuildFile; fileRef = D766B33C1521F386004ED3EC /* TestContext.m */; };
 		D766B3401521F808004ED3EC /* SessionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D766B33F1521F808004ED3EC /* SessionTests.m */; };
 		D766B3421521FBD2004ED3EC /* BrightContext_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D766B3411521FBD2004ED3EC /* BrightContext_Private.h */; };
@@ -100,6 +101,7 @@
 		D79A305E1523A758001294C4 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D79A305D1523A758001294C4 /* libicucore.dylib */; };
 		D79A305F1523A75C001294C4 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D79A305D1523A758001294C4 /* libicucore.dylib */; };
 		D79E5A91152F7460009BF380 /* FDTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D79E5A90152F7460009BF380 /* FDTableCell.m */; };
+		D7B2EEC115B49EBF007495B3 /* ProcessedChannelTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D7B2EEC015B49EBF007495B3 /* ProcessedChannelTests.m */; };
 		D7BD877A1520EA9B007F47BB /* BCEventManager.h in Headers */ = {isa = PBXBuildFile; fileRef = D7BD87781520EA9B007F47BB /* BCEventManager.h */; };
 		D7BD877B1520EA9B007F47BB /* BCEventManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D7BD87791520EA9B007F47BB /* BCEventManager.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		D7BD87821520ECA7007F47BB /* BCConnection.h in Headers */ = {isa = PBXBuildFile; fileRef = D7BD87801520ECA7007F47BB /* BCConnection.h */; };
@@ -247,6 +249,8 @@
 		D75CC441152DF46C006FD0BE /* FDMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDMessageViewController.m; sourceTree = "<group>"; };
 		D75CC447152E1AE9006FD0BE /* FDFeedMessagesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDFeedMessagesViewController.h; sourceTree = "<group>"; };
 		D75CC448152E1AE9006FD0BE /* FDFeedMessagesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDFeedMessagesViewController.m; sourceTree = "<group>"; };
+		D75E920915A394090066774D /* DateTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DateTests.h; sourceTree = "<group>"; };
+		D75E920A15A394090066774D /* DateTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DateTests.m; sourceTree = "<group>"; };
 		D766B33B1521F386004ED3EC /* TestContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestContext.h; sourceTree = "<group>"; };
 		D766B33C1521F386004ED3EC /* TestContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestContext.m; sourceTree = "<group>"; };
 		D766B33E1521F808004ED3EC /* SessionTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SessionTests.h; sourceTree = "<group>"; };
@@ -267,6 +271,8 @@
 		D79A305D1523A758001294C4 /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
 		D79E5A8F152F7460009BF380 /* FDTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDTableCell.h; sourceTree = "<group>"; };
 		D79E5A90152F7460009BF380 /* FDTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDTableCell.m; sourceTree = "<group>"; };
+		D7B2EEBF15B49EBF007495B3 /* ProcessedChannelTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProcessedChannelTests.h; sourceTree = "<group>"; };
+		D7B2EEC015B49EBF007495B3 /* ProcessedChannelTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProcessedChannelTests.m; sourceTree = "<group>"; };
 		D7BD87781520EA9B007F47BB /* BCEventManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCEventManager.h; sourceTree = "<group>"; };
 		D7BD87791520EA9B007F47BB /* BCEventManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BCEventManager.m; sourceTree = "<group>"; };
 		D7BD87801520ECA7007F47BB /* BCConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCConnection.h; sourceTree = "<group>"; };
@@ -431,6 +437,10 @@
 				D75B9D981562C60F0029F5D8 /* ConnectionTests.m */,
 				D70EBA071565423800ACC8CB /* MessageValidationTests.h */,
 				D70EBA081565423800ACC8CB /* MessageValidationTests.m */,
+				D75E920915A394090066774D /* DateTests.h */,
+				D75E920A15A394090066774D /* DateTests.m */,
+				D7B2EEBF15B49EBF007495B3 /* ProcessedChannelTests.h */,
+				D7B2EEC015B49EBF007495B3 /* ProcessedChannelTests.m */,
 			);
 			name = "Unit Tests";
 			path = "brightcontext-ios-sdkTests";
@@ -882,6 +892,8 @@
 				D725758D152CDFEF007FF7E6 /* CollaborativeFeedTests.m in Sources */,
 				D75B9D991562C60F0029F5D8 /* ConnectionTests.m in Sources */,
 				D70EBA091565423800ACC8CB /* MessageValidationTests.m in Sources */,
+				D75E920B15A394090066774D /* DateTests.m in Sources */,
+				D7B2EEC115B49EBF007495B3 /* ProcessedChannelTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1073,7 +1085,7 @@
 					"$(inherited)",
 					"BC_METRICS_ENABLED=1",
 					"BC_MESSAGE_CONTRACT_VALIDATION=1",
-					"BC_TEST_ENVIRONMENT=ProdSettings",
+					"BC_TEST_ENVIRONMENT=Te1Settings",
 					"BC_LOGGING=1",
 				);
 				INFOPLIST_FILE = "brightcontext-ios-sdkTests/brightcontext-ios-sdkTests-Info.plist";

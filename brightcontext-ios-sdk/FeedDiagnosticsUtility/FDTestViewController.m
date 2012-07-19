@@ -285,7 +285,13 @@
     NSInteger writableFeedIndex = textField.tag;
     BCFeed* f = [_writableFeeds objectAtIndex:writableFeedIndex];
     BCMessage* msg = [BCMessage messageFromString:textField.text];
-    [f send:msg];
+    
+    @try {
+        [f send:msg];
+    }
+    @catch (NSException *ex) {
+        NSLog(@"error sending message: %@", ex);
+    }
     
     [textField resignFirstResponder];
     return NO;
@@ -338,9 +344,10 @@
                     
                 case Disconnect:
                 {
-                    [self.bc.connection disconnect];
-                    
-                    [self updateStatus:@"disconnected"];
+                    [self updateStatus:@"disconnecting..."];
+                    [self.bc shutdown:^(NSError *err) {
+                        [self updateStatus:@"disconnected"];
+                    }];
                 }
                     break;
                     

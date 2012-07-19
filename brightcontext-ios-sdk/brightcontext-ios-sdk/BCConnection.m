@@ -67,8 +67,27 @@ NSString* BCConnection_CommandQueueName = @"com.brightcontext.connection.command
     return (SR_OPEN == s);
 }
 
+- (BOOL)isConnecting
+{
+    SRReadyState s = _socket.readyState;
+    return (SR_CONNECTING == s);
+}
+
+- (BOOL)isClosing
+{
+    SRReadyState s = _socket.readyState;
+    return (SR_CLOSING == s);
+}
+
+- (BOOL)isClosed
+{
+    SRReadyState s = _socket.readyState;
+    return (SR_CLOSED == s);
+}
+
 - (void)disconnect
 {
+    _socket.delegate = nil;
     [_socket close];
     [_socket release];
     _socket = nil;
@@ -77,15 +96,19 @@ NSString* BCConnection_CommandQueueName = @"com.brightcontext.connection.command
 - (void)send:(BCCommand *)cmd
 {
     NSString* json = [[cmd toJson] retain];
-    [_commandQ addOperationWithBlock:^{
-        if (SR_OPEN == _socket.readyState) {
-            BCLog(@"socket: %@ send: %@", _socket, json);
-            [_socket send:json];
-            
-            BCMetricInc(kBCMetrics_streamObjectWrites);
-        }
-        [json release];
-    }];
+    if (json) {
+        [_commandQ addOperationWithBlock:^{
+            if (SR_OPEN == _socket.readyState) {
+                BCLog(@"socket: %@ send: %@", _socket, json);
+                [_socket send:json];
+                
+                BCMetricInc(kBCMetrics_streamObjectWrites);
+            }
+            [json release];
+        }];
+    } else {
+        BCLog(@"socket: %@ json serialization failed for command: %@", _socket, cmd);
+    }
 }
 
 #pragma mark SRWebSocketDelegate

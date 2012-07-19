@@ -50,4 +50,9 @@
     return [[[self class] fetchContextEntity] valueForKey:@"testProject"];
 }
 
+@synthesize unprotectedThruChannel;
+@synthesize protectedThruChannel;
+@synthesize protectedThruChannelWriteKey;
+
+
 @end

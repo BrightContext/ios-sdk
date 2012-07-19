@@ -420,7 +420,7 @@
     if ([BC_FIELDTYPE_STRING isEqualToString:expectedType]) {
         expectedClass = [NSString class];
     } else if ([BC_FIELDTYPE_DATE isEqualToString:expectedType]) {
-        expectedClass = [NSDate class];
+        expectedClass = [NSNumber class];
     } else if ([BC_FIELDTYPE_NUMBER isEqualToString:expectedType]) {
         expectedClass = [NSNumber class];
     }

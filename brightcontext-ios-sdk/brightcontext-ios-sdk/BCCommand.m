@@ -159,8 +159,7 @@
     [cmd setObject:[NSNumber numberWithUnsignedInteger:limit]
           forParam:BC_PARAM_LIMIT];
     
-    NSTimeInterval t = [ending timeIntervalSince1970];
-    NSNumber* unixtimestamp = [NSNumber numberWithLongLong:1000 * (long long)t];
+    NSNumber* unixtimestamp = BC_MAKETIMESTAMP(ending);
     [cmd setObject:unixtimestamp
           forParam:BC_PARAM_SINCE_TS];
     

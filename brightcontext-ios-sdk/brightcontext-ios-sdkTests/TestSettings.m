@@ -56,7 +56,7 @@
 
 - (NSString *)host
 {
-    return @"dev05.bcclabs.com";
+    return @"pub.bcclabs.com";
 }
 
 - (NSUInteger)port
@@ -71,7 +71,7 @@
 
 - (NSString *)apiKey
 {
-    return @"b7d31fce-f06c-4a35-bf11-f36b3d80ce04";
+    return @"800f34dc-1b5b-492f-8017-d647ae1ef28a";
 }
 
 - (NSString*)testProject
@@ -91,7 +91,7 @@
 
 - (NSString*)protectedThruChannelWriteKey
 {
-    return @"4445598ce2a51481";
+    return @"c3d5ef421364a52a";
 }
 
 @end

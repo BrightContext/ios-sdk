@@ -12,6 +12,8 @@
 
 @implementation MessageValidationTests
 
+#if BC_MESSAGE_CONTRACT_VALIDATION
+
 - (void) testMessageNullValidation
 {
     BCFeed* f = [[BCFeed new] autorelease];
@@ -40,13 +42,11 @@
     
     NSArray* msgContract = [NSArray arrayWithObjects:expected1, expected2, expected3, nil];
     
-    
-    NSDictionary* payload = [NSDictionary dictionaryWithObjectsAndKeys:
-                             @"string value", @"f1",
-                             [NSNumber numberWithInt:5], @"f2",
-                             nil];
-    
-    BCMessage* msg = [BCMessage messageFromDictionary:payload];
+
+    BCMessage* msg = [BCMessage message];
+    [msg setString:@"string value" forKey:@"f1"];
+    [msg setNumber:[NSNumber numberWithInt:5] forKey:@"f2"];
+
     BCFeed* f = [[BCFeed new] autorelease];
     f.messageContract = msgContract;
     STAssertThrows([f send:msg], @"");
@@ -75,14 +75,12 @@
     NSArray* msgContract = [NSArray arrayWithObjects:expected1, expected2, expected3, nil];
     
     
-    NSDictionary* payload = [NSDictionary dictionaryWithObjectsAndKeys:
-                             @"string value", @"f1",
-                             [NSNumber numberWithInt:5], @"f2",
-                             [NSDate date], @"f3",
-                             @"extra field", @"f4",
-                             nil];
+    BCMessage* msg = [BCMessage message];
+    [msg setString:@"string value" forKey:@"f1"];
+    [msg setNumber:[NSNumber numberWithInt:5] forKey:@"f2"];
+    [msg setDate:[NSDate date] forKey:@"f3"];
+    [msg setString:@"extra field" forKey:@"f4"];
     
-    BCMessage* msg = [BCMessage messageFromDictionary:payload];
     BCFeed* f = [[BCFeed new] autorelease];
     f.messageContract = msgContract;
     STAssertThrows([f send:msg], @"");
@@ -110,14 +108,11 @@
     
     NSArray* msgContract = [NSArray arrayWithObjects:expected1, expected2, expected3, nil];
     
-    
-    NSDictionary* payload = [NSDictionary dictionaryWithObjectsAndKeys:
-                             @"string value", @"f1",
-                             @"should be a number", @"f2",
-                             [NSDate date], @"f3",
-                             nil];
-    
-    BCMessage* msg = [BCMessage messageFromDictionary:payload];
+    BCMessage* msg = [BCMessage message];
+    [msg setString:@"string value" forKey:@"f1"];
+    [msg setString:@"should be a number" forKey:@"f2"];
+    [msg setDate:[NSDate date] forKey:@"f3"];
+
     BCFeed* f = [[BCFeed new] autorelease];
     f.messageContract = msgContract;
     STAssertThrows([f send:msg], @"");
@@ -145,14 +140,13 @@
     
     NSArray* msgContract = [NSArray arrayWithObjects:expected1, expected2, expected3, nil];
     
-    
-    NSDictionary* payload = [NSDictionary dictionaryWithObjectsAndKeys:
-                             @"string value", @"f1",
-                             [NSNumber numberWithFloat:2.5], @"f2",
-                             @"should be a date", @"f3",
-                             nil];
-    
-    BCMessage* msg = [BCMessage messageFromDictionary:payload];
+    BCMessage* msg = [BCMessage message];
+    [msg setString:@"string value" forKey:@"f1"];
+    [msg setNumber:[NSNumber numberWithInt:2.5] forKey:@"f2"];
+    [msg setString:@"should be a date" forKey:@"f3"];
+
+    STAssertNotNil([msg toJson], @"");
+
     BCFeed* f = [[BCFeed new] autorelease];
     f.messageContract = msgContract;
     STAssertThrows([f send:msg], @"");
@@ -181,13 +175,13 @@
     NSArray* msgContract = [NSArray arrayWithObjects:expected1, expected2, expected3, nil];
     
     
-    NSDictionary* payload = [NSDictionary dictionaryWithObjectsAndKeys:
-                             @"string value", @"f4",
-                             @"should be a number", @"f5",
-                             @"should be a date", @"f6",
-                             nil];
+    BCMessage* msg = [BCMessage message];
+    [msg setString:@"string value" forKey:@"f1"];
+    [msg setString:@"should be a number" forKey:@"f2"];
+    [msg setString:@"should be a date" forKey:@"f3"];
     
-    BCMessage* msg = [BCMessage messageFromDictionary:payload];
+    STAssertNotNil([msg toJson], @"");
+
     BCFeed* f = [[BCFeed new] autorelease];
     f.messageContract = msgContract;
     STAssertThrows([f send:msg], @"");
@@ -215,8 +209,9 @@
     
     NSArray* msgContract = [NSArray arrayWithObjects:expected1, expected2, expected3, nil];
     
-    
     BCMessage* msg = [BCMessage message];
+    STAssertNil([msg toJson], @"");
+
     BCFeed* f = [[BCFeed new] autorelease];
     f.messageContract = msgContract;
     STAssertThrows([f send:msg], @"");
@@ -245,13 +240,13 @@
     NSArray* msgContract = [NSArray arrayWithObjects:expected1, expected2, expected3, nil];
     
     
-    NSDictionary* payload = [NSDictionary dictionaryWithObjectsAndKeys:
-                             @"string value", @"f1",
-                             [NSNumber numberWithInt:-1], @"f2",
-                             [NSDate date], @"f3",
-                             nil];
-    
-    BCMessage* msg = [BCMessage messageFromDictionary:payload];
+    BCMessage* msg = [BCMessage message];
+    [msg setString:@"string value" forKey:@"f1"];
+    [msg setNumber:[NSNumber numberWithInt:-1] forKey:@"f2"];
+    [msg setDate:[NSDate date] forKey:@"f3"];
+
+    STAssertNotNil([msg toJson], @"");
+
     BCFeed* f = [[BCFeed new] autorelease];
     f.messageContract = msgContract;
     STAssertThrows([f send:msg], @"");
@@ -279,14 +274,13 @@
     
     NSArray* msgContract = [NSArray arrayWithObjects:expected1, expected2, expected3, nil];
     
-    
-    NSDictionary* payload = [NSDictionary dictionaryWithObjectsAndKeys:
-                             @"string value", @"f1",
-                             [NSNumber numberWithInt:100], @"f2",
-                             [NSDate date], @"f3",
-                             nil];
-    
-    BCMessage* msg = [BCMessage messageFromDictionary:payload];
+    BCMessage* msg = [BCMessage message];
+    [msg setString:@"string value" forKey:@"f1"];
+    [msg setNumber:[NSNumber numberWithInt:100] forKey:@"f2"];
+    [msg setDate:[NSDate date] forKey:@"f3"];
+
+    STAssertNotNil([msg toJson], @"");
+
     BCFeed* f = [[BCFeed new] autorelease];
     f.messageContract = msgContract;
     STAssertThrows([f send:msg], @"");
@@ -314,17 +308,18 @@
     
     NSArray* msgContract = [NSArray arrayWithObjects:expected1, expected2, expected3, nil];
     
+    BCMessage* msg = [BCMessage message];
+    [msg setString:@"string value" forKey:@"f1"];
+    [msg setNumber:[NSNumber numberWithInt:5] forKey:@"f2"];
+    [msg setDate:[NSDate date] forKey:@"f3"];
+
+    STAssertNotNil([msg toJson], @"");
     
-    NSDictionary* payload = [NSDictionary dictionaryWithObjectsAndKeys:
-                             @"string value", @"f1",
-                             [NSNumber numberWithInt:5], @"f2",
-                             [NSDate date], @"f3",
-                             nil];
-    
-    BCMessage* msg = [BCMessage messageFromDictionary:payload];
     BCFeed* f = [[BCFeed new] autorelease];
     f.messageContract = msgContract;
     [f send:msg];
 }
+
+#endif
 
 @end

@@ -29,6 +29,7 @@
     if (self) {
         _activePollingEnabled = YES;
         _autoReconnect = YES;
+        _connectionEstablishedCompletionBlocks = [NSMutableArray new];
     }
     return self;
 }
@@ -43,6 +44,10 @@
     [session release];
     [connection release];
     [dispatcher release];
+    
+    [_connectionEstablishedCompletionBlocks release];
+    [_sessionCreateOperation release];
+    
     [super dealloc];
 }
 
@@ -55,17 +60,8 @@
 
 - (BCFeed*)registerOpenedFeedWithEvent:(BCEvent *)evt
 {
-    NSDictionary* feedData = nil;
     BCMessage* msg = evt.message;
-    BCMessageVariantType msgT = msg.type;
-    if (BCMessageVariant_Dictionary == msgT) {
-        feedData = msg.rawData;
-    } else if (BCMessageVariant_String == msgT) {
-        id parsedData = [msg.rawData JSONValue];
-        if ([parsedData isKindOfClass:[NSDictionary class]]) {
-            feedData = parsedData;
-        } 
-    }
+    NSDictionary* feedData = msg.rawData;
     
     if (!feedData) {
         NSAssert(feedData != nil, @"Incomprehensible feed open response: %@", msg);
@@ -167,7 +163,7 @@
 
 #pragma mark BCConnectionManager
 
-+ (void)createSessionUsingLoadBalancer:(NSURL *)loadBalancerRootUrl
++ (BCHTTPRequest*)createSessionUsingLoadBalancer:(NSURL *)loadBalancerRootUrl
                            usingApiKey:(NSString*)apiKey
                             completion:(void (^)(NSError *, BCSession *))completion
 {
@@ -191,30 +187,35 @@
         }
     } async:YES];
     
+    return op;
 }
 
 - (void)establishConnection:(BCSessionEstablishedCompletion)completion
 {
     if ([self isConnected]) {
+        // when connected, respond immediately
         completion(nil, self.session);
     } else {
-        BCSessionEstablishedCompletion b = [completion copy];
+        // queue up this completion
+        BCSessionEstablishedCompletion b = [[completion copy] autorelease];
+        [_connectionEstablishedCompletionBlocks addObject:b];
         
-        NSURL* environmentUrl = self.environmentURL;
-        NSString* apikey = self.apiKey;
-        [BrightContext createSessionUsingLoadBalancer:environmentUrl
-                                          usingApiKey:apikey
-                                           completion:^(NSError * err, BCSession * s) {
-                                               if (err) {
-                                                   [self failConnectionWithError:err];
-                                                   b(err, nil);
-                                               } else {
-                                                   [self initializeConnectionWithSession:s];
-                                                   b(nil, s);
-                                               }
-                                               
-                                               [b release];
-                                           }];
+        // only the first time, fire the http request
+        if (!_sessionCreateOperation) {
+            NSURL* environmentUrl = self.environmentURL;
+            NSString* apikey = self.apiKey;
+            _sessionCreateOperation = [BrightContext createSessionUsingLoadBalancer:environmentUrl usingApiKey:apikey completion:^(NSError * err, BCSession * s) {
+               if (err) {
+                   [self failConnectionWithError:err];
+               } else {
+                   [self initializeConnectionWithSession:s];
+               }
+               
+               [self fireConnectionEstablishedCompletionsWithError:err];
+            }];
+            
+            [_sessionCreateOperation retain];
+        }
     }
 }
 
@@ -239,8 +240,20 @@
         [self.connection disconnect];
         self.connection = nil;
     }
+}
+
+- (void)fireConnectionEstablishedCompletionsWithError:(NSError*)error
+{
+    for (BCSessionEstablishedCompletion b in _connectionEstablishedCompletionBlocks) {
+        @try {
+            b(error, self.session);
+        }
+        @catch (NSException *ex) {
+            BCLog(@"Exception in connection established callback: %@", ex);
+        }
+    }
     
-    // TODO: metrics / post error notification
+    [_connectionEstablishedCompletionBlocks removeAllObjects];
 }
 
 - (BOOL)shouldAutoReconnect
@@ -286,21 +299,22 @@
     
     self.connection.delegate = nil;
     self.connection = nil;
+    [_sessionCreateOperation release];
+    _sessionCreateOperation = nil;
     
     if (_autoReconnect) {
         BCMetricInc(kBCMetrics_streamReconnects);
         
         NSURL* environmentUrl = self.environmentURL;
         NSString* apikey = self.apiKey;
-        [BrightContext createSessionUsingLoadBalancer:environmentUrl
-                                          usingApiKey:apikey
-                                           completion:^(NSError * err, BCSession * newSession) {
-                                               if (err) {
-                                                   [self failConnectionWithError:err];
-                                               } else {
-                                                   [self restablishConnectionWithNewSession:newSession];
-                                               }
-                                           }];
+        _sessionCreateOperation = [BrightContext createSessionUsingLoadBalancer:environmentUrl usingApiKey:apikey completion:^(NSError * err, BCSession * newSession) {
+           if (err) {
+               [self failConnectionWithError:err];
+           } else {
+               [self restablishConnectionWithNewSession:newSession];
+           }
+        }];
+        [_sessionCreateOperation retain];
     } else {
         for (BCFeed* f in [self.dispatcher registeredFeeds]) {
             [self.dispatcher notifyListenersFeedClosed:f withError:error];
@@ -391,12 +405,16 @@
 - (void)closeAllFeeds:(BCResponseHandlerCompletion)completion
 {
     NSArray* feeds = [self.dispatcher registeredFeeds];
-    for (BCFeed* f in feeds) {
-        [f stopRevoteTimer];
+    if (0 == [feeds count]) {
+        completion(nil);
+    } else {
+        for (BCFeed* f in feeds) {
+            [f stopRevoteTimer];
+        }
+        
+        BCCommand* closeAll = [BCCommand closeFeeds:feeds];
+        [self sendRequest:closeAll onResponse:completion];
     }
-    
-    BCCommand* closeAll = [BCCommand closeFeeds:feeds];
-    [self sendRequest:closeAll onResponse:completion];
 }
 
 - (void)addListener:(id<BCFeedListener>)listener forFeed:(BCFeed *)feed
@@ -454,21 +472,28 @@
 
 - (void)shutdown:(BCShutdownCompletion)completion
 {
-    [self stopHeartbeats];
-    
-    [self closeAllFeeds:^(BCEvent *evt) {
-        _autoReconnect = NO;
+    if ([self isConnected]) {
+        [self stopHeartbeats];
         
-        self.connection.delegate = nil;
-        [self.connection disconnect];
-        
-        self.dispatcher = nil;
-        self.connection = nil;
-        
-        BCMetricPrint();
-        
-        completion(evt.error);
-    }];
+        [self closeAllFeeds:^(BCEvent *evt) {
+            _autoReconnect = NO;
+            
+            self.connection.delegate = nil;
+            [self.connection disconnect];
+            
+            self.dispatcher = nil;
+            self.connection = nil;
+            
+            [_sessionCreateOperation release];
+            _sessionCreateOperation = nil;
+            
+            BCMetricPrint();
+            
+            completion(evt.error);
+        }];
+    } else {
+        completion(nil);
+    }
 }
 
 @end

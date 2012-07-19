@@ -30,6 +30,8 @@
     }];
     
     spinwait(12000);
+    
+    [testListener release];
 }
 
 @end

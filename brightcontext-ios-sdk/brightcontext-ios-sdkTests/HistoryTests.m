@@ -79,7 +79,9 @@
     
     for (int i=0; i!=10; ++i) {
         NSString* msgbody = [NSString stringWithFormat:@"message %d", i];
-        [f send:[BCMessage messageFromString:msgbody]];
+        BCMessage* msg = [BCMessage message];
+        [msg setString:msgbody forKey:@"m"];
+        [f send:msg];
     }
 }
 

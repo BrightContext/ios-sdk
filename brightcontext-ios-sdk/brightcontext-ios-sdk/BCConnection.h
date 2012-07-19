@@ -30,6 +30,9 @@ extern NSString* BCConnection_CommandQueueName;
 @property (readwrite,nonatomic,assign) id<BCConnectionDelegate> delegate;
 
 - (BOOL) isConnected;
+- (BOOL) isConnecting;
+- (BOOL) isClosing;
+- (BOOL) isClosed;
 
 - (void) connect;
 - (void) disconnect;

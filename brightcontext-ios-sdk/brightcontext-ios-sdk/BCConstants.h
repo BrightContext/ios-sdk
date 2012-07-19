@@ -135,8 +135,7 @@ typedef enum {
 #define BC_CLAMP(x, low, high)  (((x) > (high)) ? (high) : (((x) < (low)) ? (low) : (x)))
 #define URLEncode(__S__) [[[[__S__ stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding] stringByReplacingOccurrencesOfString:@":" withString:@"%3A"] stringByReplacingOccurrencesOfString:@"," withString:@"%2C"] stringByReplacingOccurrencesOfString:@"@" withString:@"%40"]
 #define spinwait(_SECONDS_) [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:_SECONDS_]]
-
-
+#define BC_MAKETIMESTAMP(__D__) [NSNumber numberWithLongLong:1000 * (long long) [__D__ timeIntervalSince1970]]
 
 #if BC_MESSAGE_CONTRACT_VALIDATION
 

@@ -55,6 +55,8 @@
     NSTimer* _heartbeatTimer;
     BOOL _activePollingEnabled;
     BOOL _autoReconnect;
+    NSMutableArray* _connectionEstablishedCompletionBlocks;
+    BCHTTPRequest* _sessionCreateOperation;
 }
 
 /** Returns a newly created autoreleased context associated with the given API key */

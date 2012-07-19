@@ -8,6 +8,13 @@
 
 #import "BCMessage.h"
 #import "SBJson.h"
+#import "BCConstants.h"
+
+@interface BCMessage(Private)
+
+- (void) initRawDataAsDictionary;
+
+@end
 
 @implementation BCMessage
 
@@ -120,7 +127,7 @@
 
 - (NSString *)description
 {
-    return [NSString stringWithFormat:@"{ type: %d data: %@ }", _type, _data];
+    return [NSString stringWithFormat:@"{ timestamp: %f data: %@ }", _timestamp, _data];
 }
 
 - (id)proxyForJson
@@ -136,7 +143,92 @@
 
 - (NSString *)toJson
 {
-    return [self JSONRepresentation];
+    if (BCMessageVariant_Unknown == _type) {
+        return nil;
+    } else {
+        return [self JSONRepresentation];
+    }
+}
+
+#pragma mark - Easy Dictionary Values
+
+- (void)initRawDataAsDictionary
+{
+    if (!_data) {
+        [self setRawData:[NSMutableDictionary dictionary]];
+    } else if (BCMessageVariant_Dictionary != _type) {
+        [NSException raise:@"Mixed Message Type"
+                    format:@"Cannot set key values when message type is not BCMessageVariant_Dictionary"];
+    }
+}
+
+- (void)setString:(NSString *)v forKey:(NSString *)k
+{
+    [self initRawDataAsDictionary];
+    [_data setObject:v forKey:k];
+}
+
+- (NSString*) getStringForKey:(NSString*)k
+{
+    id v = [_data objectForKey:k];
+    
+    if (v) {
+        if ([v isKindOfClass:[NSString class]]) {
+            return v;
+        } else {
+            return [NSString stringWithFormat:@"%@", [v description]];
+        }
+    } else {
+        return nil;
+    }
+}
+
+- (void)setNumber:(NSNumber *)v forKey:(NSString *)k
+{
+    [self initRawDataAsDictionary];
+    [_data setObject:v forKey:k];
+}
+
+- (NSNumber*) getNumberForKey:(NSString*)k
+{
+    id v = [_data objectForKey:k];
+    
+    if ([v isKindOfClass:[NSNumber class]]) {
+        return v;
+    } else if ([v isKindOfClass:[NSString class]]) {
+        NSNumber* n = [NSNumber numberWithDouble:[v doubleValue]];
+        return n;
+    } else {
+        return nil;
+    }
+}
+
+- (void)setDate:(NSDate *)v forKey:(NSString *)k
+{
+    [self initRawDataAsDictionary];
+    [_data setObject:BC_MAKETIMESTAMP(v) forKey:k];
+}
+
+- (NSDate*) getDateForKey:(NSString*)k
+{
+    double unixtimestamp;
+    
+    id v = [_data objectForKey:k];
+    if (
+        ([v isKindOfClass:[NSNumber class]])
+        ||
+        ([v isKindOfClass:[NSString class]])
+    ) {
+        unixtimestamp = [v doubleValue];
+    }
+    
+    if (unixtimestamp) {
+        NSTimeInterval t = unixtimestamp / 1000.0;
+        NSDate* d = [NSDate dateWithTimeIntervalSince1970:t];
+        return d;
+    } else {
+        return nil;
+    }
 }
 
 @end

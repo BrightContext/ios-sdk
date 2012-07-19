@@ -40,4 +40,8 @@
 
 #define BC_TEST_SETTINGS [[BC_TEST_ENVIRONMENT new] autorelease]
 
+#else
+
+#define BC_TEST_SETTINGS [[LocalhostSettings new] autorelease]
+
 #endif

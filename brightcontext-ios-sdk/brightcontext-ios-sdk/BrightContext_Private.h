@@ -12,6 +12,7 @@
 
 - (void) failConnectionWithError:(NSError*)error;
 - (void) initializeConnectionWithSession:(BCSession*)s;
+- (void) fireConnectionEstablishedCompletionsWithError:(NSError*)error;
 - (void) restablishConnectionWithNewSession:(BCSession*)s;
 
 - (NSURL*) environmentURL;
