@@ -6,8 +6,10 @@
 // compliance with the License.
 //----------------------------------------------------------------- 
 
-#import "BCFeedDescription.h"
 #import "SBJson.h"
+
+#import "BCSerializable.h"
+#import "BCFeedDescription.h"
 #import "BCConstants.h"
 
 @implementation BCFeedDescription

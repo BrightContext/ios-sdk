@@ -8,8 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-#import "SRWebSocket.h"
-#import "SBJson.h"
+#import <SRWebSocket.h>
+
+@class SBJsonParser;
 
 extern NSString* BCConnection_CommandQueueName;
 

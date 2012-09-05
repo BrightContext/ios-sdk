@@ -6,6 +6,7 @@
 // compliance with the License.
 //----------------------------------------------------------------- 
 
+#import "BCSerializable.h"
 #import "BCSession.h"
 #import "BCConstants.h"
 #import "BCHTTPRequest.h"

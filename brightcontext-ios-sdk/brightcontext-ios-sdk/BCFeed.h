@@ -8,10 +8,10 @@
 
 #import <Foundation/Foundation.h>
 
-#import "BCSerializable.h"
-#import "BCMessage.h"
-#import "BCConnectionManager.h"
-#import "BCFeedDescription.h"
+@class BCFeedSettings;
+@class BCMessage;
+@protocol BCConnectionManager;
+@protocol BCFeedListener;
 
 typedef NSString BCFeedKey;
 
@@ -24,19 +24,21 @@ typedef enum BCFeedType {
 
 /*!
  \memberof BCFeed
- @param timepoints Array of BCTimePoint instances that occurred on a feed, or nil on error
+ @param timepoints Array of BCMessage instances that occurred on a feed, or nil on error
  @param error nil on success, otherwise contains the error that occurred while fetching the feed history
 */
-typedef void(^BCFeedHistoryCallback)(NSArray* timepoints, NSError* error);
+typedef void(^BCFeedHistoryCallback)(NSArray* messages, NSError* error);
 
 /*!
  \brief Represents a real-time stream of messages
  
  \see BCMessage
- \see BCTimePoint
  */
 @interface BCFeed : NSObject <BCSerializable>
 {
+    @private
+    dispatch_queue_t _activePollingMessageQueue;
+    dispatch_semaphore_t _activePollingResponseSemaphore;
 }
 
 + (BCFeedType) feedTypeFromString:(NSString*)feedTypeString;
@@ -99,9 +101,15 @@ typedef void(^BCFeedHistoryCallback)(NSArray* timepoints, NSError* error);
  
  \code
  
- [feed getHistory:^(NSArray* timepoints, NSError* error) {
-   if (!error) {
-     NSLog(@"%@", timepoints);
+ [feed getHistory:^(NSArray* messages, NSError* error) {
+   if (error) {
+     NSLog("Error getting history: %@", error);
+   } else {
+     for (BCMessage* historicDataPoint in timepoints) {
+       NSTimeInterval timeIntervalSinceRefDateWhenMessageWasSent = historicDataPoint.timestamp;
+       NSDictionary* msg = (NSDictionary*) historicDataPoint.asset;
+       NSLog("%@", msg);
+     }
    }
  } limit:10 ending:[NSDate date]]];
  

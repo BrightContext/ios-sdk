@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import "BCSerializable.h"
+@protocol BCSerializable;
 
 typedef enum {
     BCMessageVariant_Unknown,
@@ -76,7 +76,7 @@ typedef enum {
  @param k the string key stored in the dictionary.
  @returns the value for the given key, assumed to be an NSString* after parsing.
  */
-- (NSString*) getStringForKey:(NSString*)k;
+- (NSString*) stringForKey:(NSString*)k;
 
 /**
  Only valid when type == BCMessageVariant_Dictionary.
@@ -92,7 +92,7 @@ typedef enum {
  @param k the string key stored in the dictionary.
  @returns the value for the given key, assumed to be an NSNumber* after parsing.
  */
-- (NSNumber*) getNumberForKey:(NSString*)k;
+- (NSNumber*) numberForKey:(NSString*)k;
 
 /**
  Only valid when type == BCMessageVariant_Dictionary.
@@ -108,6 +108,6 @@ typedef enum {
  @param k the string key stored in the dictionary.
  @returns an autoreleased NSDate object using the number value stored in the field, assumed to be a unix timestamp as seconds from 1970 epoch.
  */
-- (NSDate*) getDateForKey:(NSString*)k;
+- (NSDate*) dateForKey:(NSString*)k;
 
 @end

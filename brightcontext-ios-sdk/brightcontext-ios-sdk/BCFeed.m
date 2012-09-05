@@ -6,10 +6,16 @@
 // compliance with the License.
 //----------------------------------------------------------------- 
 
+#import "SBJson.h"
+
+#import "BCSerializable.h"
+#import "BCMessage.h"
+#import "BCConnectionManager.h"
+#import "BCFeedDescription.h"
+#import "BCEvent.h"
 #import "BCFeed.h"
 #import "BCFeed_Private.h"
 #import "BCConstants.h"
-#import "SBJson.h"
 #import "BCCommand.h"
 
 @implementation BCFeed
@@ -124,6 +130,12 @@
          
         }
          */
+        
+        if (self.usesPolling) {
+            _activePollingMessageQueue = dispatch_queue_create("com.brightcontext.feed.activepolling.messagequeue", DISPATCH_QUEUE_SERIAL);
+            _activePollingResponseSemaphore = dispatch_semaphore_create(0);
+            dispatch_semaphore_signal(_activePollingResponseSemaphore);
+        }
 
     }
     return self;
@@ -142,7 +154,18 @@
     [pollFields release];
     [revoteTimer release];
     [previousMessage release];
-    //[currentPollingTimeslot release];
+    [currentPollingTimeslot release];
+    
+    if (usesPolling) {
+        dispatch_release(_activePollingMessageQueue);
+        
+        long timedout = dispatch_semaphore_wait(_activePollingResponseSemaphore, dispatch_time(DISPATCH_TIME_NOW, NSEC_PER_SEC));
+        if (!timedout) {
+            dispatch_release(_activePollingResponseSemaphore);
+        } else {
+            BCLog(@"Failed to release active polling semaphore, timeout expired");
+        }
+    }
     
     [super dealloc];
 }
@@ -167,11 +190,18 @@
 #endif
     
     if (self.usesPolling) {
-        if (self.revoteTimer) {
-            [self sendUpdateDelta:msg];
-        } else {
-            [self sendInitial:msg];
-        }
+        dispatch_async(_activePollingMessageQueue, ^{
+            long timedout = dispatch_semaphore_wait(_activePollingResponseSemaphore, BC_FEED_MAX_ACTIVE_MESSAGE_QUEUE_WAIT_TIME);
+            if (!timedout) {
+                if (self.revoteTimer) {
+                    [self sendUpdateDelta:msg];
+                } else {
+                    [self sendInitial:msg];
+                }
+            } else {
+                BCLog(@"Wait time expired, active polling message skipped: %@", msg);
+            }
+        });
     } else {
         [connection sendMessage:msg onFeed:self];
     }
@@ -206,8 +236,22 @@
         if (evt.isError) {
             b(nil, evt.error);
         } else {
-            NSArray* timepoints = evt.message.rawData;
-            b(timepoints, nil);
+            NSArray* rawpoints = evt.message.rawData;
+            
+            __block NSMutableArray* messages = [NSMutableArray arrayWithCapacity:rawpoints.count];
+            [rawpoints enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                NSDictionary* d = obj;
+                
+                BCMessage* m = [BCMessage new];
+                m.timestamp = BC_MAKENSREFSTAMP([[d objectForKey:@"ts"] doubleValue]);
+                m.rawData = [d objectForKey:@"message"];
+                
+                [messages addObject:m];
+                
+                [m release];
+            }];
+            
+            b(messages, nil);
         }
         
         [b release];
@@ -228,8 +272,8 @@
                                              selector:@selector(revote:)
                                              userInfo:nil
                                               repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:self.revoteTimer
-                                 forMode:NSRunLoopCommonModes];
+    [[NSRunLoop mainRunLoop] addTimer:self.revoteTimer
+                              forMode:NSRunLoopCommonModes];
 }
 
 - (void)stopRevoteTimer
@@ -246,22 +290,24 @@
                               withActivityState:BCActivityState_INITIAL
                                           forTS:nil];
     
-    [self.connection sendRequest:initial
-                      onResponse:^(BCEvent *evt) {
-                          if (evt.isError) {
-                              BCLog(@"Error sending initial: %@", [evt error]);
-                          } else {
-                              NSDictionary* d = [[evt message] rawData];
-                              NSNumber* tslot = [d objectForKey:BC_PARAM_TSLOT_C];
+    [self.connection sendRequest:initial onResponse:^(BCEvent *evt) {
+        if (evt.isError) {
+          BCLog(@"Error sending initial: %@", [evt error]);
+        } else {
+          NSDictionary* d = [[evt message] rawData];
+          NSNumber* tslot = [d objectForKey:BC_PARAM_TSLOT_C];
 #if BC_DEBUG_POLLING
-                              NSAssert(nil != tslot, @"timeslot should not be nil on initial");
+          NSAssert(nil != tslot, @"timeslot should not be nil on initial");
 #endif
-                              self.currentPollingTimeslot = tslot;
-                              self.previousMessage = msg;   // save values, not adjustments
-                              self.timeOfLastVote = [NSDate timeIntervalSinceReferenceDate];
-                          }
-                          // TODO: dispatch events?
-                      }];
+          self.currentPollingTimeslot = tslot;
+          self.previousMessage = msg;   // save values, not adjustments
+          self.timeOfLastVote = [NSDate timeIntervalSinceReferenceDate];
+        }
+
+        [self.connection notifyListenersMessageSent:msg withError:[evt error] onFeed:self];
+        
+        dispatch_semaphore_signal(_activePollingResponseSemaphore);
+    }];
     
     [self startRevoteTimer];
 }
@@ -289,57 +335,68 @@
                              withActivityState:BCActivityState_UPDATE
                                          forTS:self.currentPollingTimeslot];
     
-    [self.connection sendRequest:update
-                      onResponse:^(BCEvent *evt) {
-                          if (evt.isError) {
-                              BCLog(@"Error sending update: %@", [evt error]);
-                          } else {
+    [self.connection sendRequest:update onResponse:^(BCEvent *evt) {
+        if (evt.isError) {
+          BCLog(@"Error sending update: %@", [evt error]);
+        } else {
 #if BC_DEBUG_POLLING
-                              NSDictionary* d = [[evt message] rawData];
-                              NSNumber* tslot = [d objectForKey:BC_PARAM_TSLOT_C];
-                              NSAssert(nil != tslot, @"timeslot should not be nil on update");
+          NSDictionary* d = [[evt message] rawData];
+          NSNumber* tslot = [d objectForKey:BC_PARAM_TSLOT_C];
+          NSAssert(nil != tslot, @"timeslot should not be nil on update");
 #endif
-                              self.previousMessage = msg;   // save values, not adjustments
-                              self.timeOfLastVote = [NSDate timeIntervalSinceReferenceDate];
-                          }
-                          // TODO: dispatch events?
-                      }];
+          self.previousMessage = msg;   // save values, not adjustments
+          self.timeOfLastVote = [NSDate timeIntervalSinceReferenceDate];
+        }
+        
+        [self.connection notifyListenersMessageSent:deltaMsg withError:[evt error] onFeed:self];
+
+        dispatch_semaphore_signal(_activePollingResponseSemaphore);
+    }];
 }
 
 - (void) revote:(NSTimer *)t
 {
     if (![self.connection isActivePollingEnabled]) {
+        BCLog(@"Active Polling Disabled");
         [self stopRevoteTimer];
         return;
     }
     
-    BCCommand* revote = [BCCommand sendMessage:self.previousMessage
-                                        onFeed:self
-                             withActivityState:BCActivityState_REVOTE
-                                         forTS:nil];
-    
-    [self.connection sendRequest:revote
-                      onResponse:^(BCEvent *evt) {
-                          if (evt.isError) {
-                              BCLog(@"Error sending re-vote: %@", [evt error]);
-                          } else {
-                              NSDictionary* d = [[evt message] rawData];
-                              NSNumber* tslot = [d objectForKey:BC_PARAM_TSLOT_C];
+    dispatch_async(_activePollingMessageQueue, ^{
+        long timedout = dispatch_semaphore_wait(_activePollingResponseSemaphore, BC_FEED_MAX_ACTIVE_MESSAGE_QUEUE_WAIT_TIME);
+        
+        BCCommand* revote = [BCCommand sendMessage:self.previousMessage
+                                            onFeed:self
+                                 withActivityState:BCActivityState_REVOTE
+                                             forTS:nil];
+        
+        [self.connection sendRequest:revote onResponse:^(BCEvent *evt) {
+            if (!timedout) {
+                if (evt.isError) {
+                    BCLog(@"Error sending re-vote: %@", [evt error]);
+                } else {
+                    NSDictionary* d = [[evt message] rawData];
+                    NSNumber* tslot = [d objectForKey:BC_PARAM_TSLOT_C];
 #if BC_DEBUG_POLLING
-                              NSAssert(nil != tslot, @"timeslot should not be nil on revote");
+                    NSAssert(nil != tslot, @"timeslot should not be nil on revote");
 #endif
-                              self.currentPollingTimeslot = tslot;
-                              
-                              self.timeOfLastVote = [NSDate timeIntervalSinceReferenceDate];
-                              
-                              if ([self.connection isActivePollingEnabled]) {
-                                  [self startRevoteTimer];
-                              } else {
-                                  [self stopRevoteTimer];
-                              }
-                          }
-                      }];
+                    self.currentPollingTimeslot = tslot;
+                    
+                    self.timeOfLastVote = [NSDate timeIntervalSinceReferenceDate];
+                    
+                    if ([self.connection isActivePollingEnabled]) {
+                        [self startRevoteTimer];
+                    } else {
+                        [self stopRevoteTimer];
+                    }
+                }
+                dispatch_semaphore_signal(_activePollingResponseSemaphore);
+            }
+        }];
+    });
 }
+
+#pragma mark Listener Management
 
 - (void)addListener:(id<BCFeedListener>)listener
 {

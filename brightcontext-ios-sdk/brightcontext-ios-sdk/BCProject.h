@@ -8,10 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-#import "BCFeedDescription.h"
-#import "BCFeedListener.h"
-#import "BCChannelDescription.h"
-#import "BCConnectionManager.h"
+@protocol BCConnectionManager;
+@protocol BCFeedListener;
+@class BCChannelDescription;
 
 typedef void(^BCChannelDescriptionFetchCompletion)(BCChannelDescription* channelMetadata, NSError* err);
 

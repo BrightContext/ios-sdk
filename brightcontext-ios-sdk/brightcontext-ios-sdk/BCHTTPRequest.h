@@ -8,8 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
-#import "BCURL.h"
-#import "BCHTTPResponse.h"
+#import <BCURL.h>
+#import <BCHTTPResponse.h>
 
 /** name of the network operation queue */
 extern NSString* kBCNetworkOperationQueueName;

@@ -6,8 +6,15 @@
 // compliance with the License.
 //----------------------------------------------------------------- 
 
-#import "BCCommand.h"
 #import "SBJson.h"
+
+#import "BCSerializable.h"
+#import "BCEvent.h"
+#import "BCFeedDescription.h"
+#import "BCFeed.h"
+#import "BCConstants.h"
+
+#import "BCCommand.h"
 
 @interface BCCommand(Private)
 

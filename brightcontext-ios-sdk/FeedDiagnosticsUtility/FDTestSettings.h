@@ -12,6 +12,7 @@
 
 @interface FDTestSettings : NSObject <TestSettings>
 
-+ (NSManagedObject *)fetchContextEntity;
++ (NSManagedObject*) fetchContextEntity;
++ (NSManagedObject*) injectDefaultSettings;
 
 @end

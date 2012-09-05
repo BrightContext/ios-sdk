@@ -110,7 +110,7 @@
 
 - (NSString *)apiRoot
 {
-    return @"";
+    return @"/";
 }
 
 - (NSString *)apiKey

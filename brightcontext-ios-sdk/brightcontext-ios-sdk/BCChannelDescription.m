@@ -6,6 +6,10 @@
 // compliance with the License.
 //----------------------------------------------------------------- 
 
+#import "BCSerializable.h"
+#import "BCFeed.h"
+#import "BCFeedDescription.h"
+
 #import "BCChannelDescription.h"
 
 @implementation BCChannelDescription

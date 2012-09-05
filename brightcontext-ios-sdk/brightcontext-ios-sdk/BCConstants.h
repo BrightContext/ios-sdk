@@ -39,6 +39,7 @@
 #define BC_FEED_TYPE_OUT @"OUT"
 #define BC_FEED_TYPE_THRU @"THRU"
 #define BC_FEED_DEFAULT_SUBCHANNEL @"DefaultThruProc"
+#define BC_FEED_MAX_ACTIVE_MESSAGE_QUEUE_WAIT_TIME dispatch_time(DISPATCH_TIME_NOW, 5ull * NSEC_PER_SEC)
 
 /* command and query string parameters */
 
@@ -136,6 +137,7 @@ typedef enum {
 #define URLEncode(__S__) [[[[__S__ stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding] stringByReplacingOccurrencesOfString:@":" withString:@"%3A"] stringByReplacingOccurrencesOfString:@"," withString:@"%2C"] stringByReplacingOccurrencesOfString:@"@" withString:@"%40"]
 #define spinwait(_SECONDS_) [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:_SECONDS_]]
 #define BC_MAKETIMESTAMP(__D__) [NSNumber numberWithLongLong:1000 * (long long) [__D__ timeIntervalSince1970]]
+#define BC_MAKENSREFSTAMP(__T__) (__T__ / 1000.0) - NSTimeIntervalSince1970
 
 #if BC_MESSAGE_CONTRACT_VALIDATION
 

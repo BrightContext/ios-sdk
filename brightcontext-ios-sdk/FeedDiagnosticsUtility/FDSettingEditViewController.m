@@ -51,7 +51,6 @@
     
     if (!saveOk) {
         NSLog(@"save error: %@", saveError);
-        
     } else {
         [self.navigationController popViewControllerAnimated:YES];
     }

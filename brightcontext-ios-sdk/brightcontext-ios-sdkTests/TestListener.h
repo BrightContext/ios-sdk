@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import "BrightContext.h"
+#import <BrightContext.h>
 
 @interface TestListener : NSObject
 <BCFeedListener>

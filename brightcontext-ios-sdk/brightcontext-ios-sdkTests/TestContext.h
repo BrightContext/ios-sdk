@@ -8,8 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-#import "BrightContext.h"
-#import "BrightContext_Private.h"
+#import <BrightContext.h>
+#import <BrightContext_Private.h>
+
 #import "TestSettings.h"
 
 @interface TestContext : BrightContext

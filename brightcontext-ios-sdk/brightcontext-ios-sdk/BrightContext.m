@@ -6,6 +6,9 @@
 // compliance with the License.
 //----------------------------------------------------------------- 
 
+#import "SRWebSocket.h"
+#import "SBJson.h"
+
 #import "BrightContext.h"
 #import "BrightContext_Private.h"
 #import "BCFeed_Private.h"
@@ -494,6 +497,11 @@
     } else {
         completion(nil);
     }
+}
+
+- (void)notifyListenersMessageSent:(BCMessage *)message withError:(NSError *)error onFeed:(BCFeed *)feed
+{
+    [self.dispatcher notifyListenersMessageSent:message withError:error onFeed:feed];
 }
 
 @end

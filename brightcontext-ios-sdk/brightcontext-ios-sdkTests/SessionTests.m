@@ -7,7 +7,7 @@
 //----------------------------------------------------------------- 
 
 #import "SessionTests.h"
-#import "BCConstants.h"
+
 
 @implementation SessionTests
 

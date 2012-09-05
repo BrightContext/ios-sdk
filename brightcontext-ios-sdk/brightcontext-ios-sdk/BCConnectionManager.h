@@ -53,4 +53,8 @@ typedef void(^BCShutdownCompletion)(NSError* err);
 
 - (void) dispatchError:(NSError*)error toListener:(id<BCFeedListener>)listener;
 
+- (void) notifyListenersMessageSent:(BCMessage*)message
+                          withError:(NSError*)error
+                             onFeed:(BCFeed*)feed;
+
 @end

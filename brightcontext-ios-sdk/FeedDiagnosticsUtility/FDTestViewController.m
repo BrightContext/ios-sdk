@@ -6,6 +6,8 @@
 // compliance with the License.
 //----------------------------------------------------------------- 
 
+#import <NSObject+SBJson.h>
+
 #import "FDTestViewController.h"
 #import "TestContext.h"
 #import "FDTestSettings.h"
@@ -116,13 +118,13 @@
 
 - (void) updateStatus:(NSString*)m
 {
-    [self.tableView beginUpdates];
+//    [self.tableView beginUpdates];
     self.statusMessage = m;
-    NSIndexPath* statusRow = [NSIndexPath indexPathForRow:0 inSection:ConnectSection];
-    NSArray* updatedRows = [NSArray arrayWithObject:statusRow]; 
-    [self.tableView reloadRowsAtIndexPaths:updatedRows
-                          withRowAnimation:UITableViewRowAnimationAutomatic];
-    [self.tableView endUpdates];
+//    NSIndexPath* statusRow = [NSIndexPath indexPathForRow:0 inSection:ConnectSection];
+//    NSArray* updatedRows = [NSArray arrayWithObject:statusRow]; 
+//    [self.tableView reloadRowsAtIndexPaths:updatedRows
+//                          withRowAnimation:UITableViewRowAnimationAutomatic];
+//    [self.tableView endUpdates];
     
     [self log:m];
 }

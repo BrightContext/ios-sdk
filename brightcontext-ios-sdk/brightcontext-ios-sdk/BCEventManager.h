@@ -8,12 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import "BCSession.h"
-#import "BCMessage.h"
-#import "BCFeed.h"
-#import "BCEvent.h"
-#import "BCFeedListener.h"
-#import "BCFeedDescription.h"
+#import <BCConnectionManager.h>
 
 /*
  Main storage for three mappings.

@@ -6,6 +6,8 @@
 // compliance with the License.
 //----------------------------------------------------------------- 
 
+#import <SBJson.h>
+
 #import "FDMasterViewController.h"
 
 #import "FDTestSettings.h"

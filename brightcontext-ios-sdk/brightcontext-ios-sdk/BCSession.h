@@ -8,8 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import "BCSerializable.h"
-
+@protocol BCSerializable;
 @class BCMetrics;
 
 @interface BCSession : NSObject <BCSerializable>

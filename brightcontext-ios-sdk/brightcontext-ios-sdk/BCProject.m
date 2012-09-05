@@ -6,9 +6,17 @@
 // compliance with the License.
 //----------------------------------------------------------------- 
 
+#import "BCConstants.h"
+#import "BCSerializable.h"
+#import "BCFeedDescription.h"
+#import "BCFeedListener.h"
+#import "BCChannelDescription.h"
+#import "BCConnectionManager.h"
+
 #import "BCProject.h"
 #import "BCEvent.h"
 #import "BCCommand.h"
+#import "BCMessage.h"
 
 @interface BCProject (Private)
 

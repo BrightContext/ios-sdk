@@ -8,11 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-#import "BCSerializable.h"
-#import "BCEvent.h"
-#import "BCFeedDescription.h"
-#import "BCFeed.h"
-#import "BCConstants.h"
+@protocol BCSerializable;
+@class BCFeed;
+@class BCFeedSettings;
 
 typedef enum {
     BCCommandActionType_GET,

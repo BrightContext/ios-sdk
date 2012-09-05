@@ -20,7 +20,35 @@
     if (1 == results.count) {
         return [results objectAtIndex:0];
     } else {
+        return [self injectDefaultSettings];
+    }
+}
+
++ (NSManagedObject *)injectDefaultSettings
+{
+    FDAppDelegate* d = [[UIApplication sharedApplication] delegate];
+    NSManagedObjectContext* ctx = d.managedObjectContext;
+    
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Context"
+                                              inManagedObjectContext:ctx];
+    NSManagedObject* o = [[NSManagedObject alloc] initWithEntity:entity 
+                                  insertIntoManagedObjectContext:ctx];
+    
+    ProdSettings* prodSettings = [ProdSettings new];
+    [o setValue:@"api key not set" forKey:@"apikey"];
+    [o setValue:prodSettings.apiRoot forKey:@"apiroot"];
+    [o setValue:prodSettings.host forKey:@"host"];
+    [o setValue:[NSString stringWithFormat:@"%d", prodSettings.port] forKey:@"port"];
+    [o setValue:@"Demo Apps" forKey:@"testProject"];
+    
+    NSError* saveError = nil;
+    BOOL saveOk = [ctx save:&saveError];
+    
+    if (!saveOk) {
+        NSLog(@"save error: %@", saveError);
         return nil;
+    } else {
+        return o;
     }
 }
 
@@ -53,6 +81,8 @@
 @synthesize unprotectedThruChannel;
 @synthesize protectedThruChannel;
 @synthesize protectedThruChannelWriteKey;
+
+
 
 
 @end

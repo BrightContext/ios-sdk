@@ -6,8 +6,6 @@
 // compliance with the License.
 //----------------------------------------------------------------- 
 
-#import "BrightContext.h"
-
 @interface BrightContext(Private)
 
 - (void) failConnectionWithError:(NSError*)error;

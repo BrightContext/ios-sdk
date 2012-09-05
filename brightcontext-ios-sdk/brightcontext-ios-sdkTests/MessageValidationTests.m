@@ -8,7 +8,9 @@
 
 #import "MessageValidationTests.h"
 
-#import "BCFeed.h"
+#import <BCSerializable.h>
+#import <BCFeed.h>
+#import <BCMessage.h>
 
 @implementation MessageValidationTests
 

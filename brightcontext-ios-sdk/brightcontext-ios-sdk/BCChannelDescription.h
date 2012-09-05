@@ -8,9 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
-#import "BCSerializable.h"
-#import "BCFeed.h"
-#import "BCFeedDescription.h"
+@protocol BCSerializable;
+@class BCFeedDescription;
 
 typedef enum {
     BCChannelType_Unprocessed,

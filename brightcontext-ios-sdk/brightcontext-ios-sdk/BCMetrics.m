@@ -6,8 +6,9 @@
 // compliance with the License.
 //----------------------------------------------------------------- 
 
-#import "BCMetrics.h"
 #import "SBJson.h"
+
+#import "BCMetrics.h"
 
 NSString* kBCMetricsQueueName = @"com.brightcontext.MetricDispatchQueue";
 

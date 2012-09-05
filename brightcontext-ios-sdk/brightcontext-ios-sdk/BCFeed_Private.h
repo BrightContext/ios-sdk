@@ -18,4 +18,3 @@
 - (void) revote:(NSTimer*)t;
 
 @end
-

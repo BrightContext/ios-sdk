@@ -63,7 +63,7 @@
     STAssertTrue(1 == outputmessages.count, @"");
     
     BCMessage* m = [outputmessages lastObject];
-    NSNumber* avg_actual = [m getNumberForKey:@"avg_v"];
+    NSNumber* avg_actual = [m numberForKey:@"avg_v"];
     STAssertTrue(avg == [avg_actual floatValue], @"");
     
     [ctx shutdown:^(NSError *err) {
@@ -88,7 +88,7 @@
     [p open:@"field types" feed:@"i" listener:inputHandler];
     [p open:@"field types" feed:@"o" listener:outputHandler];
     
-    spinwait(1);
+    spinwait(5);
     
     // check if things opened correctly
     STAssertTrue(1 == inputHandler.numOpens, @"");
@@ -125,13 +125,100 @@
     STAssertTrue(1 == outputmessages.count, @"");
     
     BCMessage* output_msg = [outputmessages lastObject];
-    NSNumber* actual_number = [output_msg getNumberForKey:@"n"];
-    NSDate* actual_date = [output_msg getDateForKey:@"d"];
-    NSString* actual_string = [output_msg getStringForKey:@"s"];
+    NSNumber* actual_number = [output_msg numberForKey:@"n"];
+    NSDate* actual_date = [output_msg dateForKey:@"d"];
+    NSString* actual_string = [output_msg stringForKey:@"s"];
     
     STAssertEqualObjects(actual_number, expected_number, @"");
     STAssertEqualObjects([actual_date description], [expected_date description], @"");
     STAssertEqualObjects(actual_string, expected_string, @"");
+    
+    [ctx shutdown:^(NSError *err) {
+        STAssertNil(err, @"Shutdown Error: %@", err);
+    }];
+    
+    // wait for shutdown
+    spinwait(5);
+}
+
+- (void) testActivePollingInput
+{
+    id<TestSettings> settings = BC_TEST_SETTINGS;
+    
+    TestContext* ctx = [[TestContext new] autorelease];
+    ctx.settings = settings;
+    
+    TestListener* inputHandler = [[TestListener new] autorelease];
+    TestListener* outputHandler = [[TestListener new] autorelease];
+    
+    BCProject* p = [ctx loadProject:[settings testProject]];
+    
+    /*
+     activeinput = {
+     s : 'String',
+     d : new Date(),
+     n : 10
+     }
+     */
+    [p open:@"active" feed:@"activeinput" listener:inputHandler];
+    
+    /*
+     activeoutput = {
+     sum : 10,
+     avg : 10,
+     count : 10
+     }
+     */
+    [p open:@"active" feed:@"activeoutput" listener:outputHandler];
+    
+    spinwait(5);
+    
+    // check if things opened correctly
+    STAssertTrue(1 == inputHandler.numOpens, @"");
+    STAssertTrue(1 == outputHandler.numOpens, @"");
+    STAssertTrue(0 == inputHandler.numErrors, @"");
+    STAssertTrue(0 == outputHandler.numErrors, @"");
+    STAssertTrue(0 == inputHandler.numCloses, @"");
+    STAssertTrue(0 == outputHandler.numCloses, @"");
+    
+    BCMetricPrint();
+    
+    BCFeed* inputfeed = inputHandler.testFeed;
+    STAssertNotNil(inputfeed, @"input feed null");
+    if (!inputfeed) return; // bail early
+    
+    
+    BCMessage* input_msg = [[BCMessage alloc] init];
+    [input_msg setNumber:[NSNumber numberWithInt:1] forKey:@"n"];
+    [input_msg setDate:[NSDate date] forKey:@"d"];
+    [input_msg setString:@"string" forKey:@"s"];
+    
+    [inputfeed send:input_msg];
+    [inputfeed send:input_msg];
+    
+    // wait for calculations
+    spinwait(5);
+    
+    NSArray* inputmessages = [inputHandler messagesSent];
+    STAssertNotNil(inputmessages, @"");
+    STAssertTrue(2 == inputmessages.count, @"");
+    
+    // test math
+    NSArray* outputmessages = [outputHandler messagesReceived];
+    STAssertNotNil(outputmessages, @"");
+    STAssertTrue(1 == outputmessages.count, @"");
+    
+    BCMessage* output_msg = [outputmessages lastObject];
+    NSNumber* actual_sum = [output_msg numberForKey:@"sum"];
+    NSNumber* actual_avg = [output_msg numberForKey:@"avg"];
+    NSNumber* actual_count = [output_msg numberForKey:@"count"];
+    
+    NSNumber* expected_sum = [NSNumber numberWithInt:1];
+    NSNumber* expected_avg = [NSNumber numberWithInt:1];
+    NSNumber* expected_count = [NSNumber numberWithInt:1];
+    STAssertEqualObjects(actual_sum, expected_sum, @"sum");
+    STAssertEqualObjects(actual_avg, expected_avg, @"avg");
+    STAssertEqualObjects(actual_count, expected_count, @"count");
     
     [ctx shutdown:^(NSError *err) {
         STAssertNil(err, @"Shutdown Error: %@", err);

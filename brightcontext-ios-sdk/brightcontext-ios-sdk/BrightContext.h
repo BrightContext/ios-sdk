@@ -8,29 +8,28 @@
 
 #import <Foundation/Foundation.h>
 
-#import "BCConstants.h"
+#import <BCConstants.h>
 
-#import "BCConnectionManager.h"
-#import "BCSerializable.h"
-#import "BCFeedListener.h"
+#import <BCConnectionManager.h>
+#import <BCSerializable.h>
+#import <BCFeedListener.h>
 
-#import "BCChannelDescription.h"
-#import "BCCommand.h"
-#import "BCEvent.h"
-#import "BCFeed.h"
-#import "BCFeedDescription.h"
-#import "BCMessage.h"
-#import "BCProject.h"
-#import "BCSession.h"
-#import "BCTimePoint.h"
+#import <BCChannelDescription.h>
+#import <BCEvent.h>
+#import <BCCommand.h>
+#import <BCFeed.h>
+#import <BCFeedDescription.h>
+#import <BCMessage.h>
+#import <BCProject.h>
+#import <BCSession.h>
 
-#import "BCURL.h"
-#import "BCHTTPRequest.h"
-#import "BCHTTPResponse.h"
+#import <BCURL.h>
+#import <BCHTTPRequest.h>
+#import <BCHTTPResponse.h>
 
-#import "BCMetrics.h"
-#import "BCEventManager.h"
-#import "BCConnection.h"
+#import <BCMetrics.h>
+#import <BCEventManager.h>
+#import <BCConnection.h>
 
 #pragma mark -
 

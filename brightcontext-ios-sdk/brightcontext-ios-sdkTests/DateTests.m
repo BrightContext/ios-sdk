@@ -21,26 +21,26 @@
     BCProject* p = [ctx loadProject:[ctx.settings testProject]];
     [p open:ctx.settings.unprotectedThruChannel listener:testListener];
     
-    spinwait(2);
+    spinwait(5);
     
     BCFeed* f = testListener.testFeed;
     BCMessage* msgWithDate = [BCMessage message];
     [msgWithDate setDate:[NSDate date] forKey:@"d"];
     [f send:msgWithDate];
     
-    spinwait(2);
+    spinwait(5);
     
     STAssertTrue(0 == testListener.numErrors, @"should not have encountered errors");
     STAssertTrue(1 == testListener.numOpens, @"");
     
-    spinwait(1);
+    spinwait(5);
     
     STAssertTrue(1 == testListener.messagesReceived.count, @"");
     STAssertTrue(1 == testListener.messagesSent.count, @"");
 
     [f close];
     
-    spinwait(1);
+    spinwait(5);
     
     STAssertTrue(1 == testListener.numCloses, @"");
 }
@@ -70,7 +70,7 @@
     
     // known issue: we lose subsecond date precision on ios to be javascript friendly
     int expected = [dateObj timeIntervalSinceReferenceDate];
-    NSDate* d = [msgWithDate getDateForKey:dateKey];
+    NSDate* d = [msgWithDate dateForKey:dateKey];
     int actual = [d timeIntervalSinceReferenceDate];
     STAssertTrue(expected == actual, @"expected: %d actual: %d", expected, actual);
 }

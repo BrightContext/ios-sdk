@@ -12,25 +12,25 @@
 		D708B77A1520AB6D008C8B71 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D708B7681520AB6D008C8B71 /* Foundation.framework */; };
 		D708B7831520AB6D008C8B71 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D708B7811520AB6D008C8B71 /* InfoPlist.strings */; };
 		D70EBA091565423800ACC8CB /* MessageValidationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D70EBA081565423800ACC8CB /* MessageValidationTests.m */; };
-		D712E7B81520C62D0050BB0C /* base64.h in Headers */ = {isa = PBXBuildFile; fileRef = D712E7B11520C62D0050BB0C /* base64.h */; };
-		D712E7B91520C62D0050BB0C /* NSData+SRB64Additions.h in Headers */ = {isa = PBXBuildFile; fileRef = D712E7B21520C62D0050BB0C /* NSData+SRB64Additions.h */; };
-		D712E7BC1520C62D0050BB0C /* SRWebSocket.h in Headers */ = {isa = PBXBuildFile; fileRef = D712E7B51520C62D0050BB0C /* SRWebSocket.h */; };
-		D712E7D01520C7D50050BB0C /* BCConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = D712E7BE1520C7D50050BB0C /* BCConstants.h */; };
-		D712E7D31520C7D50050BB0C /* BCMetrics.h in Headers */ = {isa = PBXBuildFile; fileRef = D712E7C11520C7D50050BB0C /* BCMetrics.h */; };
+		D712E7B81520C62D0050BB0C /* base64.h in Headers */ = {isa = PBXBuildFile; fileRef = D712E7B11520C62D0050BB0C /* base64.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D712E7B91520C62D0050BB0C /* NSData+SRB64Additions.h in Headers */ = {isa = PBXBuildFile; fileRef = D712E7B21520C62D0050BB0C /* NSData+SRB64Additions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D712E7BC1520C62D0050BB0C /* SRWebSocket.h in Headers */ = {isa = PBXBuildFile; fileRef = D712E7B51520C62D0050BB0C /* SRWebSocket.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D712E7D01520C7D50050BB0C /* BCConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = D712E7BE1520C7D50050BB0C /* BCConstants.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D712E7D31520C7D50050BB0C /* BCMetrics.h in Headers */ = {isa = PBXBuildFile; fileRef = D712E7C11520C7D50050BB0C /* BCMetrics.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D712E7D41520C7D50050BB0C /* BCMetrics.m in Sources */ = {isa = PBXBuildFile; fileRef = D712E7C21520C7D50050BB0C /* BCMetrics.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		D712E7D51520C7D50050BB0C /* BCHTTPRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = D712E7C31520C7D50050BB0C /* BCHTTPRequest.h */; };
+		D712E7D51520C7D50050BB0C /* BCHTTPRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = D712E7C31520C7D50050BB0C /* BCHTTPRequest.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D712E7D61520C7D50050BB0C /* BCHTTPRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = D712E7C41520C7D50050BB0C /* BCHTTPRequest.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		D712E7D91520C7D50050BB0C /* BCHTTPResponse.h in Headers */ = {isa = PBXBuildFile; fileRef = D712E7C71520C7D50050BB0C /* BCHTTPResponse.h */; };
+		D712E7D91520C7D50050BB0C /* BCHTTPResponse.h in Headers */ = {isa = PBXBuildFile; fileRef = D712E7C71520C7D50050BB0C /* BCHTTPResponse.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D712E7DA1520C7D50050BB0C /* BCHTTPResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = D712E7C81520C7D50050BB0C /* BCHTTPResponse.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		D712E7DB1520C7D50050BB0C /* BCSession.h in Headers */ = {isa = PBXBuildFile; fileRef = D712E7C91520C7D50050BB0C /* BCSession.h */; };
+		D712E7DB1520C7D50050BB0C /* BCSession.h in Headers */ = {isa = PBXBuildFile; fileRef = D712E7C91520C7D50050BB0C /* BCSession.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D712E7DC1520C7D50050BB0C /* BCSession.m in Sources */ = {isa = PBXBuildFile; fileRef = D712E7CA1520C7D50050BB0C /* BCSession.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		D712E7DF1520C7D50050BB0C /* BCURL.h in Headers */ = {isa = PBXBuildFile; fileRef = D712E7CD1520C7D50050BB0C /* BCURL.h */; };
+		D712E7DF1520C7D50050BB0C /* BCURL.h in Headers */ = {isa = PBXBuildFile; fileRef = D712E7CD1520C7D50050BB0C /* BCURL.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D712E7E01520C7D50050BB0C /* BCURL.m in Sources */ = {isa = PBXBuildFile; fileRef = D712E7CE1520C7D50050BB0C /* BCURL.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		D712E7E81520E19C0050BB0C /* BrightContext.h in Headers */ = {isa = PBXBuildFile; fileRef = D712E7E61520E19B0050BB0C /* BrightContext.h */; };
+		D712E7E81520E19C0050BB0C /* BrightContext.h in Headers */ = {isa = PBXBuildFile; fileRef = D712E7E61520E19B0050BB0C /* BrightContext.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D712E7E91520E19C0050BB0C /* BrightContext.m in Sources */ = {isa = PBXBuildFile; fileRef = D712E7E71520E19C0050BB0C /* BrightContext.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		D712E7EC1520E3D60050BB0C /* BCFeed.h in Headers */ = {isa = PBXBuildFile; fileRef = D712E7EA1520E3D60050BB0C /* BCFeed.h */; };
+		D712E7EC1520E3D60050BB0C /* BCFeed.h in Headers */ = {isa = PBXBuildFile; fileRef = D712E7EA1520E3D60050BB0C /* BCFeed.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D712E7ED1520E3D60050BB0C /* BCFeed.m in Sources */ = {isa = PBXBuildFile; fileRef = D712E7EB1520E3D60050BB0C /* BCFeed.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		D712E7F01520E46E0050BB0C /* BCMessage.h in Headers */ = {isa = PBXBuildFile; fileRef = D712E7EE1520E46E0050BB0C /* BCMessage.h */; };
+		D712E7F01520E46E0050BB0C /* BCMessage.h in Headers */ = {isa = PBXBuildFile; fileRef = D712E7EE1520E46E0050BB0C /* BCMessage.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D712E7F11520E46E0050BB0C /* BCMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = D712E7EF1520E46E0050BB0C /* BCMessage.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		D7257578152CB2B4007FF7E6 /* FDSettingEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D7257577152CB2B4007FF7E6 /* FDSettingEditViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		D725757C152CB9A3007FF7E6 /* FDSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D725757B152CB9A3007FF7E6 /* FDSettingsViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -57,7 +57,7 @@
 		D72A1400152A0F3C00319BAB /* FDMasterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D72A13FF152A0F3C00319BAB /* FDMasterViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		D72A1403152A0F3C00319BAB /* FDDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D72A1402152A0F3C00319BAB /* FDDetailViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		D72D0A2A1520BC07004B98AA /* libbrightcontext-ios-sdk.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D708B7651520AB6D008C8B71 /* libbrightcontext-ios-sdk.a */; };
-		D74A524B153C7205006421AE /* BCTimePoint.m in Sources */ = {isa = PBXBuildFile; fileRef = D7FA17B315387131004CF17F /* BCTimePoint.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		D73E4BA715C84CC50085E61E /* BCSerializable.h in Headers */ = {isa = PBXBuildFile; fileRef = D7BD878D1520F8FA007F47BB /* BCSerializable.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D75B9D991562C60F0029F5D8 /* ConnectionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D75B9D981562C60F0029F5D8 /* ConnectionTests.m */; };
 		D75CC426152DCD61006FD0BE /* FDTestSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = D75CC425152DCD61006FD0BE /* FDTestSettings.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		D75CC427152DD359006FD0BE /* TestContext.m in Sources */ = {isa = PBXBuildFile; fileRef = D766B33C1521F386004ED3EC /* TestContext.m */; };
@@ -86,11 +86,12 @@
 		D75E920B15A394090066774D /* DateTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D75E920A15A394090066774D /* DateTests.m */; };
 		D766B33D1521F386004ED3EC /* TestContext.m in Sources */ = {isa = PBXBuildFile; fileRef = D766B33C1521F386004ED3EC /* TestContext.m */; };
 		D766B3401521F808004ED3EC /* SessionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D766B33F1521F808004ED3EC /* SessionTests.m */; };
-		D766B3421521FBD2004ED3EC /* BrightContext_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D766B3411521FBD2004ED3EC /* BrightContext_Private.h */; };
+		D766B3421521FBD2004ED3EC /* BrightContext_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D766B3411521FBD2004ED3EC /* BrightContext_Private.h */; settings = {ATTRIBUTES = (); }; };
 		D766B34B152212E7004ED3EC /* TestSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = D766B34A152212E7004ED3EC /* TestSettings.m */; };
-		D79A304015238BD4001294C4 /* BCConnectionManager.h in Headers */ = {isa = PBXBuildFile; fileRef = D79A303F15238BD4001294C4 /* BCConnectionManager.h */; };
-		D79A304515238DC3001294C4 /* BCFeedListener.h in Headers */ = {isa = PBXBuildFile; fileRef = D79A304415238DC3001294C4 /* BCFeedListener.h */; };
-		D79A3048152391CA001294C4 /* BCFeedDescription.h in Headers */ = {isa = PBXBuildFile; fileRef = D79A3046152391C9001294C4 /* BCFeedDescription.h */; };
+		D77C129715C9C358007DC5B7 /* BCFeed_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D75B9D951562AE670029F5D8 /* BCFeed_Private.h */; settings = {ATTRIBUTES = (); }; };
+		D79A304015238BD4001294C4 /* BCConnectionManager.h in Headers */ = {isa = PBXBuildFile; fileRef = D79A303F15238BD4001294C4 /* BCConnectionManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D79A304515238DC3001294C4 /* BCFeedListener.h in Headers */ = {isa = PBXBuildFile; fileRef = D79A304415238DC3001294C4 /* BCFeedListener.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D79A3048152391CA001294C4 /* BCFeedDescription.h in Headers */ = {isa = PBXBuildFile; fileRef = D79A3046152391C9001294C4 /* BCFeedDescription.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D79A3049152391CA001294C4 /* BCFeedDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = D79A3047152391CA001294C4 /* BCFeedDescription.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		D79A304D1523A4C3001294C4 /* UnprocessedChannelTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D79A304C1523A4C3001294C4 /* UnprocessedChannelTests.m */; };
 		D79A30501523A599001294C4 /* TestListener.m in Sources */ = {isa = PBXBuildFile; fileRef = D79A304F1523A599001294C4 /* TestListener.m */; };
@@ -102,15 +103,15 @@
 		D79A305F1523A75C001294C4 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D79A305D1523A758001294C4 /* libicucore.dylib */; };
 		D79E5A91152F7460009BF380 /* FDTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D79E5A90152F7460009BF380 /* FDTableCell.m */; };
 		D7B2EEC115B49EBF007495B3 /* ProcessedChannelTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D7B2EEC015B49EBF007495B3 /* ProcessedChannelTests.m */; };
-		D7BD877A1520EA9B007F47BB /* BCEventManager.h in Headers */ = {isa = PBXBuildFile; fileRef = D7BD87781520EA9B007F47BB /* BCEventManager.h */; };
+		D7BD877A1520EA9B007F47BB /* BCEventManager.h in Headers */ = {isa = PBXBuildFile; fileRef = D7BD87781520EA9B007F47BB /* BCEventManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D7BD877B1520EA9B007F47BB /* BCEventManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D7BD87791520EA9B007F47BB /* BCEventManager.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		D7BD87821520ECA7007F47BB /* BCConnection.h in Headers */ = {isa = PBXBuildFile; fileRef = D7BD87801520ECA7007F47BB /* BCConnection.h */; };
+		D7BD87821520ECA7007F47BB /* BCConnection.h in Headers */ = {isa = PBXBuildFile; fileRef = D7BD87801520ECA7007F47BB /* BCConnection.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D7BD87831520ECA7007F47BB /* BCConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = D7BD87811520ECA7007F47BB /* BCConnection.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		D7BD87871520EF5E007F47BB /* BCChannelDescription.h in Headers */ = {isa = PBXBuildFile; fileRef = D7BD87851520EF5E007F47BB /* BCChannelDescription.h */; };
+		D7BD87871520EF5E007F47BB /* BCChannelDescription.h in Headers */ = {isa = PBXBuildFile; fileRef = D7BD87851520EF5E007F47BB /* BCChannelDescription.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D7BD87881520EF5E007F47BB /* BCChannelDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = D7BD87861520EF5E007F47BB /* BCChannelDescription.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		D7BD878B1520F7C9007F47BB /* BCCommand.h in Headers */ = {isa = PBXBuildFile; fileRef = D7BD87891520F7C9007F47BB /* BCCommand.h */; };
+		D7BD878B1520F7C9007F47BB /* BCCommand.h in Headers */ = {isa = PBXBuildFile; fileRef = D7BD87891520F7C9007F47BB /* BCCommand.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D7BD878C1520F7C9007F47BB /* BCCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = D7BD878A1520F7C9007F47BB /* BCCommand.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		D7BD87901520FA9D007F47BB /* BCEvent.h in Headers */ = {isa = PBXBuildFile; fileRef = D7BD878E1520FA9D007F47BB /* BCEvent.h */; };
+		D7BD87901520FA9D007F47BB /* BCEvent.h in Headers */ = {isa = PBXBuildFile; fileRef = D7BD878E1520FA9D007F47BB /* BCEvent.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D7BD87911520FA9D007F47BB /* BCEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = D7BD878F1520FA9D007F47BB /* BCEvent.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		D7C2C4DF1524AD9E00AC3FC6 /* NSObject+SBJson.m in Sources */ = {isa = PBXBuildFile; fileRef = D7CF49BF1520BB1D00169E41 /* NSObject+SBJson.m */; };
 		D7C2C4E01524AD9E00AC3FC6 /* SBJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = D7CF49C21520BB1D00169E41 /* SBJsonParser.m */; };
@@ -124,34 +125,37 @@
 		D7C2C4E81524AD9E00AC3FC6 /* SBJsonTokeniser.m in Sources */ = {isa = PBXBuildFile; fileRef = D7CF49D21520BB1D00169E41 /* SBJsonTokeniser.m */; };
 		D7C2C4E91524AD9E00AC3FC6 /* SBJsonUTF8Stream.m in Sources */ = {isa = PBXBuildFile; fileRef = D7CF49D41520BB1D00169E41 /* SBJsonUTF8Stream.m */; };
 		D7C2C4EA1524AD9E00AC3FC6 /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = D7CF49D61520BB1D00169E41 /* SBJsonWriter.m */; };
-		D7CF31EF1545997300C53736 /* BCProject.h in Headers */ = {isa = PBXBuildFile; fileRef = D7CF31ED1545997300C53736 /* BCProject.h */; };
-		D7CF31F01545997300C53736 /* BCProject.m in Sources */ = {isa = PBXBuildFile; fileRef = D7CF31EE1545997300C53736 /* BCProject.m */; };
-		D7CF49D81520BB1D00169E41 /* NSObject+SBJson.h in Headers */ = {isa = PBXBuildFile; fileRef = D7CF49BE1520BB1D00169E41 /* NSObject+SBJson.h */; };
+		D7CF31EF1545997300C53736 /* BCProject.h in Headers */ = {isa = PBXBuildFile; fileRef = D7CF31ED1545997300C53736 /* BCProject.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D7CF31F01545997300C53736 /* BCProject.m in Sources */ = {isa = PBXBuildFile; fileRef = D7CF31EE1545997300C53736 /* BCProject.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		D7CF49D81520BB1D00169E41 /* NSObject+SBJson.h in Headers */ = {isa = PBXBuildFile; fileRef = D7CF49BE1520BB1D00169E41 /* NSObject+SBJson.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D7CF49D91520BB1D00169E41 /* NSObject+SBJson.m in Sources */ = {isa = PBXBuildFile; fileRef = D7CF49BF1520BB1D00169E41 /* NSObject+SBJson.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		D7CF49DA1520BB1D00169E41 /* SBJson.h in Headers */ = {isa = PBXBuildFile; fileRef = D7CF49C01520BB1D00169E41 /* SBJson.h */; };
-		D7CF49DB1520BB1D00169E41 /* SBJsonParser.h in Headers */ = {isa = PBXBuildFile; fileRef = D7CF49C11520BB1D00169E41 /* SBJsonParser.h */; };
+		D7CF49DA1520BB1D00169E41 /* SBJson.h in Headers */ = {isa = PBXBuildFile; fileRef = D7CF49C01520BB1D00169E41 /* SBJson.h */; settings = {ATTRIBUTES = (); }; };
+		D7CF49DB1520BB1D00169E41 /* SBJsonParser.h in Headers */ = {isa = PBXBuildFile; fileRef = D7CF49C11520BB1D00169E41 /* SBJsonParser.h */; settings = {ATTRIBUTES = (); }; };
 		D7CF49DC1520BB1D00169E41 /* SBJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = D7CF49C21520BB1D00169E41 /* SBJsonParser.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		D7CF49DD1520BB1D00169E41 /* SBJsonStreamParser.h in Headers */ = {isa = PBXBuildFile; fileRef = D7CF49C31520BB1D00169E41 /* SBJsonStreamParser.h */; };
+		D7CF49DD1520BB1D00169E41 /* SBJsonStreamParser.h in Headers */ = {isa = PBXBuildFile; fileRef = D7CF49C31520BB1D00169E41 /* SBJsonStreamParser.h */; settings = {ATTRIBUTES = (); }; };
 		D7CF49DE1520BB1D00169E41 /* SBJsonStreamParser.m in Sources */ = {isa = PBXBuildFile; fileRef = D7CF49C41520BB1D00169E41 /* SBJsonStreamParser.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		D7CF49DF1520BB1D00169E41 /* SBJsonStreamParserAccumulator.h in Headers */ = {isa = PBXBuildFile; fileRef = D7CF49C51520BB1D00169E41 /* SBJsonStreamParserAccumulator.h */; };
+		D7CF49DF1520BB1D00169E41 /* SBJsonStreamParserAccumulator.h in Headers */ = {isa = PBXBuildFile; fileRef = D7CF49C51520BB1D00169E41 /* SBJsonStreamParserAccumulator.h */; settings = {ATTRIBUTES = (); }; };
 		D7CF49E01520BB1D00169E41 /* SBJsonStreamParserAccumulator.m in Sources */ = {isa = PBXBuildFile; fileRef = D7CF49C61520BB1D00169E41 /* SBJsonStreamParserAccumulator.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		D7CF49E11520BB1D00169E41 /* SBJsonStreamParserAdapter.h in Headers */ = {isa = PBXBuildFile; fileRef = D7CF49C71520BB1D00169E41 /* SBJsonStreamParserAdapter.h */; };
+		D7CF49E11520BB1D00169E41 /* SBJsonStreamParserAdapter.h in Headers */ = {isa = PBXBuildFile; fileRef = D7CF49C71520BB1D00169E41 /* SBJsonStreamParserAdapter.h */; settings = {ATTRIBUTES = (); }; };
 		D7CF49E21520BB1D00169E41 /* SBJsonStreamParserAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = D7CF49C81520BB1D00169E41 /* SBJsonStreamParserAdapter.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		D7CF49E31520BB1D00169E41 /* SBJsonStreamParserState.h in Headers */ = {isa = PBXBuildFile; fileRef = D7CF49C91520BB1D00169E41 /* SBJsonStreamParserState.h */; };
+		D7CF49E31520BB1D00169E41 /* SBJsonStreamParserState.h in Headers */ = {isa = PBXBuildFile; fileRef = D7CF49C91520BB1D00169E41 /* SBJsonStreamParserState.h */; settings = {ATTRIBUTES = (); }; };
 		D7CF49E41520BB1D00169E41 /* SBJsonStreamParserState.m in Sources */ = {isa = PBXBuildFile; fileRef = D7CF49CA1520BB1D00169E41 /* SBJsonStreamParserState.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		D7CF49E51520BB1D00169E41 /* SBJsonStreamWriter.h in Headers */ = {isa = PBXBuildFile; fileRef = D7CF49CB1520BB1D00169E41 /* SBJsonStreamWriter.h */; };
+		D7CF49E51520BB1D00169E41 /* SBJsonStreamWriter.h in Headers */ = {isa = PBXBuildFile; fileRef = D7CF49CB1520BB1D00169E41 /* SBJsonStreamWriter.h */; settings = {ATTRIBUTES = (); }; };
 		D7CF49E61520BB1D00169E41 /* SBJsonStreamWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = D7CF49CC1520BB1D00169E41 /* SBJsonStreamWriter.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		D7CF49E71520BB1D00169E41 /* SBJsonStreamWriterAccumulator.h in Headers */ = {isa = PBXBuildFile; fileRef = D7CF49CD1520BB1D00169E41 /* SBJsonStreamWriterAccumulator.h */; };
+		D7CF49E71520BB1D00169E41 /* SBJsonStreamWriterAccumulator.h in Headers */ = {isa = PBXBuildFile; fileRef = D7CF49CD1520BB1D00169E41 /* SBJsonStreamWriterAccumulator.h */; settings = {ATTRIBUTES = (); }; };
 		D7CF49E81520BB1D00169E41 /* SBJsonStreamWriterAccumulator.m in Sources */ = {isa = PBXBuildFile; fileRef = D7CF49CE1520BB1D00169E41 /* SBJsonStreamWriterAccumulator.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		D7CF49E91520BB1D00169E41 /* SBJsonStreamWriterState.h in Headers */ = {isa = PBXBuildFile; fileRef = D7CF49CF1520BB1D00169E41 /* SBJsonStreamWriterState.h */; };
+		D7CF49E91520BB1D00169E41 /* SBJsonStreamWriterState.h in Headers */ = {isa = PBXBuildFile; fileRef = D7CF49CF1520BB1D00169E41 /* SBJsonStreamWriterState.h */; settings = {ATTRIBUTES = (); }; };
 		D7CF49EA1520BB1D00169E41 /* SBJsonStreamWriterState.m in Sources */ = {isa = PBXBuildFile; fileRef = D7CF49D01520BB1D00169E41 /* SBJsonStreamWriterState.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		D7CF49EB1520BB1D00169E41 /* SBJsonTokeniser.h in Headers */ = {isa = PBXBuildFile; fileRef = D7CF49D11520BB1D00169E41 /* SBJsonTokeniser.h */; };
+		D7CF49EB1520BB1D00169E41 /* SBJsonTokeniser.h in Headers */ = {isa = PBXBuildFile; fileRef = D7CF49D11520BB1D00169E41 /* SBJsonTokeniser.h */; settings = {ATTRIBUTES = (); }; };
 		D7CF49EC1520BB1D00169E41 /* SBJsonTokeniser.m in Sources */ = {isa = PBXBuildFile; fileRef = D7CF49D21520BB1D00169E41 /* SBJsonTokeniser.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		D7CF49ED1520BB1D00169E41 /* SBJsonUTF8Stream.h in Headers */ = {isa = PBXBuildFile; fileRef = D7CF49D31520BB1D00169E41 /* SBJsonUTF8Stream.h */; };
+		D7CF49ED1520BB1D00169E41 /* SBJsonUTF8Stream.h in Headers */ = {isa = PBXBuildFile; fileRef = D7CF49D31520BB1D00169E41 /* SBJsonUTF8Stream.h */; settings = {ATTRIBUTES = (); }; };
 		D7CF49EE1520BB1D00169E41 /* SBJsonUTF8Stream.m in Sources */ = {isa = PBXBuildFile; fileRef = D7CF49D41520BB1D00169E41 /* SBJsonUTF8Stream.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		D7CF49EF1520BB1D00169E41 /* SBJsonWriter.h in Headers */ = {isa = PBXBuildFile; fileRef = D7CF49D51520BB1D00169E41 /* SBJsonWriter.h */; };
+		D7CF49EF1520BB1D00169E41 /* SBJsonWriter.h in Headers */ = {isa = PBXBuildFile; fileRef = D7CF49D51520BB1D00169E41 /* SBJsonWriter.h */; settings = {ATTRIBUTES = (); }; };
 		D7CF49F01520BB1D00169E41 /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = D7CF49D61520BB1D00169E41 /* SBJsonWriter.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		D7FA17B415387131004CF17F /* BCTimePoint.h in Headers */ = {isa = PBXBuildFile; fileRef = D7FA17B215387131004CF17F /* BCTimePoint.h */; };
+		D7FF8C5115C702EE0017FAA7 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = D7FF8C5015C702EE0017FAA7 /* Icon.png */; };
+		D7FF8C5315C702F10017FAA7 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D7FF8C5215C702F10017FAA7 /* Icon@2x.png */; };
+		D7FF8C5515C702F40017FAA7 /* Icon~iPad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D7FF8C5415C702F40017FAA7 /* Icon~iPad@2x.png */; };
+		D7FF8C5715C702F60017FAA7 /* Icon~iPad.png in Resources */ = {isa = PBXBuildFile; fileRef = D7FF8C5615C702F60017FAA7 /* Icon~iPad.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -311,8 +315,10 @@
 		D7CF49D41520BB1D00169E41 /* SBJsonUTF8Stream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonUTF8Stream.m; sourceTree = "<group>"; };
 		D7CF49D51520BB1D00169E41 /* SBJsonWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonWriter.h; sourceTree = "<group>"; };
 		D7CF49D61520BB1D00169E41 /* SBJsonWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonWriter.m; sourceTree = "<group>"; };
-		D7FA17B215387131004CF17F /* BCTimePoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = BCTimePoint.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		D7FA17B315387131004CF17F /* BCTimePoint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BCTimePoint.m; sourceTree = "<group>"; };
+		D7FF8C5015C702EE0017FAA7 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
+		D7FF8C5215C702F10017FAA7 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
+		D7FF8C5415C702F40017FAA7 /* Icon~iPad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon~iPad@2x.png"; sourceTree = "<group>"; };
+		D7FF8C5615C702F60017FAA7 /* Icon~iPad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon~iPad.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -519,6 +525,10 @@
 		D72A13EA152A0F3C00319BAB /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				D7FF8C5615C702F60017FAA7 /* Icon~iPad.png */,
+				D7FF8C5415C702F40017FAA7 /* Icon~iPad@2x.png */,
+				D7FF8C5215C702F10017FAA7 /* Icon@2x.png */,
+				D7FF8C5015C702EE0017FAA7 /* Icon.png */,
 				D72A13EB152A0F3C00319BAB /* FeedDiagnosticsUtility-Info.plist */,
 				D72A13EC152A0F3C00319BAB /* InfoPlist.strings */,
 				D72A13EF152A0F3C00319BAB /* main.m */,
@@ -589,8 +599,6 @@
 				D712E7EF1520E46E0050BB0C /* BCMessage.m */,
 				D712E7C91520C7D50050BB0C /* BCSession.h */,
 				D712E7CA1520C7D50050BB0C /* BCSession.m */,
-				D7FA17B215387131004CF17F /* BCTimePoint.h */,
-				D7FA17B315387131004CF17F /* BCTimePoint.m */,
 			);
 			name = "Data Structures";
 			sourceTree = "<group>";
@@ -664,6 +672,30 @@
 			buildActionMask = 2147483647;
 			files = (
 				D7CF49D81520BB1D00169E41 /* NSObject+SBJson.h in Headers */,
+				D712E7B81520C62D0050BB0C /* base64.h in Headers */,
+				D712E7B91520C62D0050BB0C /* NSData+SRB64Additions.h in Headers */,
+				D712E7BC1520C62D0050BB0C /* SRWebSocket.h in Headers */,
+				D712E7E81520E19C0050BB0C /* BrightContext.h in Headers */,
+				D712E7D01520C7D50050BB0C /* BCConstants.h in Headers */,
+				D7BD87821520ECA7007F47BB /* BCConnection.h in Headers */,
+				D7BD877A1520EA9B007F47BB /* BCEventManager.h in Headers */,
+				D712E7D31520C7D50050BB0C /* BCMetrics.h in Headers */,
+				D7CF31EF1545997300C53736 /* BCProject.h in Headers */,
+				D79A304015238BD4001294C4 /* BCConnectionManager.h in Headers */,
+				D73E4BA715C84CC50085E61E /* BCSerializable.h in Headers */,
+				D79A304515238DC3001294C4 /* BCFeedListener.h in Headers */,
+				D7BD87871520EF5E007F47BB /* BCChannelDescription.h in Headers */,
+				D7BD878B1520F7C9007F47BB /* BCCommand.h in Headers */,
+				D7BD87901520FA9D007F47BB /* BCEvent.h in Headers */,
+				D712E7EC1520E3D60050BB0C /* BCFeed.h in Headers */,
+				D79A3048152391CA001294C4 /* BCFeedDescription.h in Headers */,
+				D712E7F01520E46E0050BB0C /* BCMessage.h in Headers */,
+				D712E7DB1520C7D50050BB0C /* BCSession.h in Headers */,
+				D712E7DF1520C7D50050BB0C /* BCURL.h in Headers */,
+				D712E7D51520C7D50050BB0C /* BCHTTPRequest.h in Headers */,
+				D712E7D91520C7D50050BB0C /* BCHTTPResponse.h in Headers */,
+				D766B3421521FBD2004ED3EC /* BrightContext_Private.h in Headers */,
+				D77C129715C9C358007DC5B7 /* BCFeed_Private.h in Headers */,
 				D7CF49DA1520BB1D00169E41 /* SBJson.h in Headers */,
 				D7CF49DB1520BB1D00169E41 /* SBJsonParser.h in Headers */,
 				D7CF49DD1520BB1D00169E41 /* SBJsonStreamParser.h in Headers */,
@@ -676,29 +708,6 @@
 				D7CF49EB1520BB1D00169E41 /* SBJsonTokeniser.h in Headers */,
 				D7CF49ED1520BB1D00169E41 /* SBJsonUTF8Stream.h in Headers */,
 				D7CF49EF1520BB1D00169E41 /* SBJsonWriter.h in Headers */,
-				D712E7B81520C62D0050BB0C /* base64.h in Headers */,
-				D712E7B91520C62D0050BB0C /* NSData+SRB64Additions.h in Headers */,
-				D712E7BC1520C62D0050BB0C /* SRWebSocket.h in Headers */,
-				D712E7D01520C7D50050BB0C /* BCConstants.h in Headers */,
-				D712E7D31520C7D50050BB0C /* BCMetrics.h in Headers */,
-				D712E7D51520C7D50050BB0C /* BCHTTPRequest.h in Headers */,
-				D712E7D91520C7D50050BB0C /* BCHTTPResponse.h in Headers */,
-				D712E7DB1520C7D50050BB0C /* BCSession.h in Headers */,
-				D712E7DF1520C7D50050BB0C /* BCURL.h in Headers */,
-				D712E7E81520E19C0050BB0C /* BrightContext.h in Headers */,
-				D712E7EC1520E3D60050BB0C /* BCFeed.h in Headers */,
-				D712E7F01520E46E0050BB0C /* BCMessage.h in Headers */,
-				D7BD877A1520EA9B007F47BB /* BCEventManager.h in Headers */,
-				D7BD87821520ECA7007F47BB /* BCConnection.h in Headers */,
-				D7BD87871520EF5E007F47BB /* BCChannelDescription.h in Headers */,
-				D7BD878B1520F7C9007F47BB /* BCCommand.h in Headers */,
-				D7BD87901520FA9D007F47BB /* BCEvent.h in Headers */,
-				D766B3421521FBD2004ED3EC /* BrightContext_Private.h in Headers */,
-				D79A304015238BD4001294C4 /* BCConnectionManager.h in Headers */,
-				D79A304515238DC3001294C4 /* BCFeedListener.h in Headers */,
-				D79A3048152391CA001294C4 /* BCFeedDescription.h in Headers */,
-				D7FA17B415387131004CF17F /* BCTimePoint.h in Headers */,
-				D7CF31EF1545997300C53736 /* BCProject.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -804,6 +813,10 @@
 				D72A13EE152A0F3C00319BAB /* InfoPlist.strings in Resources */,
 				D72A13F7152A0F3C00319BAB /* MainStoryboard_iPhone.storyboard in Resources */,
 				D72A13FA152A0F3C00319BAB /* MainStoryboard_iPad.storyboard in Resources */,
+				D7FF8C5115C702EE0017FAA7 /* Icon.png in Resources */,
+				D7FF8C5315C702F10017FAA7 /* Icon@2x.png in Resources */,
+				D7FF8C5515C702F40017FAA7 /* Icon~iPad@2x.png in Resources */,
+				D7FF8C5715C702F60017FAA7 /* Icon~iPad.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -850,17 +863,16 @@
 				D712E7DA1520C7D50050BB0C /* BCHTTPResponse.m in Sources */,
 				D712E7DC1520C7D50050BB0C /* BCSession.m in Sources */,
 				D712E7E01520C7D50050BB0C /* BCURL.m in Sources */,
-				D712E7E91520E19C0050BB0C /* BrightContext.m in Sources */,
+				D7BD87831520ECA7007F47BB /* BCConnection.m in Sources */,
 				D712E7ED1520E3D60050BB0C /* BCFeed.m in Sources */,
 				D712E7F11520E46E0050BB0C /* BCMessage.m in Sources */,
 				D7BD877B1520EA9B007F47BB /* BCEventManager.m in Sources */,
-				D7BD87831520ECA7007F47BB /* BCConnection.m in Sources */,
 				D7BD87881520EF5E007F47BB /* BCChannelDescription.m in Sources */,
 				D7BD878C1520F7C9007F47BB /* BCCommand.m in Sources */,
 				D7BD87911520FA9D007F47BB /* BCEvent.m in Sources */,
 				D79A3049152391CA001294C4 /* BCFeedDescription.m in Sources */,
-				D74A524B153C7205006421AE /* BCTimePoint.m in Sources */,
 				D7CF31F01545997300C53736 /* BCProject.m in Sources */,
+				D712E7E91520E19C0050BB0C /* BrightContext.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1008,6 +1020,11 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"./brightcontext-ios-sdk/",
+					../SocketRocket/SocketRocket/,
+					"../json-framework/Classes/",
+				);
 				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
 				SDKROOT = iphoneos;
 			};
@@ -1024,6 +1041,11 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"./brightcontext-ios-sdk/",
+					../SocketRocket/SocketRocket/,
+					"../json-framework/Classes/",
+				);
 				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -1087,6 +1109,7 @@
 					"BC_MESSAGE_CONTRACT_VALIDATION=1",
 					"BC_TEST_ENVIRONMENT=Te1Settings",
 					"BC_LOGGING=1",
+					"BC_DEBUG_POLLING=1",
 				);
 				INFOPLIST_FILE = "brightcontext-ios-sdkTests/brightcontext-ios-sdkTests-Info.plist";
 				LIBRARY_SEARCH_PATHS = (

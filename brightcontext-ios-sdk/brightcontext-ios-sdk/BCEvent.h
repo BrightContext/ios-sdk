@@ -8,9 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
-#import "BCSerializable.h"
-#import "BCConnectionManager.h"
-#import "BCMessage.h"
+@protocol BCSerializable;
+@class BCMessage;
 
 /**
  \relates BCFeedListener

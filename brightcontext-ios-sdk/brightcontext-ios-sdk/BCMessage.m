@@ -6,9 +6,11 @@
 // compliance with the License.
 //----------------------------------------------------------------- 
 
-#import "BCMessage.h"
 #import "SBJson.h"
+
 #import "BCConstants.h"
+#import "BCSerializable.h"
+#import "BCMessage.h"
 
 @interface BCMessage(Private)
 
@@ -168,7 +170,7 @@
     [_data setObject:v forKey:k];
 }
 
-- (NSString*) getStringForKey:(NSString*)k
+- (NSString*) stringForKey:(NSString*)k
 {
     id v = [_data objectForKey:k];
     
@@ -189,7 +191,7 @@
     [_data setObject:v forKey:k];
 }
 
-- (NSNumber*) getNumberForKey:(NSString*)k
+- (NSNumber*) numberForKey:(NSString*)k
 {
     id v = [_data objectForKey:k];
     
@@ -209,9 +211,9 @@
     [_data setObject:BC_MAKETIMESTAMP(v) forKey:k];
 }
 
-- (NSDate*) getDateForKey:(NSString*)k
+- (NSDate*) dateForKey:(NSString*)k
 {
-    double unixtimestamp;
+    double unixtimestamp = 0;
     
     id v = [_data objectForKey:k];
     if (

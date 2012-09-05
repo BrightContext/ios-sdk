@@ -6,9 +6,10 @@
 // compliance with the License.
 //----------------------------------------------------------------- 
 
+#import "SBJson.h"
+
 #import "BCHTTPRequest.h"
 #import "BCConstants.h"
-#import "SBJson.h"
 #import "BCMetrics.h"
 
 NSString* kBCNetworkErrorDomain = @"com.brightcontext.networkoperation.error";

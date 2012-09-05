@@ -9,6 +9,8 @@
 #import "HistoryTests.h"
 #import "TestContext.h"
 
+#define num_historic_messages_to_test 10
+
 @implementation HistoryTests
 
 @synthesize context, feed, settings;
@@ -33,23 +35,44 @@
     STAssertTrue(nil != self.feed, @"feed should be open");
     
     __block int firecount = 0;
-    [self.feed getHistory:^(NSArray *timepoints, NSError *error) {
+    [self.feed getHistory:^(NSArray *messages, NSError *error) {
         ++firecount;
         
         STAssertNil(error, @"Error: %@", error);
-        STAssertNotNil(timepoints, @"");
+        STAssertNotNil(messages, @"");
         
-        STAssertTrue(10 == timepoints.count, @"");
-        for (NSDictionary* td in timepoints) {
-            BCTimePoint* t = [[BCTimePoint alloc] initWithDictionary:td];
+        STAssertTrue(num_historic_messages_to_test == messages.count, @"");
+        
+        if (num_historic_messages_to_test != messages.count) {
+            return;
+        }
+        
+        for (int i=0; i != num_historic_messages_to_test; ++i) {
+            int h = num_historic_messages_to_test-1-i;  // from 9..0
+            BCMessage* msg = [messages objectAtIndex:i];
             
-            STAssertNotNil(t, @"");
-            STAssertNotNil(t.asset, @"");
-            STAssertTrue(0 != t.timestamp, @"");
+            STAssertNotNil(msg, @"");
             
-            NSLog(@"historic timepoint: %@", t);
+            NSString* msgbody = [msg stringForKey:@"m"];
+            NSString* msgbodyexpected = [NSString stringWithFormat:@"message %d", h];
+            STAssertEqualObjects(msgbody, msgbodyexpected, @"");
             
-            [t release];
+            STAssertTrue(0 != msg.timestamp, @"");
+            STAssertTrue(NSTimeIntervalSince1970 != msg.timestamp, @"");
+            
+            if (i != 0) {
+                BCMessage* nextMsg = [messages objectAtIndex:i-1];
+                NSTimeInterval ts = msg.timestamp;
+                NSTimeInterval nextTs = nextMsg.timestamp;
+                STAssertTrue(nextTs >= ts, @"timestamps out of order");
+            }
+            
+            if (i != num_historic_messages_to_test-1) {
+                BCMessage* prevMsg = [messages objectAtIndex:i+1];
+                NSTimeInterval ts = msg.timestamp;
+                NSTimeInterval prevTs = prevMsg.timestamp;
+                STAssertTrue(prevTs <= ts, @"timestamps out of order");
+            }
         }
     }];
     
@@ -77,11 +100,12 @@
 {
     self.feed = f;
     
-    for (int i=0; i!=10; ++i) {
+    for (int i=0; i!=num_historic_messages_to_test; ++i) {
         NSString* msgbody = [NSString stringWithFormat:@"message %d", i];
         BCMessage* msg = [BCMessage message];
         [msg setString:msgbody forKey:@"m"];
         [f send:msg];
+        spinwait(1);
     }
 }
 
