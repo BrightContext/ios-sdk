@@ -59,10 +59,12 @@
             self.usesPolling = NO;
         }
         
+        NSArray* activeUserFields = nil;
         id activeUserCycle = [data objectForKey:@"activeUserCycle"];
         if ((NULL != activeUserCycle) && (![[NSNull null] isEqual:activeUserCycle])) {
             self.revoteInterval = [activeUserCycle intValue];
-            self.pollFields = [data objectForKey:@"activeUserFields"];
+            activeUserFields = [data objectForKey:@"activeUserFields"];
+            self.pollFields = activeUserFields;
         }
         
         id writeKeyFlag = [data objectForKey:@"writeKeyFlag"];
@@ -72,17 +74,30 @@
             _isWriteProtected = NO;
         }
         
-#if BC_MESSAGE_CONTRACT_VALIDATION
         id msgContract = [data objectForKey:@"msgContract"];
         if ((NULL != msgContract) && (![[NSNull null] isEqual:msgContract])) {
             if ([msgContract isKindOfClass:[NSArray class]]) {
                 NSArray* msgContractArr = (NSArray*) msgContract;
                 if (0 != msgContractArr.count) {
+#if BC_MESSAGE_CONTRACT_VALIDATION
                     self.messageContract = msgContract;
+#endif
+                    
+                    if (self.usesPolling && activeUserFields) {
+                        NSMutableArray* dimensions = [NSMutableArray arrayWithCapacity:msgContractArr.count];
+                        for (NSDictionary* d in msgContractArr) {
+                            NSString* fieldName = [d objectForKey:@"fieldName"];
+                            if (![activeUserFields containsObject:fieldName]) {
+                                [dimensions addObject:fieldName];
+                            }
+
+                        }
+                        self.pollDimensions = dimensions;
+                    }
+                    
                 }
             }
         }
-#endif
         
         if ([[data allKeys] containsObject:@"filters"]) {
             id filterData = [data objectForKey:@"filters"];
@@ -101,7 +116,6 @@
         BCFeedSettings* derivedSettings = [[BCFeedSettings new] autorelease];
         derivedSettings.type = feedTypeString;
         derivedSettings.procId = self.procId;
-        //derivedSettings.name = @"";     // TODO: where do we get feed name?  metadata?
         
         if (self.filters) {
             derivedSettings.filters = [self.filters allKeys];
@@ -117,9 +131,7 @@
          MP_STREAM_ID : 6,
          OUTPROC_STREAM_ID : 2,
          THRU_STREAM : 9 }
-         
-         
-         
+                  
          typedef enum {
            BCValidationType_None = 0,
            BCValidationType_Number,
@@ -322,6 +334,18 @@
     NSDictionary* msgDataPrev = [self.previousMessage rawData];
     NSMutableDictionary* msgData = [[[msg rawData] mutableCopy] autorelease];
     
+    // test dimensions
+    for (NSString* fieldName in self.pollDimensions) {
+        id oldValue = [msgDataPrev objectForKey:fieldName];
+        id newValue = [msgData objectForKey:fieldName];
+        if (![newValue isEqual:oldValue]) {
+            [self stopRevoteTimer];
+            [self sendInitial:msg];
+            return;
+        }
+    }
+    
+    // adjust values
     for (NSString* fieldName in self.pollFields) {
         float actual = [[msgData objectForKey:fieldName] floatValue];
         float prev = [[msgDataPrev objectForKey:fieldName] floatValue];
@@ -349,7 +373,7 @@
         }
         
         [self.connection notifyListenersMessageSent:deltaMsg withError:[evt error] onFeed:self];
-
+        
         dispatch_semaphore_signal(_activePollingResponseSemaphore);
     }];
 }

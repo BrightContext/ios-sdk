@@ -13,6 +13,11 @@ do
 	for sdk in ${DEVICE} ${SIMULATOR}
 	do
 	  xcodebuild -sdk ${sdk} -configuration ${CONFIGURATION} -target ${TARGET_NAME} -verbose
+
+	  # bail if the build fails
+	  if [[ $? -ne 0 ]]; then
+	  	exit
+	  fi
 	done
 
 	device_output=${OUTPUT}/${CONFIGURATION}-${DEVICE}
@@ -28,5 +33,13 @@ do
 	mkdir -p "${headers_dest}"
 	cp "${headers_src}"/* "${headers_dest}"
 	
-	open "${fatlib_output}"
+	if [[ '$1'='zip' ]]; then
+		pushd ${OUTPUT}
+		zipfile=$2-${CONFIGURATION}.zip
+		zip -r ${zipfile} ${CONFIGURATION}-${FAT}
+		popd
+	fi
+
 done
+
+open ${OUTPUT}

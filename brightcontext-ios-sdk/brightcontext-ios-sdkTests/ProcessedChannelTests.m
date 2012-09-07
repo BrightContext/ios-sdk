@@ -228,4 +228,283 @@
     spinwait(5);
 }
 
+- (void) testDimensionChanges
+{
+    spinwait(15);   // wait for calculations to clear
+    
+    id<TestSettings> settings = BC_TEST_SETTINGS;
+    
+    TestContext* ctx = [[TestContext new] autorelease];
+    ctx.settings = settings;
+    
+    TestListener* inputHandler = [[TestListener new] autorelease];
+    TestListener* outputHandler = [[TestListener new] autorelease];
+    
+    BCProject* p = [ctx loadProject:[settings testProject]];
+    
+    /*
+     i = {
+         group : 'String',
+         value : 10
+     }
+     */
+    [p open:@"activegroups" feed:@"i" listener:inputHandler];
+    
+    /*
+     o = {
+         c : 10,
+         g1 : 10,
+         g2 : 10
+     }
+     */
+    [p open:@"activegroups" feed:@"o" listener:outputHandler];
+    
+    spinwait(3);
+    
+    // check if things opened correctly
+    STAssertTrue(1 == inputHandler.numOpens, @"");
+    STAssertTrue(1 == outputHandler.numOpens, @"");
+    STAssertTrue(0 == inputHandler.numErrors, @"");
+    STAssertTrue(0 == outputHandler.numErrors, @"");
+    STAssertTrue(0 == inputHandler.numCloses, @"");
+    STAssertTrue(0 == outputHandler.numCloses, @"");
+    
+    BCMetricPrint();
+    
+    BCFeed* inputfeed = inputHandler.testFeed;
+    STAssertNotNil(inputfeed, @"input feed null");
+    if (!inputfeed) return; // bail early
+    
+    [inputfeed send:[BCMessage messageFromDictionary:@{
+                     @"group" : @"g1",
+                     @"value" : [NSNumber numberWithInt:100]
+                     }]];
+    
+    NSArray* inputmessages;
+    NSArray* outputmessages;
+    
+    // wait for calculations
+    spinwait(30);
+    BCMetricPrint();
+    
+    inputmessages = [inputHandler messagesSent];
+    STAssertNotNil(inputmessages, @"");
+    STAssertTrue(1 == inputmessages.count, @"wrong count: %d", inputmessages.count);
+    
+    outputmessages = [outputHandler messagesReceived];
+    STAssertNotNil(outputmessages, @"");
+    STAssertTrue(6 == outputmessages.count, @"wrong count: %d", outputmessages.count);
+    
+    int message_index = 0;
+    BCMessage* output_msg;
+    NSNumber* actual_c;
+    NSNumber* actual_g1;
+    NSNumber* actual_g2;
+    NSNumber* expected_c;
+    NSNumber* expected_g1;
+    NSNumber* expected_g2;
+    
+    // msg[0] g1 should be active
+    output_msg = [outputmessages objectAtIndex:message_index++];
+    actual_c = [output_msg numberForKey:@"c"];
+    actual_g1 = [output_msg numberForKey:@"g1"];
+    actual_g2 = [output_msg numberForKey:@"g2"];
+    expected_c = [NSNumber numberWithInt:1];
+    expected_g1 = [NSNumber numberWithInt:100];
+    expected_g2 = [NSNumber numberWithInt:0];
+    STAssertEqualObjects(actual_c, expected_c, @"c");
+    STAssertEqualObjects(actual_g1, expected_g1, @"g1");
+    STAssertEqualObjects(actual_g2, expected_g2, @"g2");
+
+    // msg[1] g1 should be active
+    output_msg = [outputmessages objectAtIndex:message_index++];
+    actual_c = [output_msg numberForKey:@"c"];
+    actual_g1 = [output_msg numberForKey:@"g1"];
+    actual_g2 = [output_msg numberForKey:@"g2"];
+    expected_c = [NSNumber numberWithInt:1];
+    expected_g1 = [NSNumber numberWithInt:100];
+    expected_g2 = [NSNumber numberWithInt:0];
+    STAssertEqualObjects(actual_c, expected_c, @"c");
+    STAssertEqualObjects(actual_g1, expected_g1, @"g1");
+    STAssertEqualObjects(actual_g2, expected_g2, @"g2");
+
+    // msg[2] g1 should be active
+    output_msg = [outputmessages objectAtIndex:message_index++];
+    actual_c = [output_msg numberForKey:@"c"];
+    actual_g1 = [output_msg numberForKey:@"g1"];
+    actual_g2 = [output_msg numberForKey:@"g2"];
+    expected_c = [NSNumber numberWithInt:1];
+    expected_g1 = [NSNumber numberWithInt:100];
+    expected_g2 = [NSNumber numberWithInt:0];
+    STAssertEqualObjects(actual_c, expected_c, @"c");
+    STAssertEqualObjects(actual_g1, expected_g1, @"g1");
+    STAssertEqualObjects(actual_g2, expected_g2, @"g2");
+        
+    // msg[3] g1 should be active
+    output_msg = [outputmessages objectAtIndex:message_index++];
+    actual_c = [output_msg numberForKey:@"c"];
+    actual_g1 = [output_msg numberForKey:@"g1"];
+    actual_g2 = [output_msg numberForKey:@"g2"];
+    expected_c = [NSNumber numberWithInt:1];
+    expected_g1 = [NSNumber numberWithInt:100];
+    expected_g2 = [NSNumber numberWithInt:0];
+    STAssertEqualObjects(actual_c, expected_c, @"c");
+    STAssertEqualObjects(actual_g1, expected_g1, @"g1");
+    STAssertEqualObjects(actual_g2, expected_g2, @"g2");
+
+    // msg[4] g1 should be active
+    output_msg = [outputmessages objectAtIndex:message_index++];
+    actual_c = [output_msg numberForKey:@"c"];
+    actual_g1 = [output_msg numberForKey:@"g1"];
+    actual_g2 = [output_msg numberForKey:@"g2"];
+    expected_c = [NSNumber numberWithInt:1];
+    expected_g1 = [NSNumber numberWithInt:100];
+    expected_g2 = [NSNumber numberWithInt:0];
+    STAssertEqualObjects(actual_c, expected_c, @"c");
+    STAssertEqualObjects(actual_g1, expected_g1, @"g1");
+    STAssertEqualObjects(actual_g2, expected_g2, @"g2");
+
+    // msg[5] g1 should be active
+    output_msg = [outputmessages objectAtIndex:message_index++];
+    actual_c = [output_msg numberForKey:@"c"];
+    actual_g1 = [output_msg numberForKey:@"g1"];
+    actual_g2 = [output_msg numberForKey:@"g2"];
+    expected_c = [NSNumber numberWithInt:1];
+    expected_g1 = [NSNumber numberWithInt:100];
+    expected_g2 = [NSNumber numberWithInt:0];
+    STAssertEqualObjects(actual_c, expected_c, @"c");
+    STAssertEqualObjects(actual_g1, expected_g1, @"g1");
+    STAssertEqualObjects(actual_g2, expected_g2, @"g2");
+
+    // shift to g2
+    [inputfeed send:[BCMessage messageFromDictionary:@{
+                     @"group" : @"g2",
+                     @"value" : [NSNumber numberWithInt:12]
+                     }]];
+    
+    // wait for more output
+    spinwait(30);
+    BCMetricPrint();
+    
+    inputmessages = [inputHandler messagesSent];
+    STAssertNotNil(inputmessages, @"");
+    STAssertTrue(2 == inputmessages.count, @"wrong count: %d", inputmessages.count);
+    outputmessages = [outputHandler messagesReceived];
+    STAssertNotNil(outputmessages, @"");
+    STAssertTrue(12 == outputmessages.count, @"wrong count: %d", outputmessages.count);
+
+    // watch g1 age off
+        
+    // msg[6] g2 active, g1 aged
+    output_msg = [outputmessages objectAtIndex:message_index++];
+    actual_c = [output_msg numberForKey:@"c"];
+    actual_g1 = [output_msg numberForKey:@"g1"];
+    actual_g2 = [output_msg numberForKey:@"g2"];
+    expected_c = [NSNumber numberWithInt:1];
+    expected_g1 = [NSNumber numberWithInt:0];
+    expected_g2 = [NSNumber numberWithInt:12];
+    STAssertEqualObjects(actual_c, expected_c, @"c");
+    STAssertEqualObjects(actual_g1, expected_g1, @"g1");
+    STAssertEqualObjects(actual_g2, expected_g2, @"g2");
+    
+    // msg[7] g2 revoting
+    output_msg = [outputmessages objectAtIndex:message_index++];
+    actual_c = [output_msg numberForKey:@"c"];
+    actual_g1 = [output_msg numberForKey:@"g1"];
+    actual_g2 = [output_msg numberForKey:@"g2"];
+    expected_c = [NSNumber numberWithInt:1];
+    expected_g1 = [NSNumber numberWithInt:0];
+    expected_g2 = [NSNumber numberWithInt:12];
+    STAssertEqualObjects(actual_c, expected_c, @"c");
+    STAssertEqualObjects(actual_g1, expected_g1, @"g1");
+    STAssertEqualObjects(actual_g2, expected_g2, @"g2");
+    
+    // msg[8] g2 revoting
+    output_msg = [outputmessages objectAtIndex:message_index++];
+    actual_c = [output_msg numberForKey:@"c"];
+    actual_g1 = [output_msg numberForKey:@"g1"];
+    actual_g2 = [output_msg numberForKey:@"g2"];
+    expected_c = [NSNumber numberWithInt:1];
+    expected_g1 = [NSNumber numberWithInt:0];
+    expected_g2 = [NSNumber numberWithInt:12];
+    STAssertEqualObjects(actual_c, expected_c, @"c");
+    STAssertEqualObjects(actual_g1, expected_g1, @"g1");
+    STAssertEqualObjects(actual_g2, expected_g2, @"g2");
+    
+    // msg[9] g2 revoting
+    output_msg = [outputmessages objectAtIndex:message_index++];
+    actual_c = [output_msg numberForKey:@"c"];
+    actual_g1 = [output_msg numberForKey:@"g1"];
+    actual_g2 = [output_msg numberForKey:@"g2"];
+    expected_c = [NSNumber numberWithInt:1];
+    expected_g1 = [NSNumber numberWithInt:0];
+    expected_g2 = [NSNumber numberWithInt:12];
+    STAssertEqualObjects(actual_c, expected_c, @"c");
+    STAssertEqualObjects(actual_g1, expected_g1, @"g1");
+    STAssertEqualObjects(actual_g2, expected_g2, @"g2");
+    
+    // msg[10] g2 revoting
+    output_msg = [outputmessages objectAtIndex:message_index++];
+    actual_c = [output_msg numberForKey:@"c"];
+    actual_g1 = [output_msg numberForKey:@"g1"];
+    actual_g2 = [output_msg numberForKey:@"g2"];
+    expected_c = [NSNumber numberWithInt:1];
+    expected_g1 = [NSNumber numberWithInt:0];
+    expected_g2 = [NSNumber numberWithInt:12];
+    STAssertEqualObjects(actual_c, expected_c, @"c");
+    STAssertEqualObjects(actual_g1, expected_g1, @"g1");
+    STAssertEqualObjects(actual_g2, expected_g2, @"g2");
+    
+    // msg[11] g2 revoting
+    output_msg = [outputmessages objectAtIndex:message_index++];
+    actual_c = [output_msg numberForKey:@"c"];
+    actual_g1 = [output_msg numberForKey:@"g1"];
+    actual_g2 = [output_msg numberForKey:@"g2"];
+    expected_c = [NSNumber numberWithInt:1];
+    expected_g1 = [NSNumber numberWithInt:0];
+    expected_g2 = [NSNumber numberWithInt:12];
+    STAssertEqualObjects(actual_c, expected_c, @"c");
+    STAssertEqualObjects(actual_g1, expected_g1, @"g1");
+    STAssertEqualObjects(actual_g2, expected_g2, @"g2");
+    
+    // close the input and wait for more output
+    [[inputHandler testFeed] close];
+    spinwait(30);
+    outputmessages = [outputHandler messagesReceived];
+    STAssertNotNil(outputmessages, @"");
+    STAssertTrue(14 == outputmessages.count, @"wrong count: %d", outputmessages.count);
+
+    // msg[12] g2 trend off
+    output_msg = [outputmessages objectAtIndex:message_index++];
+    actual_c = [output_msg numberForKey:@"c"];
+    actual_g1 = [output_msg numberForKey:@"g1"];
+    actual_g2 = [output_msg numberForKey:@"g2"];
+    expected_c = [NSNumber numberWithInt:0];
+    expected_g1 = [NSNumber numberWithInt:0];
+    expected_g2 = [NSNumber numberWithInt:0];
+    STAssertEqualObjects(actual_c, expected_c, @"c");
+    STAssertEqualObjects(actual_g1, expected_g1, @"g1");
+    STAssertEqualObjects(actual_g2, expected_g2, @"g2");
+
+    // msg[13] zeros
+    output_msg = [outputmessages objectAtIndex:message_index++];
+    actual_c = [output_msg numberForKey:@"c"];
+    actual_g1 = [output_msg numberForKey:@"g1"];
+    actual_g2 = [output_msg numberForKey:@"g2"];
+    expected_c = [NSNumber numberWithInt:0];
+    expected_g1 = [NSNumber numberWithInt:0];
+    expected_g2 = [NSNumber numberWithInt:0];
+    STAssertEqualObjects(actual_c, expected_c, @"c");
+    STAssertEqualObjects(actual_g1, expected_g1, @"g1");
+    STAssertEqualObjects(actual_g2, expected_g2, @"g2");
+
+    // close output and cleanup
+    [ctx shutdown:^(NSError *err) {
+        STAssertNil(err, @"Shutdown Error: %@", err);
+    }];
+    
+    // wait for shutdown
+    spinwait(5);
+}
+
 @end

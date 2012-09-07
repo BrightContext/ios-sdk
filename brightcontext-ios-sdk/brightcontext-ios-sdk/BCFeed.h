@@ -123,6 +123,7 @@ typedef void(^BCFeedHistoryCallback)(NSArray* messages, NSError* error);
 
 @property (readwrite,nonatomic,assign) BOOL usesPolling;
 @property (readwrite,nonatomic,retain) NSArray* pollFields;
+@property (readwrite,nonatomic,retain) NSArray* pollDimensions;
 @property (readwrite,nonatomic,retain) NSTimer* revoteTimer;
 @property (readwrite,nonatomic,assign) NSTimeInterval revoteInterval;
 @property (readwrite,nonatomic,retain) BCMessage* previousMessage;
