@@ -33,7 +33,7 @@ do
 	mkdir -p "${headers_dest}"
 	cp "${headers_src}"/* "${headers_dest}"
 	
-	if [[ '$1'='zip' ]]; then
+	if [[ '$1' == 'zip' ]]; then
 		pushd ${OUTPUT}
 		zipfile=$2-${CONFIGURATION}.zip
 		zip -r ${zipfile} ${CONFIGURATION}-${FAT}
