@@ -58,6 +58,7 @@
     // create a test context
     TestContext* ctx = [TestContext new];
     ctx.settings = [FDTestSettings new];
+    [ctx setShouldAutoReconnect:false];
     self.bc = ctx;
     self.statusMessage = @"Context Loaded";
     

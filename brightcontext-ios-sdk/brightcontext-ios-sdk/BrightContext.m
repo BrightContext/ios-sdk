@@ -136,6 +136,7 @@
 
 - (NSURL *)socketUrlForConnection:(BCConnection *)conn
 {
+    [self.session parseNextSocketUrl];
     return self.session.socketUrl;
 }
 

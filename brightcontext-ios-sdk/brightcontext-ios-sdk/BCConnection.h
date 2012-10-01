@@ -13,6 +13,7 @@
 @class SBJsonParser;
 
 extern NSString* BCConnection_CommandQueueName;
+extern NSString* BCConnection_ErrorDomain;
 
 @class BCCommand;
 @class BCEvent;

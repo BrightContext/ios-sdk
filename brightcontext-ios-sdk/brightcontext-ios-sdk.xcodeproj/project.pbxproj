@@ -1025,7 +1025,7 @@
 					../SocketRocket/SocketRocket/,
 					"../json-framework/Classes/",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -1046,7 +1046,7 @@
 					../SocketRocket/SocketRocket/,
 					"../json-framework/Classes/",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};

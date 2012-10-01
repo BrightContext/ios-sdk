@@ -29,11 +29,15 @@
 @synthesize domain=_domain;
 @synthesize sessionId=_sessionId;
 @synthesize serverTime=_serverTime;
+@synthesize socketUrl=_socketUrl;
 
 - (id)initWithDictionary:(NSDictionary*)d
 {
     self = [super init];
     if (self) {
+        _availablePorts = [[NSArray arrayWithObjects:@"80", @"8080", nil] retain];
+        _currentPortIndex = -1;
+        
         _domain = [[d objectForKey:@"domain"] retain];
         _sessionId = [[d objectForKey:@"sid"] retain];
         
@@ -46,9 +50,12 @@
     return self;
 }
 
-- (void)dealloc {
+- (void)dealloc
+{
     [_domain release];
     [_sessionId release];
+    [_socketUrl release];
+    [_availablePorts release];
     [super dealloc];
 }
 
@@ -57,8 +64,17 @@
     return [NSString stringWithFormat:@"{ domain: %@, sid: %@, stime: %@ }", _domain, _sessionId, [NSDate dateWithTimeIntervalSinceReferenceDate:_serverTime]];
 }
 
-- (NSURL*) socketUrl
+-(void)parseNextSocketUrl
 {
+    ++_currentPortIndex;
+    
+    if (_currentPortIndex >= [_availablePorts count]) {
+        self.socketUrl = nil;
+        return; // fail fast
+    }
+    
+    NSString* port = [_availablePorts objectAtIndex:_currentPortIndex];
+    
     NSRegularExpression* startsWithSlash = [NSRegularExpression regularExpressionWithPattern:@"^/"
                                                                                      options:0
                                                                                        error:nil];
@@ -93,12 +109,14 @@
                                                            range:NSMakeRange(0, [socketPath length])
                                                     withTemplate:@""];
     
-    NSString* wsPath = [root stringByAppendingFormat:@"/%@/%@?%@=%@",
+    NSString* wsPath = [root stringByAppendingFormat:@":%@/%@/%@?%@=%@",
+                        port,
                         apiRoot,
                         socketPath,
                         BC_PARAM_SESSION_ID, self.sessionId];
+    
     NSURL* wsUrl = [NSURL URLWithString:wsPath];
-    return wsUrl;
+    self.socketUrl = wsUrl;
 }
 
 @end

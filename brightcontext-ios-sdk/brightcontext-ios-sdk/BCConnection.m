@@ -16,6 +16,7 @@
 #import "BCCommand.h"
 
 NSString* BCConnection_CommandQueueName = @"com.brightcontext.connection.commandqueue";
+NSString* BCConnection_ErrorDomain = @"com.brightcontext.connection.error";
 
 @implementation BCConnection
 
@@ -51,15 +52,28 @@ NSString* BCConnection_CommandQueueName = @"com.brightcontext.connection.command
                                                          
 - (void)connect
 {
-    if ([self isConnected]) {
-        [self disconnect];
-    }
+    [self disconnect];
     
     NSURL* socketUrl = [self.delegate socketUrlForConnection:self];
-    NSURLRequest* r = [NSURLRequest requestWithURL:socketUrl];
-    _socket = [[SRWebSocket alloc] initWithURLRequest:r];
-    _socket.delegate = self;
-    [_socket open];
+    NSInteger code = 400;
+    
+    if (!socketUrl) {
+        NSString* message = @"Cannot establish socket, all known ports of entry exhausted";
+        NSDictionary* userInfo = [NSDictionary dictionaryWithObject:message
+                                                             forKey:NSLocalizedFailureReasonErrorKey];
+        NSError* nilSocketError = [NSError errorWithDomain:BCConnection_ErrorDomain
+                                                      code:code
+                                                  userInfo:userInfo];
+        [self.delegate connection:self
+                         didError:nilSocketError];
+    } else {
+        BCLog(@"Establishing connection with %@", socketUrl);
+        
+        NSURLRequest* r = [NSURLRequest requestWithURL:socketUrl];
+        _socket = [[SRWebSocket alloc] initWithURLRequest:r];
+        _socket.delegate = self;
+        [_socket open];
+    }
 }
 
 - (BOOL)isConnected
@@ -89,8 +103,12 @@ NSString* BCConnection_CommandQueueName = @"com.brightcontext.connection.command
 - (void)disconnect
 {
     _socket.delegate = nil;
-    [_socket close];
-    [_socket release];
+    
+    if (SR_OPEN == _socket.readyState) {
+        [_socket close];
+        [_socket release];
+    }
+    
     _socket = nil;
 }
 
@@ -142,7 +160,7 @@ NSString* BCConnection_CommandQueueName = @"com.brightcontext.connection.command
     
     [_commandQ setSuspended:YES];
     
-    [self.delegate connection:self didError:error];
+    [self connect];
 }
 
 - (void)webSocket:(SRWebSocket *)webSocket didCloseWithCode:(NSInteger)code reason:(NSString *)reason wasClean:(BOOL)wasClean
