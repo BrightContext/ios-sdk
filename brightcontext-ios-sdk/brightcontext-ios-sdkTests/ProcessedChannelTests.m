@@ -1,10 +1,10 @@
+//-----------------------------------------------------------------
+// Copyright 2012 BrightContext Corporation
 //
-//  ProcessedChannelTests.m
-//  brightcontext-ios-sdk
-//
-//  Created by Steven Fusco on 7/16/12.
-//  Copyright (c) 2012 BrightContext Corporation. All rights reserved.
-//
+// Licensed under the MIT License defined in the
+// LICENSE file. You may not use this file except in
+// compliance with the License.
+//-----------------------------------------------------------------
 
 #import "ProcessedChannelTests.h"
 
@@ -105,19 +105,29 @@
     if (!inputfeed) return; // bail early
     
     
-    NSNumber* expected_number = [NSNumber numberWithInt:7];
+    NSNumber* expected_number = @64;
     NSDate* expected_date = [NSDate date];
     NSString* expected_string = @"string";
+    NSArray* expected_list = @[ @"one", @"two", @"three" ];
+    NSDictionary* expected_map = @{ @"test key" : @"test value" };
+    BOOL expected_bool = true;
+    int expected_int = 32;
+    float expected_float = 3.14;
     
     BCMessage* input_msg = [[BCMessage alloc] init];
     [input_msg setNumber:expected_number forKey:@"n"];
     [input_msg setDate:expected_date forKey:@"d"];
     [input_msg setString:expected_string forKey:@"s"];
-    
+    [input_msg setArray:expected_list forKey:@"l"];
+    [input_msg setDictionary:expected_map forKey:@"m"];
+    [input_msg setBool:expected_bool forKey:@"b"];
+    [input_msg setInt:expected_int forKey:@"i"];
+    [input_msg setFloat:expected_float forKey:@"f"];
+
     [inputfeed send:input_msg];
     
     // wait for calculations
-    spinwait(5);
+    spinwait(6);
     
     // test math
     NSArray* outputmessages = [outputHandler messagesReceived];
@@ -128,10 +138,20 @@
     NSNumber* actual_number = [output_msg numberForKey:@"n"];
     NSDate* actual_date = [output_msg dateForKey:@"d"];
     NSString* actual_string = [output_msg stringForKey:@"s"];
+    NSArray* actual_list = [output_msg arrayForKey:@"l"];
+    NSDictionary* actual_map = [output_msg dictionaryForKey:@"m"];
+    BOOL actual_bool = [output_msg boolForKey:@"b"];
+    int actual_int = [output_msg intForKey:@"i"];
+    float actual_float = [output_msg floatForKey:@"f"];
     
     STAssertEqualObjects(actual_number, expected_number, @"");
     STAssertEqualObjects([actual_date description], [expected_date description], @"");
     STAssertEqualObjects(actual_string, expected_string, @"");
+    STAssertEqualObjects(actual_list, expected_list, @"");
+    STAssertEqualObjects(actual_map, expected_map, @"");
+    STAssertEquals(actual_bool, expected_bool, @"");
+    STAssertEquals(actual_int, expected_int, @"");
+    STAssertEquals(actual_float, expected_float, @"");
     
     [ctx shutdown:^(NSError *err) {
         STAssertNil(err, @"Shutdown Error: %@", err);

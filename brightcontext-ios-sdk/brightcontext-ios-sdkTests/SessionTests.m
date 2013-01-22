@@ -38,26 +38,70 @@
     NSURL* environmentUrl = [self.context environmentURL];
     STAssertNotNil(environmentUrl, @"");
     
-    NSString* apikey = [self.context apiKey];
+    NSString* apikey = [self.context.settings apiKey];
     STAssertNotNil(apikey, @"");
+    
+    __block NSError* testSessionError = nil;
+    __block BCSession* testSession = nil;
     
     [BrightContext createSessionUsingLoadBalancer:environmentUrl
                                       usingApiKey:apikey
                                        completion:^(NSError * err, BCSession * s) {
                                            ++executionCount;
-                                           STAssertNil(err, [err localizedDescription]);
-                                           STAssertNotNil(s, @"Session should not be nil");
                                            
-                                           NSLog(@"Session: %@", s);
-                                           
-                                           STAssertNotNil(s.domain, @"");
-                                           STAssertNotNil(s.sessionId, @"");
-                                           STAssertTrue(0 != s.serverTime, @"");
+                                           testSessionError = [err retain];
+                                           testSession = [s retain];
                                        }];
     
     spinwait(2);
     
     STAssertEquals(1, executionCount, @"callback should have fired exactly once");
+    
+    STAssertNil(testSessionError, [testSessionError localizedDescription]);
+    STAssertNotNil(testSession, @"Session should not be nil");
+    
+    NSLog(@"Session: %@", testSession);
+    
+    STAssertNotNil(testSession.sessionId, @"");
+    STAssertTrue(0 != testSession.serverTime, @"");
+    STAssertFalse(testSession.isSecure, @"");
+}
+
+- (void) testSecureSessionCreate
+{
+    __block int executionCount = 0;
+    
+    NSURL* environmentUrl = [self.context secureEnvironmentURL];
+    STAssertNotNil(environmentUrl, @"");
+    STAssertEqualObjects(@"https", [environmentUrl scheme], @"");
+    
+    NSString* apikey = [self.context.settings secureApiKey];
+    STAssertNotNil(apikey, @"");
+    
+    __block NSError* testSessionError = nil;
+    __block BCSession* testSession = nil;
+    
+    [BrightContext createSessionUsingLoadBalancer:environmentUrl
+                                      usingApiKey:apikey
+                                       completion:^(NSError * err, BCSession * s) {
+                                           ++executionCount;
+                                           
+                                           testSessionError = [err retain];
+                                           testSession = [s retain];
+                                       }];
+    
+    spinwait(2);
+    
+    STAssertEquals(1, executionCount, @"callback should have fired exactly once");
+    
+    STAssertNil(testSessionError, [testSessionError localizedDescription]);
+    STAssertNotNil(testSession, @"Session should not be nil");
+    
+    NSLog(@"Session: %@", testSession);
+    
+    STAssertNotNil(testSession.sessionId, @"");
+    STAssertTrue(0 != testSession.serverTime, @"");
+    STAssertTrue(testSession.isSecure, @"");
 }
 
 - (void) testShortApiKey

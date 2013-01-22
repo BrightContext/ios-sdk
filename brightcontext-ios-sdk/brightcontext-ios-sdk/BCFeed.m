@@ -35,128 +35,108 @@
     return t;
 }
 
-@synthesize procId, state, type, key, netId, throttleRate, filters, settings, connection;
++ (BCFeed*) feedWithMetadata:(BCFeedMetadata *)md
+{
+    BCFeed* f = [[[BCFeed alloc] init] autorelease];
+    f.metadata = md;
+    f.type = BCFeedType_Unknown;
+    return f;
+}
+
+@synthesize procId, type, key, netId, throttleRate, filters, settings, connection;
 @synthesize usesPolling, revoteInterval, pollFields, revoteTimer, timeOfLastVote, previousMessage, currentPollingTimeslot;
 
-- (id)initWithDictionary:(NSDictionary *)data
+- (void)loadSettings:(NSDictionary *)data
 {
-    self = [super init];
-    if (self) {
-        NSString* feedTypeString = [data objectForKey:@"feedType"];
-        self.type = [BCFeed feedTypeFromString:feedTypeString];
-        
-        self.state = [data objectForKey:@"state"];
-        self.procId = [data objectForKey:@"procId"];
-        self.key = [data objectForKey:@"feedKey"];
-        self.netId = [data objectForKey:@"netId"];
-        self.throttleRate = [data objectForKey:@"throttleRate"];
-        
-        
-        id activePollingMode = [data objectForKey:@"activeUserFlag"];
-        if ((NULL != activePollingMode) && (![[NSNull null] isEqual:activePollingMode])) {
-            self.usesPolling = [activePollingMode boolValue];
-        } else {
-            self.usesPolling = NO;
-        }
-        
-        NSArray* activeUserFields = nil;
-        id activeUserCycle = [data objectForKey:@"activeUserCycle"];
-        if ((NULL != activeUserCycle) && (![[NSNull null] isEqual:activeUserCycle])) {
-            self.revoteInterval = [activeUserCycle intValue];
-            activeUserFields = [data objectForKey:@"activeUserFields"];
-            self.pollFields = activeUserFields;
-        }
-        
-        id writeKeyFlag = [data objectForKey:@"writeKeyFlag"];
-        if ((NULL != writeKeyFlag) && (![[NSNull null] isEqual:writeKeyFlag])) {
-            _isWriteProtected = [writeKeyFlag boolValue];
-        } else {
-            _isWriteProtected = NO;
-        }
-        
-        id msgContract = [data objectForKey:@"msgContract"];
-        if ((NULL != msgContract) && (![[NSNull null] isEqual:msgContract])) {
-            if ([msgContract isKindOfClass:[NSArray class]]) {
-                NSArray* msgContractArr = (NSArray*) msgContract;
-                if (0 != msgContractArr.count) {
-#if BC_MESSAGE_CONTRACT_VALIDATION
-                    self.messageContract = msgContract;
-#endif
-                    
-                    if (self.usesPolling && activeUserFields) {
-                        NSMutableArray* dimensions = [NSMutableArray arrayWithCapacity:msgContractArr.count];
-                        for (NSDictionary* d in msgContractArr) {
-                            NSString* fieldName = [d objectForKey:@"fieldName"];
-                            if (![activeUserFields containsObject:fieldName]) {
-                                [dimensions addObject:fieldName];
-                            }
-
-                        }
-                        self.pollDimensions = dimensions;
-                    }
-                    
-                }
-            }
-        }
-        
-        if ([[data allKeys] containsObject:@"filters"]) {
-            id filterData = [data objectForKey:@"filters"];
-            if ([filterData isKindOfClass:[NSDictionary class]]) {
-                self.filters = filterData;
-            } else if ([filterData isKindOfClass:[NSString class]]) {
-                if ((nil != filterData) && (![filterData isEqualToString:@""])) {
-                    id parsedFilters = [filterData JSONValue];
-                    if ([parsedFilters isKindOfClass:[NSDictionary class]]) {
-                        self.filters = parsedFilters;
-                    }
-                }
-            }
-        }
-        
-        BCFeedSettings* derivedSettings = [[BCFeedSettings new] autorelease];
-        derivedSettings.type = feedTypeString;
-        derivedSettings.procId = self.procId;
-        
-        if (self.filters) {
-            derivedSettings.filters = [self.filters allKeys];
-            derivedSettings.filterValues = self.filters;
-        }
-        self.settings = derivedSettings;
-        
-        /* other fields not parsed right now... 
-         
-         // "procType":1,       
-        
-       { INPROC_STREAM_ID : 1,
-         MP_STREAM_ID : 6,
-         OUTPROC_STREAM_ID : 2,
-         THRU_STREAM : 9 }
-                  
-         typedef enum {
-           BCValidationType_None = 0,
-           BCValidationType_Number,
-           BCValidationType_Date
-         } BCValidationType;
-
-         min / max present on 1 and 2
-         
-        }
-         */
-        
-        if (self.usesPolling) {
-            _activePollingMessageQueue = dispatch_queue_create("com.brightcontext.feed.activepolling.messagequeue", DISPATCH_QUEUE_SERIAL);
-            _activePollingResponseSemaphore = dispatch_semaphore_create(0);
-            dispatch_semaphore_signal(_activePollingResponseSemaphore);
-        }
-
+    NSString* feedTypeString = [data objectForKey:@"feedType"];
+    self.type = [BCFeed feedTypeFromString:feedTypeString];
+    
+    self.procId = [data objectForKey:@"procId"];
+    self.key = [data objectForKey:@"feedKey"];
+    self.netId = [data objectForKey:@"netId"];
+    self.throttleRate = [data objectForKey:@"throttleRate"];
+    
+    id activePollingMode = [data objectForKey:@"activeUserFlag"];
+    if ((NULL != activePollingMode) && (![[NSNull null] isEqual:activePollingMode])) {
+        self.usesPolling = [activePollingMode boolValue];
+    } else {
+        self.usesPolling = NO;
     }
-    return self;
+    
+    NSArray* activeUserFields = nil;
+    id activeUserCycle = [data objectForKey:@"activeUserCycle"];
+    if ((NULL != activeUserCycle) && (![[NSNull null] isEqual:activeUserCycle])) {
+        self.revoteInterval = [activeUserCycle intValue];
+        activeUserFields = [data objectForKey:@"activeUserFields"];
+        self.pollFields = activeUserFields;
+    }
+    
+    id writeKeyFlag = [data objectForKey:@"writeKeyFlag"];
+    if ((NULL != writeKeyFlag) && (![[NSNull null] isEqual:writeKeyFlag])) {
+        _isWriteProtected = [writeKeyFlag boolValue];
+    } else {
+        _isWriteProtected = NO;
+    }
+    
+    id msgContract = [data objectForKey:@"msgContract"];
+    if ((NULL != msgContract) && (![[NSNull null] isEqual:msgContract])) {
+        if ([msgContract isKindOfClass:[NSArray class]]) {
+            NSArray* msgContractArr = (NSArray*) msgContract;
+            if (0 != msgContractArr.count) {
+#if BC_MESSAGE_CONTRACT_VALIDATION
+                self.messageContract = msgContract;
+#endif
+                
+                if (self.usesPolling && activeUserFields) {
+                    NSMutableArray* dimensions = [NSMutableArray arrayWithCapacity:msgContractArr.count];
+                    for (NSDictionary* d in msgContractArr) {
+                        NSString* fieldName = [d objectForKey:@"fieldName"];
+                        if (![activeUserFields containsObject:fieldName]) {
+                            [dimensions addObject:fieldName];
+                        }
+
+                    }
+                    self.pollDimensions = dimensions;
+                }
+                
+            }
+        }
+    }
+    
+    if ([[data allKeys] containsObject:@"filters"]) {
+        id filterData = [data objectForKey:@"filters"];
+        if ([filterData isKindOfClass:[NSDictionary class]]) {
+            self.filters = filterData;
+        } else if ([filterData isKindOfClass:[NSString class]]) {
+            if ((nil != filterData) && (![filterData isEqualToString:@""])) {
+                id parsedFilters = [filterData JSONValue];
+                if ([parsedFilters isKindOfClass:[NSDictionary class]]) {
+                    self.filters = parsedFilters;
+                }
+            }
+        }
+    }
+    
+    BCFeedSettings* derivedSettings = [[BCFeedSettings new] autorelease];
+    derivedSettings.type = feedTypeString;
+    derivedSettings.procId = self.procId;
+    
+    if (self.filters) {
+        derivedSettings.filters = [self.filters allKeys];
+        derivedSettings.filterValues = self.filters;
+    }
+    self.settings = derivedSettings;
+    
+    if (self.usesPolling) {
+        _activePollingMessageQueue = dispatch_queue_create("com.brightcontext.feed.activepolling.messagequeue", DISPATCH_QUEUE_SERIAL);
+        _activePollingResponseSemaphore = dispatch_semaphore_create(0);
+        dispatch_semaphore_signal(_activePollingResponseSemaphore);
+    }
 }
 
 - (void)dealloc
 {
     [procId release];
-    [state release];
     [key release];
     [netId release];
     [throttleRate release];
@@ -188,9 +168,18 @@
             self.key, [self.settings generateHashCode]];
 }
 
-- (void)open
+- (BOOL)isEqual:(id)object
 {
-    [connection openFeed:self];
+    if (!object) return NO;
+    if (![object isKindOfClass:[BCFeed class]]) return NO;
+    
+    BCFeed* otherFeed = (BCFeed*) object;
+    BCFeedMetadata* otherMetadata = otherFeed.metadata;
+    
+    if (!otherMetadata) return NO;
+    
+    BOOL metadataMatches = [self.metadata isEqual:otherMetadata];
+    return metadataMatches;
 }
 
 - (void)send:(BCMessage *)msg
@@ -227,12 +216,12 @@
 
 - (void)getHistory:(BCFeedHistoryCallback)callback
 {
-    [self getHistory:callback limit:10];
+    [self getHistory:callback limit:0];
 }
 
 - (void)getHistory:(BCFeedHistoryCallback)callback limit:(NSUInteger)limit
 {
-    [self getHistory:callback limit:limit ending:[NSDate date]];
+    [self getHistory:callback limit:limit ending:nil];
 }
 
 - (void)getHistory:(BCFeedHistoryCallback)callback limit:(NSUInteger)limit ending:(NSDate *)ending
@@ -503,6 +492,12 @@
     } else if ([BC_FIELDTYPE_DATE isEqualToString:expectedType]) {
         expectedClass = [NSNumber class];
     } else if ([BC_FIELDTYPE_NUMBER isEqualToString:expectedType]) {
+        expectedClass = [NSNumber class];
+    } else if ([BC_FIELDTYPE_LIST isEqualToString:expectedType]) {
+        expectedClass = [NSArray class];
+    } else if ([BC_FIELDTYPE_MAP isEqualToString:expectedType]) {
+        expectedClass = [NSDictionary class];
+    } else if ([BC_FIELDTYPE_BOOL isEqualToString:expectedType]) {
         expectedClass = [NSNumber class];
     }
     

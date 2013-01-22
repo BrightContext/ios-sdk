@@ -1,4 +1,4 @@
-# Bright Context iOS SDK
+# BrightContext iOS SDK
 
 Sign up
 [http://www.brightcontext.com](http://www.brightcontext.com)
@@ -14,8 +14,8 @@ Questions
 ## Option A: Download a pre-baked framework
 
 1. From the downloads tab, fetch the one of the pre-built release packages
-2. Link `libbrightcontext-ios-sdk.a` into your project under the "Build Phases" tab of your project settings
-3. Adjust your project build settings and add path to the `headers` directory to the "Header Search Paths" setting.
+2. Link `libbrightcontext-ios-sdk.a` `libicucore.dylib` `CFNetwork.framework` and `Security.framework` into your project under the "Build Phases" tab of your project settings
+3. Adjust your project build settings and add the path to the `headers` directory to the "Header Search Paths" setting.  For example, if you extracted to a folder named 'brightcontext' in the same directory as your apps XCode project add 'brightcontext/headers'.
 4. Adjust your project build settings and add `-ObjC` and `-all_load` to your "Other Linker Flags" setting.  See [Technical Q&A QA1490](http://developer.apple.com/library/mac/#qa/qa1490/_index.html) for more info.
 
 

@@ -160,7 +160,10 @@
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
     NSManagedObject *object = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    cell.textLabel.text = [object valueForKey:@"name"];
+    
+    NSString* titleText = [NSString stringWithFormat:@"%@ - %@", [object valueForKey:@"channel"], [object valueForKey:@"name"]];
+    cell.textLabel.text = titleText;
+    
     cell.detailTextLabel.text = [object valueForKey:@"filter"];
 }
 

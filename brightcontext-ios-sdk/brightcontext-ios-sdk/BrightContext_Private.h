@@ -15,7 +15,7 @@
 
 - (NSURL*) environmentURL;
 
-- (BCFeed*) registerOpenedFeedWithEvent:(BCEvent*)evt;
+- (void) loadFeed:(BCFeed*)feed usingEvent:(BCEvent *)evt;
 - (void) registerNewListener:(id<BCFeedListener>)listener forOpenFeed:(BCFeed*)feed;
 
 - (void) startHeartbeats;

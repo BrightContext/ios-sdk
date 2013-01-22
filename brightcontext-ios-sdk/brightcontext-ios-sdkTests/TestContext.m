@@ -17,11 +17,11 @@
     return self.settings.apiKey;
 }
 
-- (NSURL *)environmentURL
+- (NSURL*) makeUrlFromSettingsSecurely:(BOOL)securely
 {
-    id<TestSettings>s = self.settings;
+    id<TestSettings> s = self.settings;
     NSString* host = [s host];
-    NSUInteger port = [s port];
+    NSUInteger port = (securely) ? 443 : [s port];
     
     NSString* apiRoot = [s apiRoot];
     if (!apiRoot) {
@@ -30,9 +30,21 @@
         apiRoot = @"";
     }
     
-    NSString* urlString = [NSString stringWithFormat:@"http://%@:%d%@", host, port, apiRoot];
+    NSString* protocol = (securely) ? @"https" : @"http";
+    
+    NSString* urlString = [NSString stringWithFormat:@"%@://%@:%d%@", protocol, host, port, apiRoot];
     NSURL* url = [NSURL URLWithString:urlString];
     return url;
+}
+
+- (NSURL *)environmentURL
+{
+    return [self makeUrlFromSettingsSecurely:NO];
+}
+
+- (NSURL *)secureEnvironmentURL
+{
+    return [self makeUrlFromSettingsSecurely:YES];
 }
 
 @end

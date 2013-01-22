@@ -13,8 +13,12 @@
 @property (readonly) NSString* host;
 @property (readonly) NSUInteger port;
 @property (readonly) NSString* apiRoot;
+
 @property (readonly) NSString* apiKey;
+@property (readonly) NSString* secureApiKey;
+
 @property (readonly) NSString* testProject;
+
 @property (readonly) NSString* unprotectedThruChannel;
 @property (readonly) NSString* protectedThruChannel;
 @property (readonly) NSString* protectedThruChannelWriteKey;

@@ -26,19 +26,40 @@
 
 @implementation BCSession
 
-@synthesize domain=_domain;
 @synthesize sessionId=_sessionId;
 @synthesize serverTime=_serverTime;
 @synthesize socketUrl=_socketUrl;
+@synthesize isSecure=_isSecure;
 
 - (id)initWithDictionary:(NSDictionary*)d
 {
     self = [super init];
     if (self) {
-        _availablePorts = [[NSArray arrayWithObjects:@"80", @"8080", nil] retain];
-        _currentPortIndex = -1;
+//        {
+//            "sid": "687f7e09-b117-4052-aec3-0a76a7a3d30b",
+//            "stime": 1353942079692,
+//            "endpoints": {
+//                "flash": [
+//                          "ws://pub01.bcclabs.com",
+//                          "ws://pub01.bcclabs.com:8080"
+//                          ],
+//                "socket": [
+//                           "ws://pub01.bcclabs.com",
+//                           "ws://pub01.bcclabs.com:8080"
+//                           ],
+//                "rest": [
+//                         "http://pub01.bcclabs.com",
+//                         "http://pub01.bcclabs.com:8080"
+//                         ]
+//            },
+//            "ssl": false
+//        }
         
-        _domain = [[d objectForKey:@"domain"] retain];
+        _availableEndpoints = [[[d objectForKey:@"endpoints"] objectForKey:@"socket"] retain];
+        _currentEndpointIndex = -1;
+        
+        _isSecure = [[d objectForKey:@"ssl"] boolValue];
+        
         _sessionId = [[d objectForKey:@"sid"] retain];
         
         NSNumber* stime = [d objectForKey:@"stime"];
@@ -52,67 +73,36 @@
 
 - (void)dealloc
 {
-    [_domain release];
     [_sessionId release];
     [_socketUrl release];
-    [_availablePorts release];
+    [_availableEndpoints release];
     [super dealloc];
 }
 
 - (NSString *)description
 {
-    return [NSString stringWithFormat:@"{ domain: %@, sid: %@, stime: %@ }", _domain, _sessionId, [NSDate dateWithTimeIntervalSinceReferenceDate:_serverTime]];
+    return [NSString stringWithFormat:@"{ endpoints: %@, sid: %@, stime: %@, secure: %@ }",
+            _availableEndpoints,
+            _sessionId,
+            [NSDate dateWithTimeIntervalSinceReferenceDate:_serverTime],
+            ((self.isSecure) ? @"true" : @"false")
+    ];
 }
 
 -(void)parseNextSocketUrl
 {
-    ++_currentPortIndex;
+    ++_currentEndpointIndex;
     
-    if (_currentPortIndex >= [_availablePorts count]) {
+    if (_currentEndpointIndex >= [_availableEndpoints count]) {
         self.socketUrl = nil;
         return; // fail fast
     }
     
-    NSString* port = [_availablePorts objectAtIndex:_currentPortIndex];
+    NSString* nextEndpoint = [_availableEndpoints objectAtIndex:_currentEndpointIndex];
     
-    NSRegularExpression* startsWithSlash = [NSRegularExpression regularExpressionWithPattern:@"^/"
-                                                                                     options:0
-                                                                                       error:nil];
-
-    NSRegularExpression* endsWithSlash = [NSRegularExpression regularExpressionWithPattern:@"/$"
-                                                                                   options:0
-                                                                                     error:nil];
-    NSString* root = [self.domain stringByReplacingOccurrencesOfString:@"http://"
-                                                            withString:BC_API_PROTOCOL];
-    root = [endsWithSlash stringByReplacingMatchesInString:root
-                                                   options:0
-                                                     range:NSMakeRange(0, [root length])
-                                              withTemplate:@""];
-    
-    NSString* apiRoot = BC_API_ROOT;
-    apiRoot = [startsWithSlash stringByReplacingMatchesInString:apiRoot
-                                                        options:0
-                                                          range:NSMakeRange(0, [apiRoot length])
-                                                   withTemplate:@""];
-    apiRoot = [endsWithSlash stringByReplacingMatchesInString:apiRoot
-                                                      options:0
-                                                        range:NSMakeRange(0, [apiRoot length])
-                                                 withTemplate:@""];
-    
-    NSString* socketPath = BC_API_SOCKET_PATH;
-    socketPath = [startsWithSlash stringByReplacingMatchesInString:socketPath
-                                                           options:0
-                                                             range:NSMakeRange(0, [socketPath length])
-                                                      withTemplate:@""];
-    socketPath = [endsWithSlash stringByReplacingMatchesInString:socketPath
-                                                         options:0
-                                                           range:NSMakeRange(0, [socketPath length])
-                                                    withTemplate:@""];
-    
-    NSString* wsPath = [root stringByAppendingFormat:@":%@/%@/%@?%@=%@",
-                        port,
-                        apiRoot,
-                        socketPath,
+    NSString* wsPath = [nextEndpoint stringByAppendingFormat:@"%@%@?%@=%@",
+                        BC_API_ROOT,
+                        BC_API_SOCKET_PATH,
                         BC_PARAM_SESSION_ID, self.sessionId];
     
     NSURL* wsUrl = [NSURL URLWithString:wsPath];

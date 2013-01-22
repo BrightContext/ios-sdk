@@ -25,6 +25,15 @@
     self.settings = ctx.settings;
 }
 
+- (void)tearDown
+{
+    [self.context shutdown:^(NSError *err) {
+        STAssertNil(err, @"");
+    }];
+    
+    spinwait(5);
+}
+
 - (void) testGetHistoryThruFeed
 {
     BCProject* p = [self.context loadProject:self.settings.testProject];

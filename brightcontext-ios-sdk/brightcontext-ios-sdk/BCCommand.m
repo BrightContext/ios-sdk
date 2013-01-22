@@ -41,6 +41,14 @@
     return cmd;
 }
 
++ (BCCommand *)uniqueId
+{
+    BCCommand* cmd = [[BCCommand new] autorelease];
+    cmd.action = BCCommandActionType_GET;
+    cmd.resource = BC_API_UNIQUE_ID;
+    return cmd;
+}
+
 + (BCCommand*) heartbeat
 {
     return [[BCCommandHeartbeat new] autorelease];
@@ -58,14 +66,14 @@
     return cmd;
 }
 
-+ (BCCommand *)openFeed:(BCFeedSettings*)settings;
++ (BCCommand *)openFeed:(BCFeedMetadata*)metadata;
 {
     BCCommand* cmd = [[BCCommand new] autorelease];
     cmd.action = BCCommandActionType_PUT;
     cmd.resource = BC_API_FEED_SESSION_CREATE;
     
-    id settingsJson = [settings proxyForJson];
-    [cmd setObject:settingsJson forParam:BC_PARAM_FEED];
+    id metaJson = [metadata proxyForJson];
+    [cmd setObject:metaJson forParam:BC_PARAM_FEED_DESC];
     
     return cmd;
 }
@@ -163,15 +171,21 @@
     
     [cmd setObject:feed.key
           forParam:BC_PARAM_FEED_KEY];
-    [cmd setObject:[NSNumber numberWithUnsignedInteger:limit]
-          forParam:BC_PARAM_LIMIT];
     
-    NSNumber* unixtimestamp = BC_MAKETIMESTAMP(ending);
-    [cmd setObject:unixtimestamp
-          forParam:BC_PARAM_SINCE_TS];
+    if (0 < limit) {
+        [cmd setObject:[NSNumber numberWithUnsignedInteger:limit]
+              forParam:BC_PARAM_LIMIT];
+    }
+    
+    if (ending) {
+        NSNumber* unixtimestamp = BC_MAKETIMESTAMP(ending);
+        [cmd setObject:unixtimestamp
+              forParam:BC_PARAM_SINCE_TS];
+    }
     
     return cmd;
 }
+
 
 #pragma mark - Instance
 

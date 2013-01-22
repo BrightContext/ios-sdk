@@ -148,18 +148,23 @@
     if (!self.bc.isConnected) {
         [self updateStatus:@"Not Connected"];
     } else {
-        BCFeedSettings* s = [BCFeedSettings new];
+        TestContext* ctx = (TestContext*) self.bc;
         
-        s.type = [feedObject valueForKey:@"type"];
-        s.name = [feedObject valueForKey:@"name"];
-        s.procId = [feedObject valueForKey:@"procId"];
+        FDTestSettings* s = (FDTestSettings*) ctx.settings;
+        NSString* projectName = [s testProject];
+        
+        NSString* channelName = [feedObject valueForKey:@"channel"];
+        NSString* connectorName = [feedObject valueForKey:@"name"];
         
         NSString* filterJson = [feedObject valueForKey:@"filter"];
-        NSDictionary* filter = [filterJson JSONValue];
-        s.filterValues = filter;
-        s.filters = [filter allKeys];
+        NSDictionary* filterObject = [filterJson JSONValue];
         
-        [self.bc openFeedWithSettings:s listener:self];
+        BCFeedMetadata* md = [BCFeedMetadata metadataWithProject:projectName
+                                                         channel:channelName
+                                                       connector:connectorName
+                                                         filters:filterObject];
+        
+        [ctx openFeedWithMetaData:md listener:self];
     }
 }
 

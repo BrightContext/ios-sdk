@@ -17,4 +17,6 @@
 
 - (NSString*) toJson;
 
+- (id)proxyForJson;
+
 @end

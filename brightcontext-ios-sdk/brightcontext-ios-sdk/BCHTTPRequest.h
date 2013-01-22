@@ -40,6 +40,7 @@ typedef enum kBCNetworkErrorCodeEnum {
     NSURLConnection* connection;
     BCHTTPResponseCallback resultCallback;
     BCHTTPResponse* result;
+    NSMutableDictionary* payload;
 }
 
 /** initializes the request, does not begin execution until start is called
@@ -50,6 +51,9 @@ typedef enum kBCNetworkErrorCodeEnum {
 
 /** fire and forget, ignoring the response */
 - (void) start;
+
+/** encode and add string key/value pair into request payload body, this will cause the the content type to be form/url-encoded */
+- (void) addPayload:(NSString*)value forKey:(NSString*)key;
 
 /** fire and receive an async result on the main thread when complete
  @param cb block executed when http response is received

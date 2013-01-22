@@ -59,17 +59,19 @@
 
 - (void)insertNewObject:(id)sender
 {
-    NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
-    NSEntityDescription *entity = [[self.fetchedResultsController fetchRequest] entity];
-    NSManagedObject *newManagedObject = [NSEntityDescription insertNewObjectForEntityForName:[entity name] inManagedObjectContext:context];
+//    NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
+//    NSEntityDescription *entity = [[self.fetchedResultsController fetchRequest] entity];
+//    NSManagedObject *newManagedObject = [NSEntityDescription insertNewObjectForEntityForName:[entity name] inManagedObjectContext:context];
+//    
+//    [newManagedObject setValue:@" new feed" forKey:@"name"];
+//    [newManagedObject setValue:[NSNumber numberWithInt:0] forKey:@"procId"];
+//    [newManagedObject setValue:@"{ \"subChannel\" : \"DefaultThruFeed\" }" forKey:@"filter"];
+//    [newManagedObject setValue:BC_FEED_TYPE_THRU forKey:@"type"];
+//    
+//    FDAppDelegate* delegate = [[UIApplication sharedApplication] delegate];
+//    [delegate saveContext];
     
-    [newManagedObject setValue:@" new feed" forKey:@"name"];
-    [newManagedObject setValue:[NSNumber numberWithInt:0] forKey:@"procId"];
-    [newManagedObject setValue:@"{ \"subChannel\" : \"DefaultThruFeed\" }" forKey:@"filter"];
-    [newManagedObject setValue:BC_FEED_TYPE_THRU forKey:@"type"];
-    
-    FDAppDelegate* delegate = [[UIApplication sharedApplication] delegate];
-    [delegate saveContext];
+    [self loadChannelMetadata];
 }
 
 - (void)loadChannelMetadata
@@ -96,8 +98,8 @@
                                       insertIntoManagedObjectContext:ctx];
         [f setValue:fd.type forKey:@"type"];
         [f setValue:fd.procId forKey:@"procId"];
-        
-        [f setValue:[channel.name stringByAppendingFormat:@" - %@", fd.name] forKey:@"name"];
+        [f setValue:channel.name forKey:@"channel"];
+        [f setValue:fd.name forKey:@"name"];
         
         NSMutableDictionary* filterExample = [NSMutableDictionary new];
         for (id k in fd.filters) {

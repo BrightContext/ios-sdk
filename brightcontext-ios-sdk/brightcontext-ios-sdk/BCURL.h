@@ -48,4 +48,12 @@ typedef enum BCHTTPMethodEnum {
            forResource:(NSString*)resource
         withParameters:(NSString*)queryString;
 
+/** builds a simple url by combining the base and the resource without a query string
+ @param urlRoot the base url that will be used, including the protocol
+ @param resource the full path to the resource
+ @returns a new autoreleased NSURL with the provided root, and resource
+ */
++ (NSURL*) urlWithRoot:(NSURL *)urlRoot
+           forResource:(NSString *)resource;
+
 @end

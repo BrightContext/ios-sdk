@@ -17,4 +17,6 @@
 
 @property (readwrite,nonatomic,retain) id<TestSettings> settings;
 
+- (NSURL *)secureEnvironmentURL;
+
 @end

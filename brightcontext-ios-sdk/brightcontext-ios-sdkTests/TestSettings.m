@@ -27,7 +27,12 @@
 
 - (NSString *)apiKey
 {
-    return @"7af00d4c-7812-11e1-a957-44cc34a085ba";
+    return @"800f34dc-1b5b-492f-8017-d647ae1ef28a";
+}
+
+- (NSString *)secureApiKey
+{
+    return @"e921d6b4-2f75-4f53-a38e-3046d9405eb6";
 }
 
 - (NSString*)testProject
@@ -74,6 +79,11 @@
     return @"800f34dc-1b5b-492f-8017-d647ae1ef28a";
 }
 
+- (NSString *)secureApiKey
+{
+    return @"e921d6b4-2f75-4f53-a38e-3046d9405eb6";
+}
+
 - (NSString*)testProject
 {
     return @"ios unit tests";
@@ -116,6 +126,11 @@
 - (NSString *)apiKey
 {
     return @"8b6522e5-d1ed-4bf9-870c-6ab2be742f4d";
+}
+
+- (NSString *)secureApiKey
+{
+    return @"e921d6b4-2f75-4f53-a38e-3046d9405eb6";
 }
 
 - (NSString*)testProject

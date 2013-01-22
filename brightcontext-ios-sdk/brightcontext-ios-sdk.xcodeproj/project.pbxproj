@@ -32,11 +32,11 @@
 		D712E7ED1520E3D60050BB0C /* BCFeed.m in Sources */ = {isa = PBXBuildFile; fileRef = D712E7EB1520E3D60050BB0C /* BCFeed.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		D712E7F01520E46E0050BB0C /* BCMessage.h in Headers */ = {isa = PBXBuildFile; fileRef = D712E7EE1520E46E0050BB0C /* BCMessage.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D712E7F11520E46E0050BB0C /* BCMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = D712E7EF1520E46E0050BB0C /* BCMessage.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		D719D4BE1601102600A3AFA9 /* ContextTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D719D4BD1601102600A3AFA9 /* ContextTests.m */; };
 		D7257578152CB2B4007FF7E6 /* FDSettingEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D7257577152CB2B4007FF7E6 /* FDSettingEditViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		D725757C152CB9A3007FF7E6 /* FDSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D725757B152CB9A3007FF7E6 /* FDSettingsViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		D7257584152CD61E007FF7E6 /* FDTestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D7257583152CD61E007FF7E6 /* FDTestViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		D725758A152CD8F6007FF7E6 /* FDSelectFeedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D7257589152CD8F6007FF7E6 /* FDSelectFeedViewController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
-		D725758D152CDFEF007FF7E6 /* CollaborativeFeedTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D725758C152CDFEF007FF7E6 /* CollaborativeFeedTests.m */; };
 		D72A139415262BF900319BAB /* base64.c in Sources */ = {isa = PBXBuildFile; fileRef = D712E7B01520C62D0050BB0C /* base64.c */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		D72A139515262BF900319BAB /* NSData+SRB64Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = D712E7B31520C62D0050BB0C /* NSData+SRB64Additions.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		D72A139615262BF900319BAB /* SRWebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = D712E7B61520C62D0050BB0C /* SRWebSocket.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
@@ -88,6 +88,7 @@
 		D766B3401521F808004ED3EC /* SessionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D766B33F1521F808004ED3EC /* SessionTests.m */; };
 		D766B3421521FBD2004ED3EC /* BrightContext_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D766B3411521FBD2004ED3EC /* BrightContext_Private.h */; settings = {ATTRIBUTES = (); }; };
 		D766B34B152212E7004ED3EC /* TestSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = D766B34A152212E7004ED3EC /* TestSettings.m */; };
+		D77A45C9166CEDDD0022AAF1 /* FeedMetadataTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D77A45C8166CEDDD0022AAF1 /* FeedMetadataTests.m */; };
 		D77C129715C9C358007DC5B7 /* BCFeed_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D75B9D951562AE670029F5D8 /* BCFeed_Private.h */; settings = {ATTRIBUTES = (); }; };
 		D79A304015238BD4001294C4 /* BCConnectionManager.h in Headers */ = {isa = PBXBuildFile; fileRef = D79A303F15238BD4001294C4 /* BCConnectionManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D79A304515238DC3001294C4 /* BCFeedListener.h in Headers */ = {isa = PBXBuildFile; fileRef = D79A304415238DC3001294C4 /* BCFeedListener.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -215,6 +216,8 @@
 		D712E7EB1520E3D60050BB0C /* BCFeed.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BCFeed.m; sourceTree = "<group>"; };
 		D712E7EE1520E46E0050BB0C /* BCMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCMessage.h; sourceTree = "<group>"; };
 		D712E7EF1520E46E0050BB0C /* BCMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BCMessage.m; sourceTree = "<group>"; };
+		D719D4BC1601102600A3AFA9 /* ContextTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContextTests.h; sourceTree = "<group>"; };
+		D719D4BD1601102600A3AFA9 /* ContextTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContextTests.m; sourceTree = "<group>"; };
 		D7257576152CB2B4007FF7E6 /* FDSettingEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDSettingEditViewController.h; sourceTree = "<group>"; };
 		D7257577152CB2B4007FF7E6 /* FDSettingEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDSettingEditViewController.m; sourceTree = "<group>"; };
 		D725757A152CB9A3007FF7E6 /* FDSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDSettingsViewController.h; sourceTree = "<group>"; };
@@ -223,8 +226,6 @@
 		D7257583152CD61E007FF7E6 /* FDTestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDTestViewController.m; sourceTree = "<group>"; };
 		D7257588152CD8F6007FF7E6 /* FDSelectFeedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDSelectFeedViewController.h; sourceTree = "<group>"; };
 		D7257589152CD8F6007FF7E6 /* FDSelectFeedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDSelectFeedViewController.m; sourceTree = "<group>"; };
-		D725758B152CDFEF007FF7E6 /* CollaborativeFeedTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollaborativeFeedTests.h; sourceTree = "<group>"; };
-		D725758C152CDFEF007FF7E6 /* CollaborativeFeedTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollaborativeFeedTests.m; sourceTree = "<group>"; };
 		D72A13AF1529F2DB00319BAB /* HistoryTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryTests.h; sourceTree = "<group>"; };
 		D72A13B01529F2DB00319BAB /* HistoryTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = HistoryTests.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		D72A13E2152A0F3B00319BAB /* FeedDiagnosticsUtility.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FeedDiagnosticsUtility.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -262,6 +263,8 @@
 		D766B3411521FBD2004ED3EC /* BrightContext_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BrightContext_Private.h; sourceTree = "<group>"; };
 		D766B349152212E7004ED3EC /* TestSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = TestSettings.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		D766B34A152212E7004ED3EC /* TestSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = TestSettings.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		D77A45C7166CEDDD0022AAF1 /* FeedMetadataTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeedMetadataTests.h; sourceTree = "<group>"; };
+		D77A45C8166CEDDD0022AAF1 /* FeedMetadataTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FeedMetadataTests.m; sourceTree = "<group>"; };
 		D79A303F15238BD4001294C4 /* BCConnectionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCConnectionManager.h; sourceTree = "<group>"; };
 		D79A304415238DC3001294C4 /* BCFeedListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCFeedListener.h; sourceTree = "<group>"; };
 		D79A3046152391C9001294C4 /* BCFeedDescription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BCFeedDescription.h; sourceTree = "<group>"; };
@@ -429,24 +432,26 @@
 		D708B77E1520AB6D008C8B71 /* Unit Tests */ = {
 			isa = PBXGroup;
 			children = (
-				D708B77F1520AB6D008C8B71 /* Supporting Files */,
-				D7C2C4DE1523B23A00AC3FC6 /* Mock Objects */,
-				D766B33E1521F808004ED3EC /* SessionTests.h */,
-				D766B33F1521F808004ED3EC /* SessionTests.m */,
-				D79A304B1523A4C3001294C4 /* UnprocessedChannelTests.h */,
-				D79A304C1523A4C3001294C4 /* UnprocessedChannelTests.m */,
-				D72A13AF1529F2DB00319BAB /* HistoryTests.h */,
-				D72A13B01529F2DB00319BAB /* HistoryTests.m */,
-				D725758B152CDFEF007FF7E6 /* CollaborativeFeedTests.h */,
-				D725758C152CDFEF007FF7E6 /* CollaborativeFeedTests.m */,
 				D75B9D971562C60F0029F5D8 /* ConnectionTests.h */,
 				D75B9D981562C60F0029F5D8 /* ConnectionTests.m */,
-				D70EBA071565423800ACC8CB /* MessageValidationTests.h */,
-				D70EBA081565423800ACC8CB /* MessageValidationTests.m */,
+				D719D4BC1601102600A3AFA9 /* ContextTests.h */,
+				D719D4BD1601102600A3AFA9 /* ContextTests.m */,
 				D75E920915A394090066774D /* DateTests.h */,
 				D75E920A15A394090066774D /* DateTests.m */,
+				D72A13AF1529F2DB00319BAB /* HistoryTests.h */,
+				D72A13B01529F2DB00319BAB /* HistoryTests.m */,
+				D70EBA071565423800ACC8CB /* MessageValidationTests.h */,
+				D70EBA081565423800ACC8CB /* MessageValidationTests.m */,
+				D7C2C4DE1523B23A00AC3FC6 /* Mock Objects */,
 				D7B2EEBF15B49EBF007495B3 /* ProcessedChannelTests.h */,
 				D7B2EEC015B49EBF007495B3 /* ProcessedChannelTests.m */,
+				D766B33E1521F808004ED3EC /* SessionTests.h */,
+				D766B33F1521F808004ED3EC /* SessionTests.m */,
+				D708B77F1520AB6D008C8B71 /* Supporting Files */,
+				D79A304B1523A4C3001294C4 /* UnprocessedChannelTests.h */,
+				D79A304C1523A4C3001294C4 /* UnprocessedChannelTests.m */,
+				D77A45C7166CEDDD0022AAF1 /* FeedMetadataTests.h */,
+				D77A45C8166CEDDD0022AAF1 /* FeedMetadataTests.m */,
 			);
 			name = "Unit Tests";
 			path = "brightcontext-ios-sdkTests";
@@ -901,11 +906,12 @@
 				D79A304D1523A4C3001294C4 /* UnprocessedChannelTests.m in Sources */,
 				D79A30501523A599001294C4 /* TestListener.m in Sources */,
 				D72A13B11529F2DB00319BAB /* HistoryTests.m in Sources */,
-				D725758D152CDFEF007FF7E6 /* CollaborativeFeedTests.m in Sources */,
 				D75B9D991562C60F0029F5D8 /* ConnectionTests.m in Sources */,
 				D70EBA091565423800ACC8CB /* MessageValidationTests.m in Sources */,
 				D75E920B15A394090066774D /* DateTests.m in Sources */,
 				D7B2EEC115B49EBF007495B3 /* ProcessedChannelTests.m in Sources */,
+				D719D4BE1601102600A3AFA9 /* ContextTests.m in Sources */,
+				D77A45C9166CEDDD0022AAF1 /* FeedMetadataTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1065,7 +1071,6 @@
 					"BC_DEBUG_POLLING=1",
 					"BC_METRICS_ENABLED=1",
 					"BC_MESSAGE_CONTRACT_VALIDATION=1",
-					"BC_TEST_ENVIRONMENT=Te1Settings",
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",

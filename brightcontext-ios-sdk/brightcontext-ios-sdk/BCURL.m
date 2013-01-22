@@ -55,4 +55,12 @@
     return u;
 }
 
++ (NSURL*) urlWithRoot:(NSURL *)urlRoot
+           forResource:(NSString *)resource
+{
+    NSString* us = [[urlRoot absoluteString] stringByAppendingFormat:@"%@", resource];
+    NSURL* u = [NSURL URLWithString:us];
+    return u;
+}
+
 @end

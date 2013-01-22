@@ -110,4 +110,94 @@ typedef enum {
  */
 - (NSDate*) dateForKey:(NSString*)k;
 
+/**
+ Only valid when type == BCMessageVariant_Dictionary.
+ Set a decimal number for the given key inside the message payload.
+ @param d the decimal number to set
+ @param k the string key stored in the dictionary.
+ */
+- (void) setDecimal:(NSDecimalNumber*)d forKey:(NSString*)k;
+
+/**
+ Only valid when type == BCMessageVariant_Dictionary.
+ @param k the string key stored in the dictionary.
+ @returns number in decimal form wrapped in a NSValue pointer.
+ */
+- (NSDecimalNumber*) decimalForKey:(NSString*)k;
+
+/**
+ Only valid when type == BCMessageVariant_Dictionary.
+ @param a An Array or List of values
+ @param k the string key stored in the dictionary.
+ */
+- (void) setArray:(NSArray*)a forKey:(NSString*)k;
+
+/**
+ Only valid when type == BCMessageVariant_Dictionary.
+ @param k the string key stored in the dictionary.
+ @returns autoreleased NSArray of values inside the field
+ */
+- (NSArray*) arrayForKey:(NSString*)k;
+
+/**
+ Only valid when type == BCMessageVariant_Dictionary.
+ @param m Dictionary or Map of key/value pairs for the field
+ @param k the string key stored in the dictionary.
+ */
+- (void) setDictionary:(NSDictionary*)m forKey:(NSString*)k;
+
+/**
+ Only valid when type == BCMessageVariant_Dictionary.
+ @param k the string key stored in the dictionary.
+ @returns autorelease NSDictionary of key/value pairs
+ */
+- (NSDictionary*) dictionaryForKey:(NSString*)k;
+
+/**
+ Only valid when type == BCMessageVariant_Dictionary.
+ Convenience method for setNumber:forKey
+ @param i integer value that will be placed on the number field
+ @param k the string key stored in the dictionary.
+ */
+- (void) setInt:(int)i forKey:(NSString*)k;
+
+/**
+ Only valid when type == BCMessageVariant_Dictionary.
+ Convenience method for numberForkey:
+ @param k the string key stored in the dictionary.
+ @returns number as an integer value type
+ */
+- (int) intForKey:(NSString*)k;
+
+/**
+ Only valid when type == BCMessageVariant_Dictionary.
+ Convenience method for setDecimal:forKey
+ @param f float value that will be placed on the number field
+ @param k the string key stored in the dictionary.
+ */
+- (void) setFloat:(float)f forKey:(NSString*)k;
+
+/**
+ Only valid when type == BCMessageVariant_Dictionary.
+ Convenience method for decimalForkey:
+ @param k the string key stored in the dictionary.
+ @returns decimal number as a floating point value type
+ */
+- (float) floatForKey:(NSString*)k;
+
+/**
+ Only valid when type == BCMessageVariant_Dictionary.
+ @param b boolean value for the field
+ @param k the string key stored in the dictionary.
+ */
+- (void) setBool:(BOOL)b forKey:(NSString*)k;
+
+/**
+ Only valid when type == BCMessageVariant_Dictionary.
+ @param k the string key stored in the dictionary.
+ @returns true or false
+ */
+- (BOOL) boolForKey:(NSString*)k;
+
+
 @end

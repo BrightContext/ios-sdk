@@ -73,7 +73,8 @@ NSString* kBCEventManager_DispatchQueue = @"com.brightcontext.eventmanager.event
     self = [super init];
     if (self) {
         _feedKeyRegistry = [[NSMutableDictionary alloc] init];
-        _feedCodeRegistry = [[NSMutableDictionary alloc] init];
+        _feedSettingsRegistry = [[NSMutableDictionary alloc] init];
+        _feedMetadataRegistry = [[NSMutableDictionary alloc] init];
         
         _feedListeners = [[NSMutableDictionary alloc] init];
         _responseListeners = [[NSMutableDictionary alloc] init];
@@ -87,7 +88,8 @@ NSString* kBCEventManager_DispatchQueue = @"com.brightcontext.eventmanager.event
 - (void)dealloc
 {
     [_feedKeyRegistry release];
-    [_feedCodeRegistry release];
+    [_feedSettingsRegistry release];
+    [_feedMetadataRegistry release];
     [_feedListeners release];
     [_responseListeners release];
     
@@ -101,9 +103,23 @@ NSString* kBCEventManager_DispatchQueue = @"com.brightcontext.eventmanager.event
 
 - (void)registerFeed:(BCFeed *)feed
 {
+    if (!feed) return;
+    if (!feed.metadata) return;
+    
+    dispatch_sync(_eventQueue, ^{
+        NSString* metaHash = [feed.metadata generateHashCode];
+        [_feedMetadataRegistry setObject:feed forKey:metaHash];
+    });
+}
+
+- (void)indexRegisteredFeed:(BCFeed *)feed
+{
+    if (!feed) return;
+    if (!feed.settings) return;
+    
     dispatch_sync(_eventQueue, ^{
         NSString* code = [feed.settings generateHashCode];
-        [_feedCodeRegistry setObject:feed forKey:code];
+        [_feedSettingsRegistry setObject:feed forKey:code];
         [_feedKeyRegistry setObject:feed forKey:feed.key];
     });
 }
@@ -117,12 +133,26 @@ NSString* kBCEventManager_DispatchQueue = @"com.brightcontext.eventmanager.event
     return [allRegistered autorelease];
 }
 
+- (BCFeed *)registeredFeedMatchingMetadata:(BCFeedMetadata *)metadata
+{
+    if (!metadata) return nil;
+    
+    __block BCFeed* found = nil;
+    dispatch_sync(_eventQueue, ^{
+        NSString* code = [metadata generateHashCode];
+        found = [_feedMetadataRegistry objectForKey:code];
+    });
+    return found;
+}
+
 - (BCFeed *) registeredFeedMatchingSettings:(BCFeedSettings *)settings
 {
+    if (!settings) return nil;
+
     __block BCFeed* found = nil;
     dispatch_sync(_eventQueue, ^{
         NSString* code = [settings generateHashCode];
-        found = [_feedCodeRegistry objectForKey:code];
+        found = [_feedSettingsRegistry objectForKey:code];
     });
     return found;
 }
@@ -139,15 +169,24 @@ NSString* kBCEventManager_DispatchQueue = @"com.brightcontext.eventmanager.event
 - (void)unregisterFeed:(BCFeed *)feed
 {
     dispatch_sync(_eventQueue, ^{
-        BCFeedKey* fk = feed.key;
+        // key index
+        if (feed.key) {
+            BCFeedKey* fk = feed.key;
+            [_feedListeners removeObjectForKey:fk];
+            [_feedKeyRegistry removeObjectForKey:fk];
+        }
         
-        // remove listeners
-        [_feedListeners removeObjectForKey:fk];
+        // settings index
+        if (feed.settings) {
+            NSString* code = [feed.settings generateHashCode];
+            [_feedSettingsRegistry removeObjectForKey:code];
+        }
         
-        // remove feeds
-        NSString* code = [feed.settings generateHashCode];
-        [_feedCodeRegistry removeObjectForKey:code];
-        [_feedKeyRegistry removeObjectForKey:fk];
+        // metadata index
+        if (feed.metadata) {
+            NSString* code = [feed.metadata generateHashCode];
+            [_feedMetadataRegistry removeObjectForKey:code];
+        }
     });
 }
 
@@ -273,9 +312,7 @@ NSString* kBCEventManager_DispatchQueue = @"com.brightcontext.eventmanager.event
     BCEventKey* ek = responseEvent.eventKey;
     BCResponseHandlerCompletion block = [[_responseListeners objectForKey:ek] retain];
     
-    if (!block) {
-        BCLog(@"Null response handler for key: %@", ek);
-    } else {
+    if (block) {
         dispatch_async(_mainQueue, ^{
             block(responseEvent);
             [block release];

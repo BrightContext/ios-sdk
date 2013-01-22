@@ -205,6 +205,26 @@
     }
 }
 
+- (void)setDecimal:(NSDecimalNumber *)d forKey:(NSString *)k
+{
+    [self initRawDataAsDictionary];
+    [_data setObject:d forKey:k];
+}
+
+- (NSDecimalNumber *)decimalForKey:(NSString *)k
+{
+    id v = [_data objectForKey:k];
+    
+    if ([v isKindOfClass:[NSDecimalNumber class]]) {
+        return v;
+    } else if ([v isKindOfClass:[NSString class]]) {
+        NSDecimalNumber* n = [NSDecimalNumber decimalNumberWithString:v];
+        return n;
+    } else {
+        return nil;
+    }
+}
+
 - (void)setDate:(NSDate *)v forKey:(NSString *)k
 {
     [self initRawDataAsDictionary];
@@ -230,6 +250,82 @@
         return d;
     } else {
         return nil;
+    }
+}
+
+- (void)setArray:(NSArray *)a forKey:(NSString *)k
+{
+    [self initRawDataAsDictionary];
+    [_data setObject:a forKey:k];
+}
+
+- (NSArray *)arrayForKey:(NSString *)k
+{
+    id v = [_data objectForKey:k];
+    
+    if ([v isKindOfClass:[NSArray class]]) {
+        return v;
+    } else {
+        return nil;
+    }
+}
+
+- (void)setDictionary:(NSDictionary *)m forKey:(NSString *)k
+{
+    [self initRawDataAsDictionary];
+    [_data setObject:m forKey:k];
+}
+
+- (NSDictionary *)dictionaryForKey:(NSString *)k
+{
+    id v = [_data objectForKey:k];
+    
+    if ([v isKindOfClass:[NSDictionary class]]) {
+        return v;
+    } else {
+        return nil;
+    }
+}
+
+- (void)setInt:(int)i forKey:(NSString *)k
+{
+    [self initRawDataAsDictionary];
+    [_data setObject:[NSNumber numberWithInt:i] forKey:k];
+}
+
+- (int)intForKey:(NSString *)k
+{
+    return [[self numberForKey:k] integerValue];
+}
+
+- (void)setFloat:(float)f forKey:(NSString *)k
+{
+    NSDecimalNumber* dec = [[[NSDecimalNumber alloc] initWithFloat:f] autorelease];
+    [self setDecimal:dec forKey:k];
+}
+
+- (float)floatForKey:(NSString *)k
+{
+    return [[self decimalForKey:k] floatValue];
+}
+
+- (void)setBool:(BOOL)b forKey:(NSString *)k
+{
+    [self initRawDataAsDictionary];
+    [_data setObject:[NSNumber numberWithBool:b] forKey:k];
+}
+
+- (BOOL)boolForKey:(NSString *)k
+{
+    id v = [_data objectForKey:k];
+    
+    if ([v isKindOfClass:[NSNumber class]]) {
+        return [v boolValue];
+    } else if ([v isKindOfClass:[NSString class]]) {
+        bool b = ([v isEqualToString:@"true"]);
+        return b;
+    } else {
+        return false;
     }
 }
 

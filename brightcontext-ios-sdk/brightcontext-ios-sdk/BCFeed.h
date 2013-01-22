@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @class BCFeedSettings;
+@class BCFeedMetadata;
 @class BCMessage;
 @protocol BCConnectionManager;
 @protocol BCFeedListener;
@@ -34,7 +35,7 @@ typedef void(^BCFeedHistoryCallback)(NSArray* messages, NSError* error);
  
  \see BCMessage
  */
-@interface BCFeed : NSObject <BCSerializable>
+@interface BCFeed : NSObject
 {
     @private
     dispatch_queue_t _activePollingMessageQueue;
@@ -43,8 +44,9 @@ typedef void(^BCFeedHistoryCallback)(NSArray* messages, NSError* error);
 
 + (BCFeedType) feedTypeFromString:(NSString*)feedTypeString;
 
++ (BCFeed*) feedWithMetadata:(BCFeedMetadata*)md;
+
 @property (readwrite,nonatomic,retain) NSNumber* procId;
-@property (readwrite,nonatomic,retain) NSString* state;
 @property (readwrite,nonatomic,assign) BCFeedType type;
 @property (readwrite,nonatomic,retain) BCFeedKey* key;
 @property (readwrite,nonatomic,retain) NSNumber* netId;
@@ -53,10 +55,11 @@ typedef void(^BCFeedHistoryCallback)(NSArray* messages, NSError* error);
 @property (readwrite,nonatomic,retain) NSDictionary* filters;
 
 @property (readwrite,nonatomic,retain) BCFeedSettings* settings;
+@property (readwrite,nonatomic,retain) BCFeedMetadata* metadata;
 
 @property (readwrite,nonatomic,assign) id<BCConnectionManager> connection;
 
-- (void) open;
+- (void) loadSettings:(NSDictionary*)data;
 
 /**
  \brief Sends a message on a feed

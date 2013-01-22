@@ -13,13 +13,14 @@
 
 @interface BCSession : NSObject <BCSerializable>
 {
-    NSArray* _availablePorts;
-    NSInteger _currentPortIndex;
+    NSArray* _availableEndpoints;
+    NSInteger _currentEndpointIndex;
 }
 
-@property (readonly,nonatomic,retain) NSString* domain;
 @property (readonly,nonatomic,retain) NSString* sessionId;
 @property (readonly,nonatomic,assign) NSTimeInterval serverTime;
+@property (readonly,nonatomic,assign) BOOL isSecure;
+
 @property (readwrite,nonatomic,retain) NSURL* socketUrl;
 
 - (void) parseNextSocketUrl;

@@ -55,8 +55,19 @@ NSString* kBCNetworkErrorUserInfoKey_ResponsePayload = @"com.brightcontext.netwo
         connectionURL = [url copy];
         connectionMethod = BCHTTPMethodGET;
         shouldParseResult = YES;
+        payload = [[NSMutableDictionary alloc] init];
     }
     return self;
+}
+
+- (void)dealloc
+{
+    [payload release];
+    [connectionURL release];
+    [connection release];
+    [result release];
+    [resultCallback release];
+    [super dealloc];
 }
 
 - (NSError*) errorWithMessage:(NSString*)message
@@ -117,6 +128,34 @@ NSString* kBCNetworkErrorUserInfoKey_ResponsePayload = @"com.brightcontext.netwo
     
     if (BCHTTPMethodPOST == connectionMethod) {
         [req setHTTPMethod:BC_ACTION_POST];
+    }
+    
+    if (0 != [[payload allKeys] count]) {
+        [req setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+        
+        NSData* ampersand = [@"&" dataUsingEncoding:NSUTF8StringEncoding];
+        NSData* equalsSign = [@"=" dataUsingEncoding:NSUTF8StringEncoding];
+        NSMutableData* requestPayload = [NSMutableData data];
+        
+        int valuesWritten = 0;
+        for (NSString* key in [payload allKeys]) {
+            if (0 != valuesWritten) {
+                [requestPayload appendBytes:ampersand length:[ampersand length]];
+            }
+            
+            NSData* keyData = [key dataUsingEncoding:NSUTF8StringEncoding];
+            [requestPayload appendData:keyData];
+            
+            [requestPayload appendData:equalsSign];
+            
+            NSString* value = [payload objectForKey:key];
+            NSData* valueData = [value dataUsingEncoding:NSUTF8StringEncoding];
+            [requestPayload appendData:valueData];
+            
+            ++valuesWritten;
+        }
+        
+        [req setHTTPBody:requestPayload];
     }
     
     result = [[BCHTTPResponse alloc] initWithRequest:req];
@@ -235,7 +274,12 @@ NSString* kBCNetworkErrorUserInfoKey_ResponsePayload = @"com.brightcontext.netwo
     result = nil;
 }
 
-#pragma NSURLConnectionDelegate
+- (void)addPayload:(NSString *)value forKey:(NSString *)key
+{
+    [payload setObject:BC_URLEncode(value) forKey:key];
+}
+
+#pragma mark - NSURLConnectionDelegate
 
 - (void)connection:(NSURLConnection *)conn didReceiveResponse:(NSURLResponse *)response
 {
@@ -260,15 +304,5 @@ NSString* kBCNetworkErrorUserInfoKey_ResponsePayload = @"com.brightcontext.netwo
     [self checkStatusAndSignalCaller];
 }
 
-#pragma Cleanup
-
-- (void)dealloc
-{
-    [connectionURL release];
-    [connection release];
-    [result release];
-    [resultCallback release];
-    [super dealloc];
-}
 
 @end

@@ -15,6 +15,11 @@
 
 @implementation BrightContext
 
++ (NSString*) version
+{
+    return [NSString stringWithFormat:@"%d.%d.%d", BC_VERSION_MAJOR, BC_VERSION_MINOR, BC_VERSION_REV];
+}
+
 + (id)contextWithApiKey:(NSString *)apikey
 {
     BrightContext* ctx = [[BrightContext new] autorelease];
@@ -61,21 +66,16 @@
 
 #pragma mark Registration and Dispatch
 
-- (BCFeed*)registerOpenedFeedWithEvent:(BCEvent *)evt
+- (void)loadFeed:(BCFeed*)feed usingEvent:(BCEvent *)evt
 {
     BCMessage* msg = evt.message;
-    NSDictionary* feedData = msg.rawData;
+    NSDictionary* feedSettings = msg.rawData;
     
-    if (!feedData) {
-        NSAssert(feedData != nil, @"Incomprehensible feed open response: %@", msg);
-        return nil;
+    if (!feedSettings) {
+        NSAssert(feedSettings != nil, @"Incomprehensible feed open response: %@", msg);
     } else {
-        BCFeed* feed = [[[BCFeed alloc] initWithDictionary:feedData] autorelease];
+        [feed loadSettings:feedSettings];
         feed.connection = self;
-        
-        [self.dispatcher registerFeed:feed];
-        
-        return feed;
     }
 }
 
@@ -172,19 +172,20 @@
                             completion:(void (^)(NSError *, BCSession *))completion
 {
     NSURL* u = [BCURL urlWithRoot:loadBalancerRootUrl
-                      forResource:BC_API_SESSION_CREATE
-                   withParameters:[BCURL buildQueryString:BC_PARAM_API_KEY, apiKey, nil]];
+                      forResource:BC_API_SESSION_CREATE];
     
     BCHTTPRequest* op = [BCHTTPRequest requestWithUrl:u
                                            withMethod:BCHTTPMethodPOST];
     
+    [op addPayload:apiKey forKey:BC_PARAM_API_KEY];
+    
     [op startWithCallback:^(BCHTTPResponse *result) {
         if (nil == result.error) {
-            BCSession* metadata = [[BCSession alloc] initWithDictionary:[result responseObject]];
+            BCSession* newSession = [[BCSession alloc] initWithDictionary:[result responseObject]];
             
-            completion(nil, metadata);
+            completion(nil, newSession);
             
-            [metadata release];
+            [newSession release];
         } else {
             BCLog(@"Error establishing load balanced session: %@", result.error);
             completion(result.error, nil);
@@ -276,7 +277,7 @@
 
 - (void)restablishConnectionWithNewSession:(BCSession *)s
 {
-    BOOL shouldReopen = ![self.session.domain isEqualToString:s.domain];
+    BOOL shouldReopen = ![self.session.sessionId isEqualToString:s.sessionId];
     
     self.session = s;
     BCConnection* conn = [[[BCConnection alloc] init] autorelease];
@@ -286,7 +287,7 @@
     
     if (shouldReopen) {
         for (BCFeed* f in [self.dispatcher registeredFeeds]) {
-            BCCommand* openFeedCmd = [BCCommand openFeed:f.settings];
+            BCCommand* openFeedCmd = [BCCommand openFeed:f.metadata];
             [self sendRequest:openFeedCmd onResponse:^(BCEvent *evt) {
                 if (evt.isError) {
                     [self.dispatcher notifyListenersFeedClosed:f withError:evt.error];
@@ -346,45 +347,58 @@
     }
 }
 
-- (void) openFeed:(BCFeed*)f
-{
-    [self openFeedWithSettings:f.settings listener:nil];
-}
+#pragma Feeds
 
-- (void) openFeed:(BCFeed *)f listener:(id<BCFeedListener>)listener
+- (BCFeed*) openFeed:(BCFeed *)f listener:(id<BCFeedListener>)listener
 {
-    [self openFeedWithSettings:f.settings listener:listener];
-}
-
-- (void) openFeedWithSettings:(BCFeedSettings *)fs listener:(id<BCFeedListener>)listener
-{
-    if (!fs) return;
+    if (!f) return nil;
     
-    BCFeed* existingFeed = [self.dispatcher registeredFeedMatchingSettings:fs];
-    if (existingFeed) {
-        // feed already opened
-        
-        if (listener) {
-            [self registerNewListener:listener
-                          forOpenFeed:existingFeed];
-        }
+    return [self openFeedWithMetaData:f.metadata
+                             listener:listener];
+}
+
+- (BCFeed*) openFeedWithMetaData:(BCFeedMetadata*)feedMetadata
+                        listener:(id<BCFeedListener>)listener
+{
+    if (!feedMetadata) return nil;
+    
+    BCFeed* feed = [self.dispatcher registeredFeedMatchingMetadata:feedMetadata];
+    
+    if (feed) {
+        return feed;
     } else {
-        // open new feed
+        feed = [BCFeed feedWithMetadata:feedMetadata];
         
-        BCCommand* openFeedCmd = [BCCommand openFeed:fs];
-        [self sendRequest:openFeedCmd onResponse:^(BCEvent *evt) {
-            if (evt.isError) {
-                [self dispatchError:evt.error toListener:listener];
+        [self.dispatcher registerFeed:feed];
+        
+        [self establishConnection:^(NSError *connErr, BCSession *s) {
+            if (connErr) {
+                // failed to connect
+                [self dispatchError:connErr toListener:listener];
+                [self.dispatcher unregisterFeed:feed];
             } else {
-                BCFeed* newlyOpenedFeed = [self registerOpenedFeedWithEvent:evt];
-                
-                if (listener) {
-                    [self registerNewListener:listener
-                                  forOpenFeed:newlyOpenedFeed];
-                }
+                BCCommand* openFeedCmd = [BCCommand openFeed:feedMetadata];
+                [self sendRequest:openFeedCmd onResponse:^(BCEvent *evt) {
+                    if (evt.isError) {
+                        // failed to open feed
+                        [self dispatchError:evt.error toListener:listener];
+                        [self.dispatcher unregisterFeed:feed];
+                    } else {
+                        // success
+                        [self loadFeed:feed usingEvent:evt];
+                        [self.dispatcher indexRegisteredFeed:feed];
+                        
+                        if (listener) {
+                            [self registerNewListener:listener
+                                          forOpenFeed:feed];
+                        }
+                    }
+                }];
             }
         }];
     }
+    
+    return feed;
 }
 
 - (void) closeFeed:(BCFeed *)f
@@ -421,6 +435,8 @@
     }
 }
 
+#pragma Listeners
+
 - (void)addListener:(id<BCFeedListener>)listener forFeed:(BCFeed *)feed
 {
     if (!listener) return;
@@ -436,6 +452,8 @@
     
     [self.dispatcher removeListener:listener forFeed:feed];
 }
+
+#pragma Messaging
 
 - (void) sendMessage:(BCMessage *)msg onFeed:(BCFeed *)feed
 {
@@ -473,6 +491,49 @@
     [self.dispatcher addResponder:callback forEventKey:cmd.eventKey];
     [self.connection send:cmd];
 }
+
+#pragma Server Info
+
+- (void)getServerTime:(BCServerTimeCompletion)completion
+{
+    [self establishConnection:^(NSError *err, BCSession *s) {
+        if (err) {
+            completion(err, 0);
+        } else {
+            BCCommand* makeUniqueId = [BCCommand serverTime];
+            [self sendRequest:makeUniqueId onResponse:^(BCEvent *evt) {
+                if (evt.isError) {
+                    completion(evt.error, 0);
+                } else {
+                    NSNumber* stime = [evt.message numberForKey:@"stime"];
+                    NSTimeInterval t = BC_MAKENSREFSTAMP([stime doubleValue]);
+                    completion(nil, t);
+                }
+            }];
+        }
+    }];
+}
+
+- (void)makeUniqueId:(BCUniqueIdCompletion)completion
+{
+    [self establishConnection:^(NSError *err, BCSession *s) {
+        if (err) {
+            completion(err, nil);
+        } else {
+            BCCommand* makeUniqueId = [BCCommand uniqueId];
+            [self sendRequest:makeUniqueId onResponse:^(BCEvent *evt) {
+                if (evt.isError) {
+                    completion(evt.error, nil);
+                } else {
+                    NSString* uniqueId = [evt.message stringForKey:@"d"];
+                    completion(nil, uniqueId);
+                }
+            }];
+        }
+    }];
+}
+
+#pragma -
 
 - (void)shutdown:(BCShutdownCompletion)completion
 {

@@ -58,7 +58,15 @@
     BCHTTPRequest* _sessionCreateOperation;
 }
 
-/** Returns a newly created autoreleased context associated with the given API key */
+/** The SDK Version Number
+ * @returns The SDK Version Number in Major.Minor.Revision format
+ */
++ (NSString*) version;
+
+/** Build a context that uses the given API Key
+ * @param apikey The api key to use
+ * @returns a newly created autoreleased context associated with the given API key
+ */
 + (id) contextWithApiKey:(NSString*)apikey;
 
 @property (readwrite,nonatomic,retain) NSString* apiKey;
@@ -72,6 +80,31 @@
  @returns newly created autoreleased instance of a project bound to this context and API key that provides access to channels and feeds
  */
 - (BCProject*) loadProject:(NSString*)projectName;
+
+/**
+ * Retrieves the current server time.  Useful when synchronizing clients or commands with a single time source.
+ * @param completion async block callback with the following method signature: (NSError* err, NSTimeInterval serverTime)
+ */
+- (void)getServerTime:(BCServerTimeCompletion)completion;
+
+/**
+ * Asks the server to create a UUID (aka GUID).
+ * Useful for identifying a user, grouping a set of related messages, or when creating a local UUID is not an option.
+ * @param completion async block callback with the following method signature: (NSError* err, NSString* uniqueId)
+ */
+- (void)makeUniqueId:(BCUniqueIdCompletion)completion;
+
+/** Retrieve if active polling is currently enabled.
+ * @returns the current state of active polling, in other words, if the platform currently thinks this user is active on acive user inputs.
+ * The default is YES, users are assumed to be active.
+ */
+- (BOOL) isActivePollingEnabled;
+/** Changes the state of active polling.
+ * While set to NO, the user is considered inactive on input feeds with active user tracking.
+ * The default is YES, users are assumed to be active.
+ * @param enabled YES if the user is active, NO otherwise.
+ */
+- (void) setActivePollingEnabled:(BOOL)enabled;
 
 @end
 

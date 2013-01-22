@@ -10,7 +10,7 @@
 
 @protocol BCSerializable;
 @class BCFeed;
-@class BCFeedSettings;
+@class BCFeedMetadata;
 
 typedef enum {
     BCCommandActionType_GET,
@@ -20,20 +20,28 @@ typedef enum {
 @interface BCCommand : NSObject <BCSerializable>
 
 + (BCCommand*) serverTime;
+
++ (BCCommand*) uniqueId;
+
 + (BCCommand*) heartbeat;
-+ (BCCommand*) channelDescription:(NSString*)channelName inProject:(NSString*)projectName;
-+ (BCCommand*) openFeed:(BCFeedSettings*)settings;
++ (BCCommand*) channelDescription:(NSString*)channelName
+                        inProject:(NSString*)projectName;
+
++ (BCCommand*) openFeed:(BCFeedMetadata*)metadata;
 + (BCCommand*) closeFeed:(BCFeed*)feed;
 + (BCCommand*) closeFeeds:(NSArray*)feeds;
 
 + (BCCommand*) sendMessage:(BCMessage*)msg
                     onFeed:(BCFeed*)feed;
+
 + (BCCommand*) sendMessage:(BCMessage *)msg
                     onFeed:(BCFeed *)feed
          withActivityState:(BCActivityState)state
                      forTS:(NSNumber *)tslot;
 
-+ (BCCommand*) getHistory:(BCFeed*)feed limit:(NSUInteger)limit ending:(NSDate*)ending;
++ (BCCommand*) getHistory:(BCFeed*)feed
+                    limit:(NSUInteger)limit
+                   ending:(NSDate*)ending;
 
 @property (readwrite,nonatomic,assign) BCEventKey* eventKey;
 @property (readwrite,nonatomic,assign) BCCommandActionType action;

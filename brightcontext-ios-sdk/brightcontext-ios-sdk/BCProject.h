@@ -56,29 +56,57 @@ typedef void(^BCChannelDescriptionFetchCompletion)(BCChannelDescription* channel
  
  */
 @interface BCProject : NSObject
-{
-    NSMutableDictionary* _channelMetadata;
-}
 
 + (id)projectWithName:(NSString*)n inContext:(id<BCConnectionManager>)cm;
 
 @property (readwrite,nonatomic,retain) NSString* name;
 @property (readwrite,nonatomic,assign) id<BCConnectionManager> connection;
 
-- (void) open:(NSString*)unprocessedChannelName
-     listener:(id<BCFeedListener>)listener;
+/** Fetch the metadata description of the configured channel
+ * @param channelName name of the channel configured in the management console
+ * @param completion completion block executed later once metadata is loaded from server
+ */
+- (void) loadChannel:(NSString*)channelName
+          completion:(BCChannelDescriptionFetchCompletion)completion;
 
-- (void) open:(NSString*)unprocessedChannelName
-   subchannel:(NSString*)subchannelName
-     listener:(id<BCFeedListener>)listener;
+/** Open a ThruChannel with no processing
+ * @param unprocessedChannelName name of the ThruChannel configured in the management console
+ * @param listener object that handles open, close and message events
+ * @returns A handle to an unopened feed instance, the listener should await onopen before using
+ */
+- (BCFeed*) open:(NSString*)unprocessedChannelName
+        listener:(id<BCFeedListener>)listener;
 
-- (void) open:(NSString*)processedChannelName
-         feed:(NSString*)feedName
-     listener:(id<BCFeedListener>)listener;
+/** Open a private subchannel on a ThruChannel with no processing
+ * @param unprocessedChannelName name of the ThruChannel configured in the management console
+ * @param subchannelName name of new dynamic subchannel
+ * @param listener object that handles open, close and message events
+ * @returns A handle to an unopened feed instance, the listener should await onopen before using
+ */
+- (BCFeed*) open:(NSString*)unprocessedChannelName
+      subchannel:(NSString*)subchannelName
+        listener:(id<BCFeedListener>)listener;
 
-- (void) open:(NSString*)processedChannelName
-         feed:(NSString*)feedName
-       filter:(NSDictionary*)filters
-     listener:(id<BCFeedListener>)listener;
+/** Open a QuantChannel input or output by name
+ * @param processedChannelName name of the QuantChannel configured in the management console
+ * @param feedName name of the Input or Output in the QuantChannel in the management console
+ * @param listener object that handles open, close and message events
+ * @returns A handle to an unopened feed instance, the listener should await onopen before using
+ */
+- (BCFeed*) open:(NSString*)processedChannelName
+            feed:(NSString*)feedName
+        listener:(id<BCFeedListener>)listener;
+
+/** Open a QuantChannel input or output that has runtime filters configured
+ * @param processedChannelName name of the QuantChannel configured in the management console
+ * @param feedName name of the Input or Output in the QuantChannel in the management console
+ * @param filters Dictionary of NSString => NSString/NSValue of configured runtime parameters
+ * @param listener object that handles open, close and message events
+ * @returns A handle to an unopened feed instance, the listener should await onopen before using
+ */
+- (BCFeed*) open:(NSString*)processedChannelName
+            feed:(NSString*)feedName
+          filter:(NSDictionary*)filters
+        listener:(id<BCFeedListener>)listener;
 
 @end

@@ -23,7 +23,8 @@
 {
     @private
     NSMutableDictionary* _feedKeyRegistry;
-    NSMutableDictionary* _feedCodeRegistry;
+    NSMutableDictionary* _feedSettingsRegistry;
+    NSMutableDictionary* _feedMetadataRegistry;
     
     NSMutableDictionary* _feedListeners;
     NSMutableDictionary* _responseListeners;
@@ -34,9 +35,12 @@
 
 - (void) registerFeed:(BCFeed*)feed;
 - (NSArray*) registeredFeeds;
+- (void) indexRegisteredFeed:(BCFeed *)feed;
+- (void) unregisterFeed:(BCFeed*)feed;
+
+- (BCFeed*) registeredFeedMatchingMetadata:(BCFeedMetadata*)metadata;
 - (BCFeed*) registeredFeedMatchingSettings:(BCFeedSettings*)settings;
 - (BCFeed*) registeredFeedMatchingKey:(BCFeedKey*)feedKey;
-- (void) unregisterFeed:(BCFeed*)feed;
 
 - (void) addListener:(id<BCFeedListener>)listener forFeed:(BCFeed*)feed;
 - (void) removeListener:(id<BCFeedListener>)listener forFeed:(BCFeed*)feed;

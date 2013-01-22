@@ -17,6 +17,25 @@
 @property (readwrite,nonatomic,retain) NSString* name;
 @property (readwrite,nonatomic,retain) NSArray* filters;
 
++ (NSString*) sortedKvps:(NSDictionary*)data;
+
+@end
+
+
+@interface BCFeedMetadata : NSObject <BCSerializable>
+
++ (BCFeedMetadata*) metadataWithProject:(NSString*)projectName
+                                channel:(NSString*)channelName
+                              connector:(NSString*)connectorName
+                                filters:(NSDictionary*)filterObject;
+
+@property (readwrite,nonatomic,retain) NSString* projectName;
+@property (readwrite,nonatomic,retain) NSString* channelName;
+@property (readwrite,nonatomic,retain) NSString* connectorName;
+@property (readwrite,nonatomic,retain) NSDictionary* filters;
+
+- (NSString*) generateHashCode;
+
 @end
 
 
@@ -30,3 +49,4 @@
 - (NSString*) generateHashCode;
 
 @end
+

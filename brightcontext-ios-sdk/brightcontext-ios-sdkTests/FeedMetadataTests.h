@@ -8,6 +8,6 @@
 
 #import <SenTestingKit/SenTestingKit.h>
 
-@interface DateTests : SenTestCase
+@interface FeedMetadataTests : SenTestCase
 
 @end

@@ -50,22 +50,25 @@
                   Identifier = "SessionTests">
                </Test>
                <Test
-                  Identifier = "MessageValidationTests">
+                  Identifier = "HistoryTests">
+               </Test>
+               <Test
+                  Identifier = "FeedMetadataTests">
                </Test>
                <Test
                   Identifier = "DateTests">
                </Test>
                <Test
-                  Identifier = "HistoryTests">
+                  Identifier = "ContextTests">
+               </Test>
+               <Test
+                  Identifier = "ProcessedChannelTests/testDimensionChanges">
                </Test>
                <Test
                   Identifier = "ProcessedChannelTests/testActivePollingInput">
                </Test>
                <Test
                   Identifier = "ProcessedChannelTests/testBasicAverages">
-               </Test>
-               <Test
-                  Identifier = "ProcessedChannelTests/testFieldValues">
                </Test>
             </SkippedTests>
          </TestableReference>

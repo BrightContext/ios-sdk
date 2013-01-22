@@ -1,10 +1,10 @@
+//-----------------------------------------------------------------
+// Copyright 2012 BrightContext Corporation
 //
-//  ProcessedChannelTests.h
-//  brightcontext-ios-sdk
-//
-//  Created by Steven Fusco on 7/16/12.
-//  Copyright (c) 2012 BrightContext Corporation. All rights reserved.
-//
+// Licensed under the MIT License defined in the
+// LICENSE file. You may not use this file except in
+// compliance with the License.
+//-----------------------------------------------------------------
 
 #import <SenTestingKit/SenTestingKit.h>
 

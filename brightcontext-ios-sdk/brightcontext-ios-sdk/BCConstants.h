@@ -9,21 +9,26 @@
 /* resources */
 #ifndef BC_CONSTANTS_H
 
+#define BC_VERSION_MAJOR 1
+#define BC_VERSION_MINOR 7
+#define BC_VERSION_REV 0
+
 #define BC_ACTION_GET @"GET"
 #define BC_ACTION_POST @"POST"
 
-#define BC_API_LOADBALANCER @"http://pub.brightcontext.com"
-#define BC_API_PROTOCOL @"ws://"
-#define BC_API_ROOT @"/api"
+#define BC_API_LOADBALANCER @"https://pub.brightcontext.com"
 #define BC_API_SOCKET_PATH @"/feed/ws"
-#define BC_API_SERVER_TIME @"/api/server/time.json"
-#define BC_API_SESSION_CREATE @"/api/session/create.json"
-#define BC_API_FEED_SESSION_CREATE @"/api/feed/session/create.json"
-#define BC_API_FEED_SESSION_DELETE @"/api/feed/session/delete.json"
-#define BC_API_FEED_MESSAGE_CREATE @"/api/feed/message/create.json"
-#define BC_API_FEED_MESSAGE_HISTORY @"/api/feed/message/history.json"
-#define BC_API_TIMELINE_TIMEPOINTS @"/api/timeline/timepoints.json"
-#define BC_API_CHANNEL_DESCRIPTION @"/api/channel/description.json"
+
+#define BC_API_ROOT @"/api/v2"
+#define BC_API_SERVER_TIME @"/api/v2/server/time.json"
+#define BC_API_UNIQUE_ID @"/api/v2/server/uuid.json"
+#define BC_API_SESSION_CREATE @"/api/v2/session/create.json"
+#define BC_API_FEED_SESSION_CREATE @"/api/v2/feed/session/create.json"
+#define BC_API_FEED_SESSION_DELETE @"/api/v2/feed/session/delete.json"
+#define BC_API_FEED_MESSAGE_CREATE @"/api/v2/feed/message/create.json"
+#define BC_API_FEED_MESSAGE_HISTORY @"/api/v2/feed/message/history.json"
+#define BC_API_TIMELINE_TIMEPOINTS @"/api/v2/timeline/timepoints.json"
+#define BC_API_CHANNEL_DESCRIPTION @"/api/v2/channel/description.json"
 
 #define BC_HEARTBEAT_COMMAND @"heartbeat"
 #define BC_HEARTBEAT_INTERVAL 45
@@ -38,7 +43,7 @@
 #define BC_FEED_TYPE_IN @"IN"
 #define BC_FEED_TYPE_OUT @"OUT"
 #define BC_FEED_TYPE_THRU @"THRU"
-#define BC_FEED_DEFAULT_SUBCHANNEL @"DefaultThruProc"
+#define BC_FEED_DEFAULT_SUBCHANNEL @"default"
 #define BC_FEED_MAX_ACTIVE_MESSAGE_QUEUE_WAIT_TIME dispatch_time(DISPATCH_TIME_NOW, 5ull * NSEC_PER_SEC)
 
 /* command and query string parameters */
@@ -53,6 +58,7 @@
 #define BC_PARAM_EVENT_KEY @"eventKey"
 #define BC_PARAM_SESSION_ID @"sid"
 #define BC_PARAM_FEED @"feed"
+#define BC_PARAM_FEED_DESC @"feedDesc"
 #define BC_PARAM_FEED_KEY @"feedKey"
 #define BC_PARAM_FEED_KEY_LIST @"fklist"
 #define BC_PARAM_MESSAGE_NUM @"msgNum"
@@ -134,7 +140,7 @@ typedef enum {
 /* basic function macros */
 
 #define BC_CLAMP(x, low, high)  (((x) > (high)) ? (high) : (((x) < (low)) ? (low) : (x)))
-#define URLEncode(__S__) [[[[__S__ stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding] stringByReplacingOccurrencesOfString:@":" withString:@"%3A"] stringByReplacingOccurrencesOfString:@"," withString:@"%2C"] stringByReplacingOccurrencesOfString:@"@" withString:@"%40"]
+#define BC_URLEncode(__S__) [[[[__S__ stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding] stringByReplacingOccurrencesOfString:@":" withString:@"%3A"] stringByReplacingOccurrencesOfString:@"," withString:@"%2C"] stringByReplacingOccurrencesOfString:@"@" withString:@"%40"]
 #define spinwait(_SECONDS_) [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:_SECONDS_]]
 #define BC_MAKETIMESTAMP(__D__) [NSNumber numberWithLongLong:1000 * (long long) [__D__ timeIntervalSince1970]]
 #define BC_MAKENSREFSTAMP(__T__) (__T__ / 1000.0) - NSTimeIntervalSince1970
@@ -146,6 +152,9 @@ typedef enum {
 #define BC_FIELDTYPE_STRING @"S"
 #define BC_FIELDTYPE_DATE @"D"
 #define BC_FIELDTYPE_NUMBER @"N"
+#define BC_FIELDTYPE_LIST @"L"
+#define BC_FIELDTYPE_MAP @"M"
+#define BC_FIELDTYPE_BOOL @"B"
 
 typedef enum {
     BCFieldValidation_None = 0,

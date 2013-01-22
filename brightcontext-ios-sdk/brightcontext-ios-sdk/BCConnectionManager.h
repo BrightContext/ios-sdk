@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @class BCFeed;
-@class BCFeedSettings;
+@class BCFeedMetadata;
 @class BCMessage;
 @class BCEvent;
 @class BCCommand;
@@ -20,6 +20,8 @@
 typedef void(^BCSessionEstablishedCompletion)(NSError* err, BCSession* s);
 typedef void(^BCResponseHandlerCompletion)(BCEvent* evt);
 typedef void(^BCShutdownCompletion)(NSError* err);
+typedef void(^BCServerTimeCompletion)(NSError* err, NSTimeInterval serverTime);
+typedef void(^BCUniqueIdCompletion)(NSError* err, NSString* uniqueId);
 
 @protocol BCConnectionManager <NSObject>
 
@@ -37,9 +39,12 @@ typedef void(^BCShutdownCompletion)(NSError* err);
 - (BOOL) shouldAutoReconnect;
 - (void) setShouldAutoReconnect:(BOOL)enabled;
 
-- (void) openFeed:(BCFeed*)f;
-- (void) openFeed:(BCFeed*)f listener:(id<BCFeedListener>)listener;
-- (void) openFeedWithSettings:(BCFeedSettings *)fs listener:(id<BCFeedListener>)listener;
+- (void) getServerTime:(BCServerTimeCompletion)completion;
+- (void) makeUniqueId:(BCUniqueIdCompletion)completion;
+
+- (BCFeed*) openFeed:(BCFeed*)f;
+- (BCFeed*) openFeed:(BCFeed*)f listener:(id<BCFeedListener>)listener;
+- (BCFeed*) openFeedWithMetaData:(BCFeedMetadata*)feedMetadata listener:(id<BCFeedListener>)listener;
 - (void) closeFeed:(BCFeed*)f;
 
 - (void) addListener:(id<BCFeedListener>)listener forFeed:(BCFeed *)feed;

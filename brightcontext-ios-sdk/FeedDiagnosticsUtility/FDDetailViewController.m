@@ -19,15 +19,11 @@
 
 @synthesize detailItem = _detailItem;
 @synthesize feedName = _feedName;
-@synthesize feedProcId = _feedProcId;
 @synthesize feedFilter = _feedFilter;
 @synthesize feedFilterLarge = _feedFilterLarge;
-@synthesize feedType = _feedType;
 @synthesize writeKey = _writeKey;
-@synthesize procIdStepper = _procIdStepper;
 @synthesize container = _container;
 @synthesize masterPopoverController = _masterPopoverController;
-@synthesize feedTypePopover = _feedTypePopover;
 @synthesize noItem = _noItem;
 
 
@@ -71,16 +67,15 @@
             self.container.contentSize = CGSizeMake(w, h * 1.25);
         }
         
+        self.channelName.text = [self.detailItem valueForKey:@"channel"];
         self.feedName.text = [self.detailItem valueForKey:@"name"];
-        NSNumber* procId = [self.detailItem valueForKey:@"procId"];
-        self.feedProcId.text = [NSString stringWithFormat:@"%@", procId];
-        [self.procIdStepper setValue:[procId doubleValue]];
         self.writeKey.text = [self.detailItem valueForKey:@"writekey"];
         NSString* filter = [self.detailItem valueForKey:@"filter"];
         self.feedFilter.text = filter;
         self.feedFilterLarge.text = filter;
         
-        [self showFeedTypeTitle:[self.detailItem valueForKey:@"type"]];
+        NSNumber* procId = [self.detailItem valueForKey:@"procId"];
+        [self showFeedTypeTitle:[self.detailItem valueForKey:@"type"] withId:[procId unsignedIntegerValue]];
         
     } else {
         if (self.noItem) {
@@ -102,16 +97,13 @@
 
 - (void)viewDidUnload
 {
-    [self setFeedTypePopover:nil];
     [self setFeedName:nil];
-    [self setFeedProcId:nil];
     [self setFeedFilter:nil];
-    [self setFeedType:nil];
-    [self setProcIdStepper:nil];
     [self setFeedFilterLarge:nil];
     [self setContainer:nil];
     [self setNoItem:nil];
     [self setWriteKey:nil];
+    [self setChannelName:nil];
     [super viewDidUnload];
 }
 
@@ -132,9 +124,6 @@
     
     NSManagedObject* o = self.detailItem;
     [o setValue:self.feedName.text forKey:@"name"];
-    
-    int procId = [self.feedProcId.text intValue];
-    [o setValue:[NSNumber numberWithInt:procId] forKey:@"procId"];
     
     NSString* wk = self.writeKey.text;
     [o setValue:wk forKey:@"writekey"];
@@ -166,13 +155,12 @@
     }
 }
 
-- (void)showFeedTypeTitle:(NSString *)title
+- (void)showFeedTypeTitle:(NSString *)title withId:(NSUInteger)procId
 {
     if (title) {
-        [self.feedType setTitle:[NSString stringWithFormat:@"Type - %@", title]
-                       forState:UIControlStateNormal];
+        [self.feedId setText:[NSString stringWithFormat:@"%d - %@", procId, title]];
     } else {
-        [self.feedType setTitle:@"Type" forState:UIControlStateNormal];
+        [self.feedId setText:@"Unknown"];
     }
 }
 
@@ -201,133 +189,11 @@
     }
 }
 
-#pragma mark - UIPickerViewDataSource
-
-- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
-{
-    return 1;
-}
-
-- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
-{
-    return 3;
-}
-
-#pragma mark - UIPickerViewDelegate
-
--(NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
-{
-    return [self titleForFeedTypeId:row];
-}
-
-- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
-{
-    NSString* title = [self titleForFeedTypeId:row];
-    [self showFeedTypeTitle:title];
-    
-    [self.detailItem setValue:title forKey:@"type"];
-    
-    [UIView animateWithDuration:.25
-                     animations:^{
-                         pickerView.transform = CGAffineTransformMakeTranslation(0, 180);
-                     } completion:^(BOOL finished) {
-                         [pickerView removeFromSuperview];
-                     }];
-}
-
-#pragma mark - UITableViewDataSource
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    return 3;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    static NSString* cellId = @"UITableViewCell";
-    UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:cellId];
-    if (nil == cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
-    }
-    
-    NSString* title = [self titleForFeedTypeId:indexPath.row];
-    cell.textLabel.text = title;
-    
-    return cell;
-}
-
-#pragma mark - UITableViewDelegate
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    NSString* title = [self titleForFeedTypeId:indexPath.row];
-    [self showFeedTypeTitle:title];
-    
-    [self.feedTypePopover dismissPopoverAnimated:YES];
-    self.feedTypePopover = nil;
-    
-    [self.detailItem setValue:title forKey:@"type"];
-}
-
 #pragma mark - UIPopoverControllerDelegate
 
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
 {
-    if (popoverController == self.feedTypePopover) {
-        self.feedTypePopover = nil;
-    } else {
-        self.settingsPopover = nil;
-    }
-}
-
-#pragma mark - Control Handlers
-
-- (IBAction)typeTouchUpInside:(id)sender
-{
-    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
-        [self.feedName resignFirstResponder];
-        [self.feedProcId resignFirstResponder];
-        [self.feedFilter resignFirstResponder];
-
-        CGRect viewFrame = self.view.frame;
-        CGFloat x = 0;
-        CGFloat y = CGRectGetHeight(viewFrame);
-        CGFloat w = CGRectGetWidth(viewFrame);
-        CGFloat h = 180;
-        CGRect pickerFrame = CGRectMake(x, y, w, h);
-        UIPickerView* typePicker = [[UIPickerView alloc] initWithFrame:pickerFrame];
-        [typePicker setShowsSelectionIndicator:YES];
-        typePicker.dataSource = self;
-        typePicker.delegate = self;
-        
-        [self.view addSubview:typePicker];
-        
-        [UIView animateWithDuration:.25
-                         animations:^{
-                             typePicker.frame = CGRectMake(x, y-h, w, h);
-                         }];
-        
-    } else {
-        UITableViewController* tableVc = [[UITableViewController alloc] initWithStyle:UITableViewStyleGrouped];
-        tableVc.tableView.delegate = self;
-        tableVc.tableView.dataSource = self;
-        
-        UIPopoverController* popOverVc = [[UIPopoverController alloc] initWithContentViewController:tableVc];
-        popOverVc.popoverContentSize = CGSizeMake(320, 150);
-        popOverVc.delegate = self;
-        
-        self.feedTypePopover = popOverVc;
-        [popOverVc presentPopoverFromRect:self.feedType.frame
-                                   inView:self.view
-                 permittedArrowDirections:UIPopoverArrowDirectionAny
-                                 animated:YES];
-    }
-}
-
-- (IBAction)stepperValueChanged:(id)sender
-{
-    double v = [self.procIdStepper value];
-    self.feedProcId.text = [NSString stringWithFormat:@"%@", [NSNumber numberWithDouble:v]];
+    self.settingsPopover = nil;
 }
 
 #pragma mark - Settings
@@ -347,6 +213,5 @@
         self.settingsPopover.delegate = self;
     }
 }
-
 
 @end
