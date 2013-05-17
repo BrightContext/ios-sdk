@@ -7,7 +7,9 @@
     get_header();
 ?>
 
-<link rel="styleshet" href="/docs/ios/doxygen.css" />
+<link rel="stylesheet" href="/docs/ios/doxygen.css" />
+<link rel="stylesheet" href="/docs/ios/stylesheet.css" />
+
 
 <div class="container interior-container" itemscope itemtype="http://schema.org/Article">
     

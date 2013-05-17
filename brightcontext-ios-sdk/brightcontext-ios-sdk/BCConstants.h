@@ -10,7 +10,7 @@
 #ifndef BC_CONSTANTS_H
 
 #define BC_VERSION_MAJOR 1
-#define BC_VERSION_MINOR 7
+#define BC_VERSION_MINOR 8
 #define BC_VERSION_REV 0
 
 #define BC_ACTION_GET @"GET"

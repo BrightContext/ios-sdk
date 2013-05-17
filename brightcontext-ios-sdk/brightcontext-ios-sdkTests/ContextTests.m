@@ -35,7 +35,7 @@
 - (void) testVersion
 {
     NSString* versionNumber = [BrightContext version];
-    STAssertEqualObjects(@"1.7.0", versionNumber, @"");
+    STAssertEqualObjects(@"1.8.0", versionNumber, @"");
 }
 
 - (void) testSystemTime

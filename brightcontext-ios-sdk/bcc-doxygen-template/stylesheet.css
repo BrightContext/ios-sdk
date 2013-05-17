@@ -1,0 +1,90 @@
+.doxygen .container.interior-container div.qindex
+{
+  display: none;
+}
+
+.doxygen table tr td div.ah {
+  display: none;
+}
+
+.doxygen .fragment {
+  padding: 1em;
+  margin: 1em;
+}
+
+.doxygen td.entry {
+  padding: 1em;
+}
+
+.doxygen td.entry img {
+  display: none;
+}
+
+.doxygen .directory tr, .doxygen .directory tr.even {
+  background-color: white;
+}
+
+.doxygen .directory {
+  border: none;
+}
+
+.doxygen .directory table tr td.desc {
+  margin-left: 5em;
+}
+
+.doxygen .memSeparator {
+  border: none;
+  line-height: 0px;
+  margin: 0px;
+  padding: 0px;
+}
+
+.doxygen .container.interior-container .memItemLeft,
+.doxygen .container.interior-container .memItemRight
+{
+  margin: 0px;
+  padding: 0px;
+  line-height: 24pt;
+}
+
+.doxygen h2.groupheader {
+  border: none;
+}
+
+.doxygen .memproto, dl.reflist dt {
+  border: none;
+  padding: 6px 0px 6px 0px;
+  color: #253555;
+  font-weight: bold;
+  text-shadow: 0px 1px 1px rgba(255, 255, 255, 0.9);
+  background-image: none;
+  background-repeat: repeat;
+  background-color: inherit;
+  /* opera specific markup */
+  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.15);
+  border-top-right-radius: 4px;
+  border-top-left-radius: 4px;
+  /* firefox specific markup */
+  -moz-box-shadow: none;
+  -moz-border-radius-topright: 0px;
+  -moz-border-radius-topleft: 0px;
+  /* webkit specific markup */
+  -webkit-box-shadow: none;
+  -webkit-border-top-right-radius: 0px;
+  -webkit-border-top-left-radius: 0px;
+}
+
+.doxygen .container.interior-container table.memname tr,
+.doxygen .container.interior-container table.memname tr td,
+.doxygen .container.interior-container table.memname tr td
+{
+  display: inline-block;
+  padding: 0px;
+  width: auto;
+}
+
+.doxygen .container.interior-container table.memname tr,
+.doxygen .container.interior-container table.memname tr td.memname {
+  display: block;
+  width: 100%;
+}
